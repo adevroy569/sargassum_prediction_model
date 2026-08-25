@@ -1,0 +1,165 @@
+# ---------------------------------------------------------------------------
+# Sargassum Puerto Rico - pipeline configuration
+# Every physical coefficient the model uses is declared here so it can be
+# tuned/calibrated without touching code. Sources are cited in README.md.
+# ---------------------------------------------------------------------------
+
+run:
+  # Forward forecast horizon, hours
+  horizon_hours: 120
+  # Lagrangian integration step, hours
+  dt_hours: 1
+  # Keep this many hourly archive rows in the committed CSV before rotating
+  archive_max_rows: 400000
+
+domains:
+  # Wide box used to seed drifting Sargassum (includes upstream Atlantic)
+  seed:
+    lat_min: 14.0
+    lat_max: 21.0
+    lon_min: -68.5
+    lon_max: -60.0
+    stride: 2          # ERDDAP stride on the 0.015 deg AFAI grid -> ~3.3 km
+  # Tight box used for the published "live" biomass map
+  map:
+    lat_min: 16.5
+    lat_max: 19.5
+    lon_min: -68.5
+    lon_max: -64.0
+    stride: 1          # full 0.015 deg (~1.7 km)
+
+sources:
+  afai:
+    server: "https://cwcgom.aoml.noaa.gov/erddap"
+    dataset_7d: "noaa_aoml_atlantic_oceanwatch_AFAI_7D"
+    dataset_3d: "noaa_aoml_atlantic_oceanwatch_AFAI_3D"
+    dataset_1d: "noaa_aoml_atlantic_oceanwatch_AFAI_1D"
+    variable: "AFAI"
+    # Prefer the 7-day composite (fewest cloud gaps) unless it lags the
+    # freshest product by more than this. As of Aug 2026 the 7-day stream is
+    # about a month behind while 1-day/3-day are current, so runs fall back to
+    # the 3-day composite automatically.
+    prefer_7d_within_days: 6
+    # Product used to build the historical training set. Keep this the SAME as
+    # what live runs end up using, or the model is trained on a different
+    # sensor product than it is applied to.
+    backfill_product: "3d"
+  currents:
+    server: "https://dm3.caricoos.org/erddap"
+    dataset: "noaa_ndbc_6484_c6c4_c96e"   # HF radar, 2 km, PR/VI
+    dataset_fallback: "noaa_ndbc_59c1_a442_736e"  # HF radar, 6 km
+    u: "u"
+    v: "v"
+    # hours of HF-radar history blended into the persistence forecast
+    mean_window_hours: 72
+  wind:
+    server: "https://dm3.caricoos.org/erddap"
+    dataset: "wrf_nmm_2km_best_agg"
+    u: "U10"
+    v: "V10"
+  waves:
+    server: "https://dm3.caricoos.org/erddap"
+    dataset: "SWAN_HighRes_PR"
+  insitu:
+    server: "https://dm3.caricoos.org/erddap"
+    variable: "Sargassum_biomass"        # kg per meter of shoreline, weekly
+    stations:
+      - Sargassum_Biomass_E1
+      - Sargassum_Biomass_G1
+      - Sargassum_Biomass_L1
+      - Sargassum_Biomass_SC
+      - Sargassum_Biomass_C1_East
+      - Sargassum_Biomass_C2_Center
+      - Sargassum_Biomass_C3_West
+      - Sargassum_Biomass_ML1
+      - Sargassum_Biomass_ML2
+      - Sargassum_Biomass_ML3
+      - Sargassum_Biomass_MJ1
+      - Sargassum_Biomass_MJ2
+      - Sargassum_Biomass_MJ3
+      - Sargassum_Biomass_MJ4
+
+biomass:
+  # dAFAI value corresponding to 100% sub-pixel Sargassum coverage
+  # (Wang & Hu; used in USF/NOAA AFAI products)
+  afai_full_coverage: 0.0441
+  # wet biomass per m2 of 100%-covered sea surface
+  wet_kg_per_m2_full_coverage: 3.34
+  # background removal: percentile of the local neighbourhood treated as
+  # "no Sargassum" water when computing dAFAI
+  background_percentile: 25
+  background_window_px: 41
+  # detection threshold on dAFAI, in robust noise sigmas
+  detect_sigma: 3.0
+  # absolute floor on fractional coverage (0.0005 = 0.05% of a pixel)
+  min_coverage: 0.0005
+  # a detected pixel must have at least this many detected neighbours
+  # (0 disables despeckling)
+  min_neighbours: 2
+
+drift:
+  # fraction of 10 m wind speed added to the surface current (windage +
+  # Stokes drift lumped together). Literature range ~0.5-2%.
+  windage: 0.012
+  # small random walk to represent unresolved eddies, m2/s
+  horizontal_diffusivity: 30.0
+  # how fast the HF-radar persistence forecast relaxes to its recent mean
+  persistence_efold_hours: 24.0
+  # particles per seeded grid cell
+  particles_per_cell: 1
+
+beaching:
+  # a particle within this distance of a coast segment can strand
+  capture_km: 2.0
+  # stranding probability per hour = k * onshore_speed(m/s), clipped to 1
+  onshore_efficiency: 0.35
+  # minimum onshore velocity component (m/s) for stranding to occur
+  min_onshore_speed: 0.02
+  # length of coastline each segment represents is computed from geometry;
+  # this is the assumed alongshore capture width used to convert kg -> kg/m
+  segment_spacing_km: 5.0
+
+emissions:
+  # cross-shore width of the stranded wrack band, metres
+  deposit_width_m: 8.0
+  # areal wet density (kg/m2) mapped to Sargassum "density index" 8
+  density_index_8_kg_m2: 40.0
+  # areal density of a thin drift line (kg/m2) - density index 1
+  thin_mat_kg_m2: 5.0
+  # --- gas yields (mass-conserving core of the emission model) ---
+  # kg of gas released per tonne of stranded WET Sargassum, integrated over
+  # the whole decomposition. See sargassum/emissions.py for the derivation.
+  # H2S plausible range 0.1-3 (sulfate reduction limited by mineralisable C
+  # and by how much sulfide escapes rather than being re-oxidised/fixed).
+  h2s_kg_per_tonne_wet: 0.8
+  # NH3 plausible range 0.15-0.45 (1.2% N of dry weight, 10-30% volatilised)
+  nh3_kg_per_tonne_wet: 0.25
+  # near-surface mixing depth used for the indicative wrack-line
+  # concentration, metres (breathing height over a wrack line, not the ABL)
+  mixing_height_m: 2.5
+  # continue integrating gas release this long past the drift horizon, so the
+  # full decomposition of what strands is counted
+  tail_hours: 288
+  # decomposition timing: no meaningful emission before lag, ramp to peak,
+  # then exponential decay
+  onset_lag_hours: 48
+  peak_hours: 72
+  decay_efold_hours: 120
+  # risk tiers on total H2S emission, kg per day per km of shoreline
+  risk_tiers:
+    low: 0.5
+    moderate: 3.0
+    high: 12.0
+
+model:
+  # target is log1p(kg per m of shoreline) at the in-situ stations
+  algorithm: "hist_gradient_boosting"
+  min_training_rows: 60
+  test_fraction: 0.2
+  random_state: 42
+  # upstream biomass integral lags, weeks (AFAI 7-day product cadence)
+  lags_weeks: [0, 1, 2, 3]
+  # nested catchment radii (km) around each receptor
+  catchment_radii_km: [100.0, 250.0, 600.0]
+  # only count biomass upwind/upcurrent of the receptor (east of it)
+  upstream_only_beyond_km: 100.0

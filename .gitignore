@@ -1,0 +1,13 @@
+# transient downloads and caches
+data/raw/
+*.nc
+*.pyc
+__pycache__/
+.venv/
+.DS_Store
+
+# keep the accumulating archive and the trained model - they are the point
+!data/archive/
+!data/models/
+.pytest_cache/
+.ipynb_checkpoints/

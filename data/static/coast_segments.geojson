@@ -1,0 +1,2168 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.1128,
+     18.49571
+    ]
+   },
+   "properties": {
+    "seg_id": "PU000",
+    "name": "Aguadilla / Crash Boat",
+    "island": "puerto_rico",
+    "lat": 18.49571,
+    "lon": -67.1128,
+    "normal_lat": 0.99544,
+    "normal_lon": 0.09542,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.0656,
+     18.49142
+    ]
+   },
+   "properties": {
+    "seg_id": "PU001",
+    "name": "Isabela / Jobos",
+    "island": "puerto_rico",
+    "lat": 18.49142,
+    "lon": -67.0656,
+    "normal_lat": 0.99544,
+    "normal_lon": 0.09542,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.01843,
+     18.49316
+    ]
+   },
+   "properties": {
+    "seg_id": "PU002",
+    "name": "Isabela / Jobos",
+    "island": "puerto_rico",
+    "lat": 18.49316,
+    "lon": -67.01843,
+    "normal_lat": 0.99449,
+    "normal_lon": -0.10486,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.97128,
+     18.49787
+    ]
+   },
+   "properties": {
+    "seg_id": "PU003",
+    "name": "Quebradillas",
+    "island": "puerto_rico",
+    "lat": 18.49787,
+    "lon": -66.97128,
+    "normal_lat": 0.99449,
+    "normal_lon": -0.10487,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.92408,
+     18.49784
+    ]
+   },
+   "properties": {
+    "seg_id": "PU004",
+    "name": "Quebradillas",
+    "island": "puerto_rico",
+    "lat": 18.49784,
+    "lon": -66.92408,
+    "normal_lat": 0.99616,
+    "normal_lon": 0.08754,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.87685,
+     18.4939
+    ]
+   },
+   "properties": {
+    "seg_id": "PU005",
+    "name": "Quebradillas",
+    "island": "puerto_rico",
+    "lat": 18.4939,
+    "lon": -66.87685,
+    "normal_lat": 0.99616,
+    "normal_lon": 0.08753,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.82962,
+     18.48997
+    ]
+   },
+   "properties": {
+    "seg_id": "PU006",
+    "name": "Arecibo",
+    "island": "puerto_rico",
+    "lat": 18.48997,
+    "lon": -66.82962,
+    "normal_lat": 0.99544,
+    "normal_lon": 0.09542,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.78242,
+     18.48567
+    ]
+   },
+   "properties": {
+    "seg_id": "PU007",
+    "name": "Arecibo",
+    "island": "puerto_rico",
+    "lat": 18.48567,
+    "lon": -66.78242,
+    "normal_lat": 0.99544,
+    "normal_lon": 0.09542,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.73523,
+     18.48138
+    ]
+   },
+   "properties": {
+    "seg_id": "PU008",
+    "name": "Arecibo",
+    "island": "puerto_rico",
+    "lat": 18.48138,
+    "lon": -66.73523,
+    "normal_lat": 0.99544,
+    "normal_lon": 0.09542,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.68803,
+     18.48291
+    ]
+   },
+   "properties": {
+    "seg_id": "PU009",
+    "name": "Arecibo",
+    "island": "puerto_rico",
+    "lat": 18.48291,
+    "lon": -66.68803,
+    "normal_lat": 0.99544,
+    "normal_lon": -0.09542,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.64083,
+     18.4872
+    ]
+   },
+   "properties": {
+    "seg_id": "PU010",
+    "name": "Arecibo",
+    "island": "puerto_rico",
+    "lat": 18.4872,
+    "lon": -66.64083,
+    "normal_lat": 0.99544,
+    "normal_lon": -0.09542,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.5937,
+     18.48796
+    ]
+   },
+   "properties": {
+    "seg_id": "PU011",
+    "name": "Barceloneta / Punta Morillos",
+    "island": "puerto_rico",
+    "lat": 18.48796,
+    "lon": -66.5937,
+    "normal_lat": 0.99143,
+    "normal_lon": 0.13067,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.5467,
+     18.48209
+    ]
+   },
+   "properties": {
+    "seg_id": "PU012",
+    "name": "Barceloneta / Punta Morillos",
+    "island": "puerto_rico",
+    "lat": 18.48209,
+    "lon": -66.5467,
+    "normal_lat": 0.99143,
+    "normal_lon": 0.13067,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.49953,
+     18.47766
+    ]
+   },
+   "properties": {
+    "seg_id": "PU013",
+    "name": "Barceloneta / Punta Morillos",
+    "island": "puerto_rico",
+    "lat": 18.47766,
+    "lon": -66.49953,
+    "normal_lat": 0.99673,
+    "normal_lon": 0.08084,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.45228,
+     18.47402
+    ]
+   },
+   "properties": {
+    "seg_id": "PU014",
+    "name": "Vega Baja / Manat\u00ed",
+    "island": "puerto_rico",
+    "lat": 18.47402,
+    "lon": -66.45228,
+    "normal_lat": 0.99673,
+    "normal_lon": 0.08084,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.40502,
+     18.47039
+    ]
+   },
+   "properties": {
+    "seg_id": "PU015",
+    "name": "Vega Baja / Manat\u00ed",
+    "island": "puerto_rico",
+    "lat": 18.47039,
+    "lon": -66.40502,
+    "normal_lat": 0.99673,
+    "normal_lon": 0.08084,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.35763,
+     18.47
+    ]
+   },
+   "properties": {
+    "seg_id": "PU016",
+    "name": "Vega Baja / Manat\u00ed",
+    "island": "puerto_rico",
+    "lat": 18.47,
+    "lon": -66.35763,
+    "normal_lat": 1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.31022,
+     18.47
+    ]
+   },
+   "properties": {
+    "seg_id": "PU017",
+    "name": "Dorado",
+    "island": "puerto_rico",
+    "lat": 18.47,
+    "lon": -66.31022,
+    "normal_lat": 1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.26282,
+     18.47
+    ]
+   },
+   "properties": {
+    "seg_id": "PU018",
+    "name": "Dorado",
+    "island": "puerto_rico",
+    "lat": 18.47,
+    "lon": -66.26282,
+    "normal_lat": 1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.21541,
+     18.47
+    ]
+   },
+   "properties": {
+    "seg_id": "PU019",
+    "name": "Dorado",
+    "island": "puerto_rico",
+    "lat": 18.47,
+    "lon": -66.21541,
+    "normal_lat": 1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.16822,
+     18.46647
+    ]
+   },
+   "properties": {
+    "seg_id": "PU020",
+    "name": "Toa Baja / Cata\u00f1o",
+    "island": "puerto_rico",
+    "lat": 18.46647,
+    "lon": -66.16822,
+    "normal_lat": 0.99321,
+    "normal_lon": 0.11635,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.12113,
+     18.46124
+    ]
+   },
+   "properties": {
+    "seg_id": "PU021",
+    "name": "Toa Baja / Cata\u00f1o",
+    "island": "puerto_rico",
+    "lat": 18.46124,
+    "lon": -66.12113,
+    "normal_lat": 0.99321,
+    "normal_lon": 0.11634,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.0738,
+     18.46
+    ]
+   },
+   "properties": {
+    "seg_id": "PU022",
+    "name": "San Juan / Condado",
+    "island": "puerto_rico",
+    "lat": 18.46,
+    "lon": -66.0738,
+    "normal_lat": 1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.02644,
+     18.45949
+    ]
+   },
+   "properties": {
+    "seg_id": "PU023",
+    "name": "San Juan / Condado",
+    "island": "puerto_rico",
+    "lat": 18.45949,
+    "lon": -66.02644,
+    "normal_lat": 0.98885,
+    "normal_lon": 0.14893,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.97956,
+     18.45279
+    ]
+   },
+   "properties": {
+    "seg_id": "PU024",
+    "name": "Isla Verde / Carolina",
+    "island": "puerto_rico",
+    "lat": 18.45279,
+    "lon": -65.97956,
+    "normal_lat": 0.98885,
+    "normal_lon": 0.14892,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.93257,
+     18.44695
+    ]
+   },
+   "properties": {
+    "seg_id": "PU025",
+    "name": "Isla Verde / Carolina",
+    "island": "puerto_rico",
+    "lat": 18.44695,
+    "lon": -65.93257,
+    "normal_lat": 0.99321,
+    "normal_lon": 0.11633,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.88549,
+     18.44172
+    ]
+   },
+   "properties": {
+    "seg_id": "PU026",
+    "name": "Lo\u00edza / Pi\u00f1ones",
+    "island": "puerto_rico",
+    "lat": 18.44172,
+    "lon": -65.88549,
+    "normal_lat": 0.99321,
+    "normal_lon": 0.11633,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.83847,
+     18.43606
+    ]
+   },
+   "properties": {
+    "seg_id": "PU027",
+    "name": "R\u00edo Grande",
+    "island": "puerto_rico",
+    "lat": 18.43606,
+    "lon": -65.83847,
+    "normal_lat": 0.99143,
+    "normal_lon": 0.13063,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.79148,
+     18.43018
+    ]
+   },
+   "properties": {
+    "seg_id": "PU028",
+    "name": "R\u00edo Grande",
+    "island": "puerto_rico",
+    "lat": 18.43018,
+    "lon": -65.79148,
+    "normal_lat": 0.99143,
+    "normal_lon": 0.13063,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.74817,
+     18.41207
+    ]
+   },
+   "properties": {
+    "seg_id": "PU029",
+    "name": "Luquillo",
+    "island": "puerto_rico",
+    "lat": 18.41207,
+    "lon": -65.74817,
+    "normal_lat": 0.91134,
+    "normal_lon": 0.41165,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.70445,
+     18.39482
+    ]
+   },
+   "properties": {
+    "seg_id": "PU030",
+    "name": "Luquillo",
+    "island": "puerto_rico",
+    "lat": 18.39482,
+    "lon": -65.70445,
+    "normal_lat": 0.94348,
+    "normal_lon": 0.33143,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.65978,
+     18.37984
+    ]
+   },
+   "properties": {
+    "seg_id": "PU031",
+    "name": "Fajardo / Las Cabezas",
+    "island": "puerto_rico",
+    "lat": 18.37984,
+    "lon": -65.65978,
+    "normal_lat": 0.78456,
+    "normal_lon": 0.62005,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.62261,
+     18.35196
+    ]
+   },
+   "properties": {
+    "seg_id": "PU032",
+    "name": "Fajardo / Las Cabezas",
+    "island": "puerto_rico",
+    "lat": 18.35196,
+    "lon": -65.62261,
+    "normal_lat": 0.78461,
+    "normal_lon": 0.61999,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.62,
+     18.30819
+    ]
+   },
+   "properties": {
+    "seg_id": "PU033",
+    "name": "Fajardo / Sardinera",
+    "island": "puerto_rico",
+    "lat": 18.30819,
+    "lon": -65.62,
+    "normal_lat": 0.0,
+    "normal_lon": 1.0,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.63661,
+     18.26678
+    ]
+   },
+   "properties": {
+    "seg_id": "PU034",
+    "name": "Ceiba / Roosevelt Roads",
+    "island": "puerto_rico",
+    "lat": 18.26678,
+    "lon": -65.63661,
+    "normal_lat": -0.42891,
+    "normal_lon": 0.90335,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.65799,
+     18.22669
+    ]
+   },
+   "properties": {
+    "seg_id": "PU035",
+    "name": "Ceiba / Roosevelt Roads",
+    "island": "puerto_rico",
+    "lat": 18.22669,
+    "lon": -65.65799,
+    "normal_lat": -0.49513,
+    "normal_lon": 0.86882,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.68174,
+     18.18782
+    ]
+   },
+   "properties": {
+    "seg_id": "PU036",
+    "name": "Naguabo",
+    "island": "puerto_rico",
+    "lat": 18.18782,
+    "lon": -65.68174,
+    "normal_lat": -0.6051,
+    "normal_lon": 0.79615,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.71038,
+     18.15202
+    ]
+   },
+   "properties": {
+    "seg_id": "PU037",
+    "name": "Naguabo",
+    "island": "puerto_rico",
+    "lat": 18.15202,
+    "lon": -65.71038,
+    "normal_lat": -0.60518,
+    "normal_lon": 0.79609,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.73902,
+     18.11623
+    ]
+   },
+   "properties": {
+    "seg_id": "PU038",
+    "name": "Humacao / Punta Santiago",
+    "island": "puerto_rico",
+    "lat": 18.11623,
+    "lon": -65.73902,
+    "normal_lat": -0.60526,
+    "normal_lon": 0.79603,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.76626,
+     18.07956
+    ]
+   },
+   "properties": {
+    "seg_id": "PU039",
+    "name": "Humacao / Punta Santiago",
+    "island": "puerto_rico",
+    "lat": 18.07956,
+    "lon": -65.76626,
+    "normal_lat": -0.49545,
+    "normal_lon": 0.86864,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.7897,
+     18.0405
+    ]
+   },
+   "properties": {
+    "seg_id": "PU040",
+    "name": "Yabucoa",
+    "island": "puerto_rico",
+    "lat": 18.0405,
+    "lon": -65.7897,
+    "normal_lat": -0.49553,
+    "normal_lon": 0.86859,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.8251,
+     18.01075
+    ]
+   },
+   "properties": {
+    "seg_id": "PU041",
+    "name": "Yabucoa",
+    "island": "puerto_rico",
+    "lat": 18.01075,
+    "lon": -65.8251,
+    "normal_lat": -0.7521,
+    "normal_lon": 0.65905,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.86319,
+     17.98505
+    ]
+   },
+   "properties": {
+    "seg_id": "PU042",
+    "name": "Maunabo / Punta Tuna",
+    "island": "puerto_rico",
+    "lat": 17.98505,
+    "lon": -65.86319,
+    "normal_lat": -0.93031,
+    "normal_lon": 0.36679,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.90717,
+     17.96856
+    ]
+   },
+   "properties": {
+    "seg_id": "PU043",
+    "name": "Maunabo / Punta Tuna",
+    "island": "puerto_rico",
+    "lat": 17.96856,
+    "lon": -65.90717,
+    "normal_lat": -0.93032,
+    "normal_lon": 0.36676,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.95258,
+     17.95749
+    ]
+   },
+   "properties": {
+    "seg_id": "PU044",
+    "name": "Patillas",
+    "island": "puerto_rico",
+    "lat": 17.95749,
+    "lon": -65.95258,
+    "normal_lat": -0.99325,
+    "normal_lon": 0.11601,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.99953,
+     17.95227
+    ]
+   },
+   "properties": {
+    "seg_id": "PU045",
+    "name": "Patillas",
+    "island": "puerto_rico",
+    "lat": 17.95227,
+    "lon": -65.99953,
+    "normal_lat": -0.99325,
+    "normal_lon": 0.11601,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.04647,
+     17.94706
+    ]
+   },
+   "properties": {
+    "seg_id": "PU046",
+    "name": "Arroyo",
+    "island": "puerto_rico",
+    "lat": 17.94706,
+    "lon": -66.04647,
+    "normal_lat": -0.99325,
+    "normal_lon": 0.11601,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.09342,
+     17.94184
+    ]
+   },
+   "properties": {
+    "seg_id": "PU047",
+    "name": "Arroyo",
+    "island": "puerto_rico",
+    "lat": 17.94184,
+    "lon": -66.09342,
+    "normal_lat": -0.99325,
+    "normal_lon": 0.116,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.14057,
+     17.94
+    ]
+   },
+   "properties": {
+    "seg_id": "PU048",
+    "name": "Guayama / Punta Pozuelo",
+    "island": "puerto_rico",
+    "lat": 17.94,
+    "lon": -66.14057,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.18784,
+     17.94
+    ]
+   },
+   "properties": {
+    "seg_id": "PU049",
+    "name": "Guayama / Punta Pozuelo",
+    "island": "puerto_rico",
+    "lat": 17.94,
+    "lon": -66.18784,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.2351,
+     17.94
+    ]
+   },
+   "properties": {
+    "seg_id": "PU050",
+    "name": "Salinas",
+    "island": "puerto_rico",
+    "lat": 17.94,
+    "lon": -66.2351,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.28236,
+     17.94
+    ]
+   },
+   "properties": {
+    "seg_id": "PU051",
+    "name": "Salinas",
+    "island": "puerto_rico",
+    "lat": 17.94,
+    "lon": -66.28236,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.32963,
+     17.94
+    ]
+   },
+   "properties": {
+    "seg_id": "PU052",
+    "name": "Salinas",
+    "island": "puerto_rico",
+    "lat": 17.94,
+    "lon": -66.32963,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.37689,
+     17.94
+    ]
+   },
+   "properties": {
+    "seg_id": "PU053",
+    "name": "Santa Isabel",
+    "island": "puerto_rico",
+    "lat": 17.94,
+    "lon": -66.37689,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.42409,
+     17.94128
+    ]
+   },
+   "properties": {
+    "seg_id": "PU054",
+    "name": "Santa Isabel",
+    "island": "puerto_rico",
+    "lat": 17.94128,
+    "lon": -66.42409,
+    "normal_lat": -0.99547,
+    "normal_lon": -0.09512,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.47114,
+     17.94556
+    ]
+   },
+   "properties": {
+    "seg_id": "PU055",
+    "name": "Juana D\u00edaz",
+    "island": "puerto_rico",
+    "lat": 17.94556,
+    "lon": -66.47114,
+    "normal_lat": -0.99547,
+    "normal_lon": -0.09512,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.5182,
+     17.94984
+    ]
+   },
+   "properties": {
+    "seg_id": "PU056",
+    "name": "Juana D\u00edaz",
+    "island": "puerto_rico",
+    "lat": 17.94984,
+    "lon": -66.5182,
+    "normal_lat": -0.99547,
+    "normal_lon": -0.09513,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.56521,
+     17.95452
+    ]
+   },
+   "properties": {
+    "seg_id": "PU057",
+    "name": "Ponce",
+    "island": "puerto_rico",
+    "lat": 17.95452,
+    "lon": -66.56521,
+    "normal_lat": -0.99452,
+    "normal_lon": -0.10454,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.61221,
+     17.95922
+    ]
+   },
+   "properties": {
+    "seg_id": "PU058",
+    "name": "Ponce",
+    "island": "puerto_rico",
+    "lat": 17.95922,
+    "lon": -66.61221,
+    "normal_lat": -0.99452,
+    "normal_lon": -0.10455,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.65944,
+     17.96
+    ]
+   },
+   "properties": {
+    "seg_id": "PU059",
+    "name": "Ponce",
+    "island": "puerto_rico",
+    "lat": 17.96,
+    "lon": -66.65944,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.70671,
+     17.96
+    ]
+   },
+   "properties": {
+    "seg_id": "PU060",
+    "name": "Pe\u00f1uelas / Tallaboa",
+    "island": "puerto_rico",
+    "lat": 17.96,
+    "lon": -66.70671,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.75375,
+     17.95625
+    ]
+   },
+   "properties": {
+    "seg_id": "PU061",
+    "name": "Pe\u00f1uelas / Tallaboa",
+    "island": "puerto_rico",
+    "lat": 17.95625,
+    "lon": -66.75375,
+    "normal_lat": -0.99325,
+    "normal_lon": 0.11601,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.8007,
+     17.95103
+    ]
+   },
+   "properties": {
+    "seg_id": "PU062",
+    "name": "Guayanilla",
+    "island": "puerto_rico",
+    "lat": 17.95103,
+    "lon": -66.8007,
+    "normal_lat": -0.99325,
+    "normal_lon": 0.11601,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.84765,
+     17.94582
+    ]
+   },
+   "properties": {
+    "seg_id": "PU063",
+    "name": "Gu\u00e1nica",
+    "island": "puerto_rico",
+    "lat": 17.94582,
+    "lon": -66.84765,
+    "normal_lat": -0.99325,
+    "normal_lon": 0.116,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.89459,
+     17.9406
+    ]
+   },
+   "properties": {
+    "seg_id": "PU064",
+    "name": "Gu\u00e1nica",
+    "island": "puerto_rico",
+    "lat": 17.9406,
+    "lon": -66.89459,
+    "normal_lat": -0.99325,
+    "normal_lon": 0.116,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.94154,
+     17.94462
+    ]
+   },
+   "properties": {
+    "seg_id": "PU065",
+    "name": "Gu\u00e1nica",
+    "island": "puerto_rico",
+    "lat": 17.94462,
+    "lon": -66.94154,
+    "normal_lat": -0.99325,
+    "normal_lon": -0.116,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -66.98848,
+     17.94983
+    ]
+   },
+   "properties": {
+    "seg_id": "PU066",
+    "name": "Lajas / La Parguera",
+    "island": "puerto_rico",
+    "lat": 17.94983,
+    "lon": -66.98848,
+    "normal_lat": -0.99325,
+    "normal_lon": -0.11601,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.03523,
+     17.95646
+    ]
+   },
+   "properties": {
+    "seg_id": "PU067",
+    "name": "Lajas / La Parguera",
+    "island": "puerto_rico",
+    "lat": 17.95646,
+    "lon": -67.03523,
+    "normal_lat": -0.98891,
+    "normal_lon": -0.14851,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.08198,
+     17.95686
+    ]
+   },
+   "properties": {
+    "seg_id": "PU068",
+    "name": "Lajas / La Parguera",
+    "island": "puerto_rico",
+    "lat": 17.95686,
+    "lon": -67.08198,
+    "normal_lat": -0.98891,
+    "normal_lon": 0.14851,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.12872,
+     17.95018
+    ]
+   },
+   "properties": {
+    "seg_id": "PU069",
+    "name": "Cabo Rojo / El Combate",
+    "island": "puerto_rico",
+    "lat": 17.95018,
+    "lon": -67.12872,
+    "normal_lat": -0.98891,
+    "normal_lon": 0.1485,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.17339,
+     17.93554
+    ]
+   },
+   "properties": {
+    "seg_id": "PU070",
+    "name": "Cabo Rojo / El Combate",
+    "island": "puerto_rico",
+    "lat": 17.93554,
+    "lon": -67.17339,
+    "normal_lat": -0.94375,
+    "normal_lon": 0.33065,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.19399,
+     17.95796
+    ]
+   },
+   "properties": {
+    "seg_id": "PU071",
+    "name": "Cabo Rojo / El Combate",
+    "island": "puerto_rico",
+    "lat": 17.95796,
+    "lon": -67.19399,
+    "normal_lat": -0.13466,
+    "normal_lon": -0.99089,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.19968,
+     18.00252
+    ]
+   },
+   "properties": {
+    "seg_id": "PU072",
+    "name": "Boquer\u00f3n",
+    "island": "puerto_rico",
+    "lat": 18.00252,
+    "lon": -67.19968,
+    "normal_lat": 0.11805,
+    "normal_lon": -0.99301,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.1941,
+     18.04718
+    ]
+   },
+   "properties": {
+    "seg_id": "PU073",
+    "name": "Boquer\u00f3n",
+    "island": "puerto_rico",
+    "lat": 18.04718,
+    "lon": -67.1941,
+    "normal_lat": 0.11802,
+    "normal_lon": -0.99301,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.19,
+     18.09191
+    ]
+   },
+   "properties": {
+    "seg_id": "PU074",
+    "name": "Joyuda",
+    "island": "puerto_rico",
+    "lat": 18.09191,
+    "lon": -67.19,
+    "normal_lat": 0.0,
+    "normal_lon": -1.0,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.19,
+     18.13688
+    ]
+   },
+   "properties": {
+    "seg_id": "PU075",
+    "name": "Joyuda",
+    "island": "puerto_rico",
+    "lat": 18.13688,
+    "lon": -67.19,
+    "normal_lat": 0.0,
+    "normal_lon": -1.0,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.18469,
+     18.18125
+    ]
+   },
+   "properties": {
+    "seg_id": "PU076",
+    "name": "Mayag\u00fcez",
+    "island": "puerto_rico",
+    "lat": 18.18125,
+    "lon": -67.18469,
+    "normal_lat": 0.23109,
+    "normal_lon": -0.97293,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.17375,
+     18.225
+    ]
+   },
+   "properties": {
+    "seg_id": "PU077",
+    "name": "Mayag\u00fcez",
+    "island": "puerto_rico",
+    "lat": 18.225,
+    "lon": -67.17375,
+    "normal_lat": 0.23103,
+    "normal_lon": -0.97295,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.17815,
+     18.26852
+    ]
+   },
+   "properties": {
+    "seg_id": "PU078",
+    "name": "Mayag\u00fcez",
+    "island": "puerto_rico",
+    "lat": 18.26852,
+    "lon": -67.17815,
+    "normal_lat": -0.26185,
+    "normal_lon": -0.96511,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.19167,
+     18.31119
+    ]
+   },
+   "properties": {
+    "seg_id": "PU079",
+    "name": "A\u00f1asco / Rinc\u00f3n",
+    "island": "puerto_rico",
+    "lat": 18.31119,
+    "lon": -67.19167,
+    "normal_lat": -0.79908,
+    "normal_lon": -0.60122,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.22952,
+     18.33823
+    ]
+   },
+   "properties": {
+    "seg_id": "PU080",
+    "name": "A\u00f1asco / Rinc\u00f3n",
+    "island": "puerto_rico",
+    "lat": 18.33823,
+    "lon": -67.22952,
+    "normal_lat": -0.79904,
+    "normal_lon": -0.60128,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.25758,
+     18.36845
+    ]
+   },
+   "properties": {
+    "seg_id": "PU081",
+    "name": "Rinc\u00f3n / Punta Hig\u00fcero",
+    "island": "puerto_rico",
+    "lat": 18.36845,
+    "lon": -67.25758,
+    "normal_lat": 0.26171,
+    "normal_lon": -0.96515,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.24518,
+     18.41185
+    ]
+   },
+   "properties": {
+    "seg_id": "PU082",
+    "name": "Aguada",
+    "island": "puerto_rico",
+    "lat": 18.41185,
+    "lon": -67.24518,
+    "normal_lat": 0.26165,
+    "normal_lon": -0.96516,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.21972,
+     18.44774
+    ]
+   },
+   "properties": {
+    "seg_id": "PU083",
+    "name": "Aguada",
+    "island": "puerto_rico",
+    "lat": 18.44774,
+    "lon": -67.21972,
+    "normal_lat": 0.73505,
+    "normal_lon": -0.67801,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -67.18488,
+     18.47823
+    ]
+   },
+   "properties": {
+    "seg_id": "PU084",
+    "name": "Aguadilla / Crash Boat",
+    "island": "puerto_rico",
+    "lat": 18.47823,
+    "lon": -67.18488,
+    "normal_lat": 0.73499,
+    "normal_lon": -0.67808,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.53308,
+     18.15586
+    ]
+   },
+   "properties": {
+    "seg_id": "VI000",
+    "name": "Vieques / Green Beach",
+    "island": "vieques",
+    "lat": 18.15586,
+    "lon": -65.53308,
+    "normal_lat": 0.99146,
+    "normal_lon": -0.13043,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.48605,
+     18.16
+    ]
+   },
+   "properties": {
+    "seg_id": "VI001",
+    "name": "Vieques / Isabel Segunda",
+    "island": "vieques",
+    "lat": 18.16,
+    "lon": -65.48605,
+    "normal_lat": 1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.43872,
+     18.16
+    ]
+   },
+   "properties": {
+    "seg_id": "VI002",
+    "name": "Vieques / Isabel Segunda",
+    "island": "vieques",
+    "lat": 18.16,
+    "lon": -65.43872,
+    "normal_lat": 1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.39164,
+     18.15646
+    ]
+   },
+   "properties": {
+    "seg_id": "VI003",
+    "name": "Vieques / Isabel Segunda",
+    "island": "vieques",
+    "lat": 18.15646,
+    "lon": -65.39164,
+    "normal_lat": 0.99146,
+    "normal_lon": 0.13043,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.34473,
+     18.15059
+    ]
+   },
+   "properties": {
+    "seg_id": "VI004",
+    "name": "Vieques / Punta Este",
+    "island": "vieques",
+    "lat": 18.15059,
+    "lon": -65.34473,
+    "normal_lat": 0.99146,
+    "normal_lon": 0.13042,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.29985,
+     18.13662
+    ]
+   },
+   "properties": {
+    "seg_id": "VI005",
+    "name": "Vieques / Punta Este",
+    "island": "vieques",
+    "lat": 18.13662,
+    "lon": -65.29985,
+    "normal_lat": 0.94363,
+    "normal_lon": 0.33099,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.26189,
+     18.11189
+    ]
+   },
+   "properties": {
+    "seg_id": "VI006",
+    "name": "Vieques / Punta Este",
+    "island": "vieques",
+    "lat": 18.11189,
+    "lon": -65.26189,
+    "normal_lat": 0.68892,
+    "normal_lon": 0.72484,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.30107,
+     18.09357
+    ]
+   },
+   "properties": {
+    "seg_id": "VI007",
+    "name": "Vieques / Punta Este",
+    "island": "vieques",
+    "lat": 18.09357,
+    "lon": -65.30107,
+    "normal_lat": -0.92172,
+    "normal_lon": 0.38787,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.3472,
+     18.08469
+    ]
+   },
+   "properties": {
+    "seg_id": "VI008",
+    "name": "Vieques / Sun Bay",
+    "island": "vieques",
+    "lat": 18.08469,
+    "lon": -65.3472,
+    "normal_lat": -0.9889,
+    "normal_lon": 0.14861,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.39401,
+     18.08175
+    ]
+   },
+   "properties": {
+    "seg_id": "VI009",
+    "name": "Vieques / Sun Bay",
+    "island": "vieques",
+    "lat": 18.08175,
+    "lon": -65.39401,
+    "normal_lat": -0.99147,
+    "normal_lon": -0.13037,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.44091,
+     18.08761
+    ]
+   },
+   "properties": {
+    "seg_id": "VI010",
+    "name": "Vieques / Sun Bay",
+    "island": "vieques",
+    "lat": 18.08761,
+    "lon": -65.44091,
+    "normal_lat": -0.99146,
+    "normal_lon": -0.13038,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.48713,
+     18.09678
+    ]
+   },
+   "properties": {
+    "seg_id": "VI011",
+    "name": "Vieques / Esperanza",
+    "island": "vieques",
+    "lat": 18.09678,
+    "lon": -65.48713,
+    "normal_lat": -0.96711,
+    "normal_lon": -0.25436,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.53288,
+     18.10822
+    ]
+   },
+   "properties": {
+    "seg_id": "VI012",
+    "name": "Vieques / Green Beach",
+    "island": "vieques",
+    "lat": 18.10822,
+    "lon": -65.53288,
+    "normal_lat": -0.96711,
+    "normal_lon": -0.25438,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.56752,
+     18.13752
+    ]
+   },
+   "properties": {
+    "seg_id": "VI013",
+    "name": "Vieques / Green Beach",
+    "island": "vieques",
+    "lat": 18.13752,
+    "lon": -65.56752,
+    "normal_lat": -0.68887,
+    "normal_lon": -0.72489,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.28508,
+     18.33672
+    ]
+   },
+   "properties": {
+    "seg_id": "CU000",
+    "name": "Culebra / Flamenco",
+    "island": "culebra",
+    "lat": 18.33672,
+    "lon": -65.28508,
+    "normal_lat": 0.81834,
+    "normal_lon": 0.57474,
+    "length_m": 5000.0,
+    "coast": "north"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.26504,
+     18.30487
+    ]
+   },
+   "properties": {
+    "seg_id": "CU001",
+    "name": "Culebra / Zoni",
+    "island": "culebra",
+    "lat": 18.30487,
+    "lon": -65.26504,
+    "normal_lat": -0.30172,
+    "normal_lon": 0.9534,
+    "length_m": 5000.0,
+    "coast": "east"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.30093,
+     18.29
+    ]
+   },
+   "properties": {
+    "seg_id": "CU002",
+    "name": "Culebra / Dewey",
+    "island": "culebra",
+    "lat": 18.29,
+    "lon": -65.30093,
+    "normal_lat": -1.0,
+    "normal_lon": -0.0,
+    "length_m": 5000.0,
+    "coast": "south"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -65.32642,
+     18.32284
+    ]
+   },
+   "properties": {
+    "seg_id": "CU003",
+    "name": "Culebra / Flamenco",
+    "island": "culebra",
+    "lat": 18.32284,
+    "lon": -65.32642,
+    "normal_lat": -0.4288,
+    "normal_lon": -0.9034,
+    "length_m": 5000.0,
+    "coast": "west"
+   }
+  }
+ ]
+}

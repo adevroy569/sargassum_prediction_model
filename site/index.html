@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sargassum Forecast &middot; Puerto Rico</title>
+<meta name="description" content="Live satellite Sargassum observations and a five day drift, stranding and gas release forecast for Puerto Rico, Vieques and Culebra.">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#127807;</text></svg>">
+<link rel="preconnect" href="https://basemaps.cartocdn.com" crossorigin>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <h1>Sargassum Forecast</h1>
+    <p class="lede">Puerto Rico, Vieques and Culebra. Where the seaweed is now, where it lands next,
+      and how much gas it releases when it rots.</p>
+    <p class="stamp" id="stamp">Loading the latest run&hellip;</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="prose cols" id="about">
+    <h2>What Sargassum is, and why it is worth forecasting</h2>
+    <div class="body">
+    <p>
+      Sargassum is a brown seaweed that floats in mats on the open ocean. Unlike almost every other
+      seaweed it never attaches to the seabed. It spends its entire life drifting, and it reproduces by
+      breaking apart, so a mat keeps growing as it travels. Out at sea this is a good thing. Those mats
+      shelter fish, crabs and juvenile sea turtles, and they are the floating nursery that gives the
+      Sargasso Sea its name.
+    </p>
+    <p>
+      Since 2011 a second population has appeared. The Great Atlantic Sargassum Belt now blooms every
+      year in a band stretching from West Africa to the Caribbean, and it is the largest macroalgae
+      bloom on Earth. The trade winds and the North Equatorial Current push part of it westward, and a
+      share of that arrives on Caribbean shorelines including Puerto Rico.
+    </p>
+    <p>
+      What lands is more than an eyesore. Thick mats smother seagrass beds and shallow reef, trap turtle
+      hatchlings, and pull the oxygen out of nearshore water. Once the pile is on the beach, bacteria
+      break it down without oxygen and release hydrogen sulfide, the rotten egg gas, along with ammonia.
+      On badly affected beaches this is enough to cause headaches, nausea and breathing trouble, and it
+      closes beaches, hotels and schools for weeks at a time.
+    </p>
+    <p>
+      Knowing where the seaweed is today is useful. Knowing where it will be in five days, roughly how
+      much of it will come ashore on a given stretch of coast, and how much gas that mass will give off
+      as it decomposes is what lets a town stage equipment, warn residents and clear a beach before the
+      pile starts to smell. That is what this site is for.
+    </p>
+    </div>
+  </section>
+
+  <section class="stats" id="stats" aria-label="Headline figures"></section>
+
+  <section class="panel" aria-labelledby="map-heading">
+    <div class="panel-head">
+      <h2 id="map-heading">Live map</h2>
+      <div class="layer-switch" id="layerSwitch" role="tablist" aria-label="Map layer">
+        <button role="tab" data-layer="biomass" class="active">Offshore biomass</button>
+        <button role="tab" data-layer="stranding">Predicted stranding</button>
+        <button role="tab" data-layer="h2s">Predicted H&#8322;S</button>
+      </div>
+    </div>
+    <div id="map" role="region" aria-label="Sargassum map"></div>
+    <div class="map-foot">
+      <div id="legend" class="legend" aria-live="polite"></div>
+      <label class="toggle">
+        <input type="checkbox" id="tracksToggle">
+        <span>Show drift tracks</span>
+      </label>
+    </div>
+    <p class="caption" id="mapCaption"></p>
+  </section>
+
+  <section class="charts">
+    <figure class="panel chart-card">
+      <figcaption>
+        <h3>Stranding forecast, island wide</h3>
+        <p>Wet Sargassum predicted to come ashore each day across all monitored segments.</p>
+      </figcaption>
+      <div class="chart" id="chartStranding"></div>
+    </figure>
+
+    <figure class="panel chart-card">
+      <figcaption>
+        <h3>Gas release</h3>
+        <p>Emission lags stranding by about two days, peaks near day three, then decays over roughly a week.</p>
+      </figcaption>
+      <div class="chart" id="chartGas"></div>
+    </figure>
+
+    <figure class="panel chart-card wide">
+      <figcaption>
+        <h3>Most affected shoreline</h3>
+        <p>Predicted accumulation per metre of shoreline over the forecast window.</p>
+      </figcaption>
+      <div class="chart" id="chartTop"></div>
+    </figure>
+  </section>
+
+  <section class="prose" id="method">
+    <h2>How the forecast is made</h2>
+    <p>
+      Satellite reflectance from the USF and NOAA Alternative Floating Algae Index is converted to wet
+      biomass, then carried forward with observed surface currents from the CariCOOS high frequency
+      radar network and forecast winds from the CariCOOS WRF model. Rafts that reach the nearshore zone
+      strand onto one of 103 coastal segments of about 5 km each. Gas release is calculated from the
+      stranded mass on a conserved yield basis, so the total released always matches the mass that
+      landed, and the resulting areal flux is checked against published field measurements.
+    </p>
+    <p>
+      Fourteen physical Sargassum traps at La Parguera have measured actual shoreline influx every week
+      since 2020. Those measurements train the model and correct its bias. Segments that host a trap are
+      served by the trained model and are marked as such. Everywhere else is physics plus a single
+      global correction factor.
+    </p>
+    <p class="muted">
+      Spatial pattern, meaning which coasts get hit and when, is the reliable part. Absolute tonnage
+      carries wide uncertainty, and the gas figures are order of magnitude estimates. Treat the ranking
+      of beaches as far more dependable than the absolute numbers. Currents past day three are a
+      persistence forecast, so the last two days of the window are indicative only.
+    </p>
+    <p class="muted" id="notes"></p>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="privacy">
+      <strong>This website does not collect any information.</strong>
+      There are no cookies, no analytics, no trackers and no accounts. Nothing you do here is recorded
+      or sent anywhere. Every figure on this page is computed in advance and served as a static file.
+      The only third party requests the page makes are for the map tiles, which come from CARTO and
+      OpenStreetMap and which see your IP address the same way any website request would.
+    </p>
+    <p class="sources">
+      Data: <a href="https://cwcgom.aoml.noaa.gov/erddap/" rel="noopener">USF and NOAA AOML AFAI</a>,
+      <a href="https://dm3.caricoos.org/erddap/" rel="noopener">CariCOOS</a> high frequency radar,
+      WRF winds and Sargassum trap measurements.
+      Basemap &copy; <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a>
+      contributors, &copy; <a href="https://carto.com/attributions" rel="noopener">CARTO</a>.
+      Not an official advisory. For emergencies and beach closures follow local authorities.
+    </p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

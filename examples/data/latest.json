@@ -1,0 +1,109 @@
+{
+ "issued_at": "2026-08-25T20:00:00+00:00",
+ "afai_scene_time": "2026-08-25 00:00:00+00:00",
+ "current_field_time": "2026-08-25 20:00:00+00:00",
+ "horizon_hours": 120,
+ "days": [
+  "2026-08-25",
+  "2026-08-26",
+  "2026-08-27",
+  "2026-08-28",
+  "2026-08-29"
+ ],
+ "gas_days": [
+  "2026-08-25",
+  "2026-08-26",
+  "2026-08-27",
+  "2026-08-28",
+  "2026-08-29",
+  "2026-08-30",
+  "2026-08-31",
+  "2026-09-01",
+  "2026-09-02",
+  "2026-09-03",
+  "2026-09-04",
+  "2026-09-05",
+  "2026-09-06",
+  "2026-09-07",
+  "2026-09-08",
+  "2026-09-09",
+  "2026-09-10"
+ ],
+ "offshore_wet_tonnes": 802009.4,
+ "predicted_stranding_tonnes": 18454.35,
+ "predicted_h2s_tonnes": 13.7379,
+ "predicted_nh3_tonnes": 4.2931,
+ "worst_segments": [
+  {
+   "name": "Culebra / Zoni",
+   "seg_id": "CU001",
+   "kg_per_m": 1259.59,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Culebra / Flamenco",
+   "seg_id": "CU000",
+   "kg_per_m": 916.91,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU031",
+   "kg_per_m": 294.82,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Luquillo",
+   "seg_id": "PU029",
+   "kg_per_m": 292.12,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU032",
+   "kg_per_m": 203.06,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Sardinera",
+   "seg_id": "PU033",
+   "kg_per_m": 169.34,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Luquillo",
+   "seg_id": "PU030",
+   "kg_per_m": 127.86,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Ceiba / Roosevelt Roads",
+   "seg_id": "PU034",
+   "kg_per_m": 105.01,
+   "risk_tier": "high"
+  },
+  {
+   "name": "R\u00edo Grande",
+   "seg_id": "PU028",
+   "kg_per_m": 64.91,
+   "risk_tier": "moderate"
+  },
+  {
+   "name": "R\u00edo Grande",
+   "seg_id": "PU027",
+   "kg_per_m": 42.88,
+   "risk_tier": "moderate"
+  }
+ ],
+ "calibration_scale": 1.0,
+ "h2s_kg_per_tonne_wet": 0.8,
+ "nh3_kg_per_tonne_wet": 0.25,
+ "flux_above_literature_fraction": 0.0,
+ "model": {},
+ "notes": [],
+ "maps": {
+  "offshore": "maps/offshore_biomass.png",
+  "beaching": "maps/beaching_forecast.png",
+  "emissions": "maps/h2s_forecast.png"
+ }
+}
