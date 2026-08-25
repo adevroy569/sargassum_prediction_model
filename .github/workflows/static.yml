@@ -6,6 +6,14 @@ on:
   push:
     branches: ["main"]
 
+  # Runs after the forecast job finishes and commits new data.
+  # This is not optional: a commit pushed by a workflow using the built-in
+  # GITHUB_TOKEN does NOT start other workflows, so without this trigger the
+  # site would keep serving whatever data you last pushed by hand.
+  workflow_run:
+    workflows: ["Sargassum forecast update"]
+    types: [completed]
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -31,12 +39,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # On a workflow_run event the default checkout ref is the commit that
+          # STARTED the forecast job, which is one commit older than the data it
+          # just committed. Always take the current tip of main.
+          ref: main
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
+          # Upload only the website folder
           path: './site'
       - name: Deploy to GitHub Pages
         id: deployment
