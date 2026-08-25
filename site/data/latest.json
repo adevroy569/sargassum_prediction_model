@@ -1,0 +1,111 @@
+{
+ "issued_at": "2026-08-25T23:00:00+00:00",
+ "afai_scene_time": "2026-08-24 12:00:00",
+ "current_field_time": "2026-08-25 19:00:00",
+ "horizon_hours": 120,
+ "days": [
+  "2026-08-25",
+  "2026-08-26",
+  "2026-08-27",
+  "2026-08-28",
+  "2026-08-29"
+ ],
+ "gas_days": [
+  "2026-08-25",
+  "2026-08-26",
+  "2026-08-27",
+  "2026-08-28",
+  "2026-08-29",
+  "2026-08-30",
+  "2026-08-31",
+  "2026-09-01",
+  "2026-09-02",
+  "2026-09-03",
+  "2026-09-04",
+  "2026-09-05",
+  "2026-09-06",
+  "2026-09-07",
+  "2026-09-08",
+  "2026-09-09",
+  "2026-09-10"
+ ],
+ "offshore_wet_tonnes": 5095345.1,
+ "predicted_stranding_tonnes": 2298.86,
+ "predicted_h2s_tonnes": 1.7496,
+ "predicted_nh3_tonnes": 0.5468,
+ "worst_segments": [
+  {
+   "name": "Toa Baja / Cata\u00f1o",
+   "seg_id": "PU021",
+   "kg_per_m": 301.53,
+   "risk_tier": "high"
+  },
+  {
+   "name": "San Juan / Condado",
+   "seg_id": "PU022",
+   "kg_per_m": 158.24,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Culebra / Flamenco",
+   "seg_id": "CU003",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Culebra / Flamenco",
+   "seg_id": "CU000",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Vieques / Green Beach",
+   "seg_id": "VI013",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Culebra / Dewey",
+   "seg_id": "CU002",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Culebra / Zoni",
+   "seg_id": "CU001",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Vieques / Sun Bay",
+   "seg_id": "VI010",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Vieques / Sun Bay",
+   "seg_id": "VI009",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Vieques / Sun Bay",
+   "seg_id": "VI008",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  }
+ ],
+ "calibration_scale": 1.0,
+ "h2s_kg_per_tonne_wet": 0.8,
+ "nh3_kg_per_tonne_wet": 0.25,
+ "flux_above_literature_fraction": 0.0,
+ "model": {},
+ "notes": [
+  "no WRF wind available; windage term disabled"
+ ],
+ "maps": {
+  "offshore": "maps/offshore_biomass.png",
+  "beaching": "maps/beaching_forecast.png",
+  "emissions": "maps/h2s_forecast.png"
+ }
+}
