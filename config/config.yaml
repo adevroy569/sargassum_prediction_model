@@ -151,6 +151,30 @@ emissions:
     moderate: 3.0
     high: 12.0
 
+# ---------------------------------------------------------------------------
+# Presentation only. These do not affect the physics - they are the bands the
+# website groups segments into so a visitor can read the map without knowing
+# what a kilogram per metre of shoreline looks like. Indicative, not an
+# official advisory scale: adjust once trap measurements give better footing.
+# ---------------------------------------------------------------------------
+web:
+  # upper bound of each stranding class, kg of wet Sargassum per metre of
+  # shoreline accumulated over the forecast window. Anything above the last
+  # bound falls in the final class.
+  stranding_classes:
+    - name: "Scattered"
+      max: 5.0
+      blurb: "A thin, broken line of weed at the tide mark."
+    - name: "Continuous band"
+      max: 25.0
+      blurb: "Unbroken weed along the beach, ankle deep in places."
+    - name: "Heavy windrow"
+      max: 100.0
+      blurb: "A packed ridge, shin to knee deep. Clearing needed."
+    - name: "Severe pile-up"
+      max: null
+      blurb: "Deep continuous mats. Access blocked, heavy equipment."
+
 model:
   # target is log1p(kg per m of shoreline) at the in-situ stations
   algorithm: "hist_gradient_boosting"

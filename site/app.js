@@ -14,17 +14,34 @@
   var CIVIDIS = ['#21395f', '#39486b', '#575d6d', '#707173',
                  '#8a8779', '#a69d75', '#c4b56c', '#ffea46'];
 
-  // inferno, upper half. Used for stranding magnitude and for risk tiers.
-  var INFERNO = ['#781c6d', '#a52c60', '#cb4149', '#e35933',
-                 '#f6820c', '#fac228', '#fcffa4'];
+  // Ordered severity ramp for the two prediction layers. One hue family,
+  // monotonically lighter with severity, so on a dark basemap "brighter" always
+  // reads as "worse". Validated as an ordinal ramp against this page's surface
+  // (#0c0f11): lightness monotone, adjacent dL >= 0.06, hue spread 40 deg, and
+  // the darkest step still clears 2:1 against the background.
+  var SEVERITY = ['#8c4a20', '#c26a1d', '#e89a2a', '#ffd24a'];
+
+  // Not part of the ramp. A segment the model expects nothing on is drawn as a
+  // thin, desaturated hairline - it must recede, because the loudest thing on a
+  // map should never be the places where nothing happens.
+  var NONE_COLOR = '#546070';
 
   var TIER = {
-    minimal:  { color: '#781c6d', label: 'Minimal' },
-    low:      { color: '#cb4149', label: 'Low' },
-    moderate: { color: '#f6820c', label: 'Moderate' },
-    high:     { color: '#fac228', label: 'High' }
+    minimal:  { color: NONE_COLOR,   label: 'Minimal' },
+    low:      { color: SEVERITY[1],  label: 'Low' },
+    moderate: { color: SEVERITY[2],  label: 'Moderate' },
+    high:     { color: SEVERITY[3],  label: 'High' }
   };
   var TIER_ORDER = ['minimal', 'low', 'moderate', 'high'];
+
+  // Plain-language meaning for each H2S tier, keyed to the thresholds in
+  // config.yaml (kg per day per km of shoreline).
+  var TIER_BLURB = {
+    minimal:  'No detectable smell expected.',
+    low:      'Faint rotten-egg smell close to the wrack line.',
+    moderate: 'Clear smell along the beach. Sensitive people may react.',
+    high:     'Strong smell. Above health guideline levels near the pile.'
+  };
 
   var BASEMAP = {
     version: 8,
@@ -220,29 +237,68 @@
     return { gj: { type: 'FeatureCollection', features: feats }, lo: lo, hi: hi };
   }
 
-  function segmentGeoJSON(segs, mode) {
-    var key = mode === 'h2s' ? 'h2s_peak_kg_day_km' : 'kg_per_m_total';
-    var vals = segs.features.map(function (f) { return f.properties[key] || 0; })
-                  .sort(function (a, b) { return a - b; });
-    var hi = Math.max(quantile(vals, 0.97), 1e-3);
+  /** Classify a stranding value (kg per m of shoreline) into one of the bands
+   *  declared in config.yaml and served in latest.json. Returns -1 for "the
+   *  model expects nothing here", which is a state, not the bottom of a scale. */
+  function strandBand(v, classes) {
+    if (!(v > 0)) return -1;
+    for (var i = 0; i < classes.length; i++) {
+      var hi = classes[i].max;
+      if (hi === null || hi === undefined || v <= hi) return i;
+    }
+    return classes.length - 1;
+  }
+
+  /** Segment features carrying a band index, a colour and a line width.
+   *
+   *  Magnitude is carried by colour alone. Width is binary - a valued segment
+   *  is a thick ribbon, an empty one a hairline - so it marks presence, not
+   *  size, and the two never compete. The old version scaled both radius and
+   *  colour off `quantile(vals, 0.97)`, which collapsed to the 1e-3 floor
+   *  whenever most segments were zero: every non-zero segment then saturated
+   *  at the top of the ramp and the legend read "0 to 0+".
+   */
+  function segmentGeoJSON(segs, mode, classes) {
+    var isGas = mode === 'h2s';
+    var key = isGas ? 'h2s_peak_kg_day_km' : 'kg_per_m_total';
+    var counts = [0, 0, 0, 0], nEmpty = 0, hi = 0;
     var feats = segs.features.map(function (f) {
       var p = f.properties;
       var v = p[key] || 0;
-      var t = Math.max(0, Math.min(1, Math.sqrt(v / hi)));
-      var color = mode === 'h2s'
-        ? (TIER[p.risk_tier] || TIER.minimal).color
-        : ramp(INFERNO, t);
+      if (v > hi) hi = v;
+      var band, color;
+      if (isGas) {
+        var tierKey = p.risk_tier || 'minimal';
+        band = TIER_ORDER.indexOf(tierKey);
+        if (band < 0) band = 0;
+        color = (TIER[tierKey] || TIER.minimal).color;
+        if (band === 0) nEmpty++; else counts[band]++;
+        band = band === 0 ? -1 : band;
+      } else {
+        band = strandBand(v, classes);
+        color = band < 0 ? NONE_COLOR : SEVERITY[band];
+        if (band < 0) nEmpty++; else counts[band]++;
+      }
+      // The popup is shared between layers, so it always names the stranding
+      // band regardless of which layer is on screen.
+      var sb = strandBand(p.kg_per_m_total || 0, classes);
       return {
         type: 'Feature',
         geometry: f.geometry,
         properties: Object.assign({}, p, {
           color: color,
-          r: 4 + 12 * t,
-          _v: v
+          band: band,
+          width: band < 0 ? 1.6 : 5.5,
+          _v: v,
+          _bandName: sb < 0 ? 'None predicted'
+                            : ((classes[sb] || {}).name || 'n/a')
         })
       };
     });
-    return { gj: { type: 'FeatureCollection', features: feats }, hi: hi };
+    return {
+      gj: { type: 'FeatureCollection', features: feats },
+      hi: hi, counts: counts, nEmpty: nEmpty
+    };
   }
 
   function tracksGeoJSON(tr) {
@@ -274,8 +330,9 @@
     map.addControl(new maplibregl.ScaleControl({ maxWidth: 90, unit: 'metric' }), 'bottom-left');
 
     var bioData = biomassGeoJSON(bio);
-    var strandData = segmentGeoJSON(segs, 'stranding');
-    var gasData = segmentGeoJSON(segs, 'h2s');
+    var classes = latest.stranding_classes || [];
+    var strandData = segmentGeoJSON(segs, 'stranding', classes);
+    var gasData = segmentGeoJSON(segs, 'h2s', classes);
 
     map.on('load', function () {
       map.addSource('biomass', { type: 'geojson', data: bioData.gj });
@@ -305,31 +362,71 @@
         }
       });
 
+      // Each segment is ~5 km of shoreline, so it is drawn as the shoreline it
+      // covers. A dark casing underneath keeps the ribbon legible where it
+      // crosses the coast outline.
+      map.addLayer({
+        id: 'segment-casing', type: 'line', source: 'segments',
+        layout: { visibility: 'none', 'line-cap': 'butt' },
+        filter: ['==', ['geometry-type'], 'LineString'],
+        paint: {
+          'line-color': '#07090a',
+          'line-opacity': 0.85,
+          'line-width': ['interpolate', ['linear'], ['zoom'],
+            6, ['+', ['get', 'width'], 2.5],
+            9, ['+', ['*', ['get', 'width'], 1.5], 3],
+            12, ['+', ['*', ['get', 'width'], 2.6], 3]]
+        }
+      });
+
+      // Fallback for data written by a pipeline older than the LineString
+      // change: those files carry a centre Point per segment, which a line
+      // layer would silently draw as nothing. Filtered by geometry type so the
+      // two layers never both draw the same feature.
       map.addLayer({
         id: 'segment-pt', type: 'circle', source: 'segments',
         layout: { visibility: 'none' },
+        filter: ['==', ['geometry-type'], 'Point'],
         paint: {
           'circle-radius': ['interpolate', ['linear'], ['zoom'],
-            5, ['*', ['get', 'r'], 0.6],
-            8, ['get', 'r'],
-            11, ['*', ['get', 'r'], 1.7]],
+            6, ['case', ['<', ['get', 'band'], 0], 2.2, 5],
+            11, ['case', ['<', ['get', 'band'], 0], 3.5, 10]],
           'circle-color': ['get', 'color'],
-          'circle-opacity': 0.9,
+          'circle-opacity': ['case', ['<', ['get', 'band'], 0], 0.55, 0.95],
           'circle-stroke-width': 1,
-          'circle-stroke-color': '#0c0f11'
+          'circle-stroke-color': '#07090a'
+        }
+      });
+
+      map.addLayer({
+        id: 'segment-line', type: 'line', source: 'segments',
+        layout: { visibility: 'none', 'line-cap': 'butt' },
+        filter: ['==', ['geometry-type'], 'LineString'],
+        paint: {
+          'line-color': ['get', 'color'],
+          'line-opacity': ['case', ['<', ['get', 'band'], 0], 0.55, 0.95],
+          'line-width': ['interpolate', ['linear'], ['zoom'],
+            6, ['get', 'width'],
+            9, ['*', ['get', 'width'], 1.5],
+            12, ['*', ['get', 'width'], 2.6]]
         }
       });
 
       map.fitBounds([[-67.7, 17.6], [-64.9, 18.75]], { padding: 30, duration: 0 });
 
       // popups on coast segments
+      map.on('click', 'segment-line', function (e) {
+        var p = e.features[0].properties;
+        new maplibregl.Popup({ offset: 12, maxWidth: '290px' })
+          .setLngLat(e.lngLat).setHTML(segmentPopup(p, latest)).addTo(map);
+      });
+      map.on('mouseenter', 'segment-line', function () { map.getCanvas().style.cursor = 'pointer'; });
+      map.on('mouseleave', 'segment-line', function () { map.getCanvas().style.cursor = ''; });
       map.on('click', 'segment-pt', function (e) {
         var p = e.features[0].properties;
         new maplibregl.Popup({ offset: 12, maxWidth: '290px' })
           .setLngLat(e.lngLat).setHTML(segmentPopup(p, latest)).addTo(map);
       });
-      map.on('mouseenter', 'segment-pt', function () { map.getCanvas().style.cursor = 'pointer'; });
-      map.on('mouseleave', 'segment-pt', function () { map.getCanvas().style.cursor = ''; });
 
       // hover readout on the biomass field
       map.on('mousemove', 'biomass-pt', function (e) {
@@ -364,8 +461,11 @@
       currentLayer = name;
       if (!map.getLayer('biomass-pt')) return;
       var showBio = name === 'biomass';
+      var segVis = showBio ? 'none' : 'visible';
       map.setLayoutProperty('biomass-pt', 'visibility', showBio ? 'visible' : 'none');
-      map.setLayoutProperty('segment-pt', 'visibility', showBio ? 'none' : 'visible');
+      map.setLayoutProperty('segment-casing', 'visibility', segVis);
+      map.setLayoutProperty('segment-line', 'visibility', segVis);
+      map.setLayoutProperty('segment-pt', 'visibility', segVis);
       if (!showBio) {
         map.getSource('segments').setData(name === 'h2s' ? gasData.gj : strandData.gj);
       }
@@ -388,6 +488,7 @@
       '<p class="meta">' + p.seg_id + '  ·  ' + (p.coast || '') + ' facing  ·  ' +
         fmt(p.length_m / 1000, 1) + ' km of shoreline</p>' +
       '<dl>' +
+      '<dt>Outlook</dt><dd><b>' + (p._bandName || 'n/a') + '</b></dd>' +
       '<dt>Accumulation</dt><dd><b>' + fmt(p.kg_per_m_total, 1) + '</b> kg/m</dd>' +
       '<dt>Total mass</dt><dd>' + fmt(p.tonnes_total, 1) + ' t</dd>' +
       '<dt>Peak day</dt><dd>' + (byDay.length
@@ -401,51 +502,100 @@
       '</div>';
   }
 
+  /** One legend row: a colour swatch shaped like the mark it describes,
+   *  a name, the numeric range it covers, and what it means on a beach. */
+  function classRow(color, thin, label, range, blurb) {
+    var row = el('div', 'key' + (thin ? ' key-thin' : ''));
+    var sw = el('span', 'swatch');
+    sw.style.background = color;
+    if (thin) sw.classList.add('swatch-thin');
+    row.appendChild(sw);
+    var txt = el('span', 'key-text');
+    txt.appendChild(el('b', null, label));
+    if (range) txt.appendChild(el('span', 'key-range', range));
+    if (blurb) txt.appendChild(el('span', 'key-blurb', blurb));
+    row.appendChild(txt);
+    return row;
+  }
+
+  function bandRange(classes, i) {
+    var lo = i === 0 ? 0 : classes[i - 1].max;
+    var hi = classes[i].max;
+    if (hi === null || hi === undefined) return 'over ' + fmt(lo, 0) + ' kg/m';
+    return fmt(lo, 0) + '\u2013' + fmt(hi, 0) + ' kg/m';
+  }
+
   function renderLegend(name, bioData, strandData, gasData, bio, latest) {
     var box = document.getElementById('legend');
     var cap = document.getElementById('mapCaption');
     box.innerHTML = '';
 
-    if (name === 'h2s') {
-      var keys = el('div', 'keys');
-      TIER_ORDER.forEach(function (k) {
-        var n = el('div', 'key');
-        n.appendChild(el('span', 'dot')).style.background = TIER[k].color;
-        n.appendChild(document.createTextNode(TIER[k].label));
-        keys.appendChild(n);
-      });
-      box.appendChild(el('span', null, 'Peak H&#8322;S per km of shoreline'));
-      box.appendChild(keys);
-      cap.innerHTML = 'Hydrogen sulfide released as the stranded mass decomposes, banded into tiers. ' +
-        'Circle size follows the same value. Tiers always carry a written label so colour is never the ' +
-        'only cue. Click a point for the estimated concentration at the wrack line and how it compares ' +
-        'with health guideline levels.';
-      return;
-    }
-
-    var stops = name === 'biomass' ? CIVIDIS : INFERNO;
-    var stack = el('div', 'stack');
-    var bar = el('div', 'bar');
-    bar.style.background = gradientCss(stops);
-    var ticks = el('div', 'ticks');
+    // ---------------------------------------------------------- biomass
     if (name === 'biomass') {
-      ticks.innerHTML = '<span>' + fmt(bioData.lo, 3) + '</span><span>' + fmt(bioData.hi, 2) + '</span>';
-      box.appendChild(el('span', null, 'Wet Sargassum, kg per m&sup2;'));
+      var stack = el('div', 'stack');
+      var bar = el('div', 'bar');
+      bar.style.background = gradientCss(CIVIDIS);
+      var ticks = el('div', 'ticks');
+      ticks.innerHTML = '<span>' + fmt(bioData.lo, 3) + '</span><span>' +
+                        fmt(bioData.hi, 2) + '</span>';
+      box.appendChild(el('span', 'legend-title', 'Wet Sargassum, kg per m&sup2;'));
+      stack.appendChild(bar);
+      stack.appendChild(ticks);
+      box.appendChild(stack);
       cap.innerHTML = 'Sargassum detected at the sea surface, from the USF and NOAA Alternative Floating ' +
         'Algae Index. Scale is logarithmic. Colours use <b>cividis</b>, a perceptually uniform ramp ' +
         'designed to read the same way for people with red green colour vision deficiency. ' +
         'Scene time ' + String(bio.time || '').slice(0, 10) + '.';
-    } else {
-      ticks.innerHTML = '<span>0</span><span>' + fmt(strandData.hi, 0) + '+</span>';
-      box.appendChild(el('span', null, 'Predicted stranding, kg per m of shoreline'));
-      cap.innerHTML = 'Wet mass predicted to come ashore on each coastal segment over the forecast ' +
-        'window, in kilograms per metre of shoreline. This is the same unit the CariCOOS traps at ' +
-        'La Parguera measure, so prediction and observation are directly comparable. Colours use ' +
-        '<b>inferno</b>, also colourblind safe. Click any point for the daily breakdown.';
+      return;
     }
-    stack.appendChild(bar);
-    stack.appendChild(ticks);
-    box.appendChild(stack);
+
+    // ------------------------------------------------------------- gas
+    if (name === 'h2s') {
+      var t = (latest.h2s_risk_tiers) || { low: 0.5, moderate: 3.0, high: 12.0 };
+      var gasRange = {
+        minimal: 'under ' + fmt(t.low, 1),
+        low: fmt(t.low, 1) + '\u2013' + fmt(t.moderate, 1),
+        moderate: fmt(t.moderate, 1) + '\u2013' + fmt(t.high, 0),
+        high: 'over ' + fmt(t.high, 0)
+      };
+      box.appendChild(el('span', 'legend-title',
+        'Peak hydrogen sulfide, kg per day per km of shoreline'));
+      var gkeys = el('div', 'keys keys-stacked');
+      TIER_ORDER.forEach(function (k) {
+        gkeys.appendChild(classRow(TIER[k].color, k === 'minimal',
+          TIER[k].label, gasRange[k], TIER_BLURB[k]));
+      });
+      box.appendChild(gkeys);
+      cap.innerHTML = 'Hydrogen sulfide given off as stranded weed rots, at its worst day on each ' +
+        'stretch of coast. Release lags the stranding by about two days. Every tier carries a written ' +
+        'label, so colour is never the only cue. Click a stretch for the estimated concentration at ' +
+        'the wrack line and how it compares with health guideline levels.' +
+        (gasData.nEmpty ? ' <b>' + gasData.nEmpty + ' of ' +
+          (gasData.nEmpty + gasData.counts.reduce(function (a, b) { return a + b; }, 0)) +
+          '</b> stretches are in the minimal tier for this run.' : '');
+      return;
+    }
+
+    // -------------------------------------------------------- stranding
+    var classes = latest.stranding_classes || [];
+    box.appendChild(el('span', 'legend-title',
+      'Predicted stranding over the next 5 days'));
+    var keys = el('div', 'keys keys-stacked');
+    classes.forEach(function (c, i) {
+      keys.appendChild(classRow(SEVERITY[i], false, c.name, bandRange(classes, i), c.blurb));
+    });
+    keys.appendChild(classRow(NONE_COLOR, true, 'None predicted', '0 kg/m',
+      'No weed expected to come ashore here in this run.'));
+    box.appendChild(keys);
+
+    var nTotal = strandData.nEmpty + strandData.counts.reduce(function (a, b) { return a + b; }, 0);
+    cap.innerHTML = 'Wet mass predicted to come ashore on each ~5 km stretch of coast over the forecast ' +
+      'window, in kilograms per metre of shoreline \u2014 the same unit the traps at La Parguera ' +
+      'measure, so prediction and observation are directly comparable. The bands are indicative ' +
+      'guidance for reading the map, not an official advisory scale. Peak value this run: <b>' +
+      fmt(strandData.hi, 1) + ' kg/m</b>. <b>' + strandData.nEmpty + ' of ' + nTotal +
+      '</b> stretches show nothing at all \u2014 note that this run cannot tell "no weed expected" ' +
+      'apart from "no current or wind data covering this coast". Click any stretch for the daily breakdown.';
   }
 
   // ============================================================= CHARTS
@@ -663,14 +813,18 @@
     var top = Object.keys(best).map(function (k) { return best[k]; })
       .sort(function (a, b) { return b.properties.kg_per_m_total - a.properties.kg_per_m_total; })
       .slice(0, 10);
-    var hi = top.length ? top[0].properties.kg_per_m_total : 1;
+    // Bars are coloured by the same band as the map, not by their own length -
+    // bar length already encodes magnitude, so a value-ramp would spend the
+    // colour channel restating it. Sharing the bands ties chart to map instead.
+    var classes = latest.stranding_classes || [];
     chartHBars(document.getElementById('chartTop'), top.map(function (f) {
       var p = f.properties;
+      var b = strandBand(p.kg_per_m_total, classes);
       return {
         label: p.name,
         value: p.kg_per_m_total,
-        color: ramp(INFERNO, Math.sqrt(p.kg_per_m_total / hi)),
-        sub: (TIER[p.risk_tier] || TIER.minimal).label + ' emission tier, worst segment ' + p.seg_id
+        color: b < 0 ? NONE_COLOR : SEVERITY[b],
+        sub: (b < 0 ? 'None predicted' : classes[b].name) + ', worst stretch ' + p.seg_id
       };
     }), 'kg per metre');
   }

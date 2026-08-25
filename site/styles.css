@@ -133,9 +133,13 @@ a:hover { border-bottom-color: currentColor; }
 
 .map-foot {
   display: flex; flex-wrap: wrap; gap: 14px;
-  align-items: center; justify-content: space-between;
+  /* The class legends are several rows tall, so the drift toggle sits at the
+     top rather than floating in the middle of them. */
+  align-items: flex-start; justify-content: space-between;
   padding: 12px 16px; border-top: 1px solid var(--line);
 }
+.map-foot .legend { flex: 1 1 460px; min-width: 0; }
+.map-foot .toggle { margin-top: 2px; }
 
 .legend { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); }
 .legend .bar { height: 9px; width: 190px; border-radius: 5px; }
@@ -144,6 +148,20 @@ a:hover { border-bottom-color: currentColor; }
 .legend .keys { display: flex; gap: 12px; flex-wrap: wrap; }
 .legend .key { display: flex; align-items: center; gap: 6px; }
 .legend .dot { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+
+/* Class legends for the two prediction layers. Each row shows the mark as it
+   is actually drawn on the map - a thick ribbon for a valued stretch, a
+   hairline for an empty one - then names it and says what it means. */
+.legend { align-items: flex-start; }
+.legend-title { display: block; width: 100%; font-size: 12.5px; color: var(--ink-2); margin-bottom: 2px; }
+.legend .keys-stacked { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 7px 18px; width: 100%; }
+.legend .keys-stacked .key { align-items: flex-start; gap: 8px; }
+.legend .swatch { width: 18px; height: 6px; border-radius: 3px; flex: none; margin-top: 4px; }
+.legend .swatch-thin { height: 2px; margin-top: 6px; opacity: 0.7; }
+.legend .key-text { display: flex; flex-direction: column; line-height: 1.35; }
+.legend .key-text b { font-weight: 600; color: var(--ink); font-size: 12.5px; }
+.legend .key-range { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.legend .key-blurb { font-size: 11.5px; color: var(--ink-2); }
 
 .toggle { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--ink-2); cursor: pointer; }
 .toggle input { accent-color: var(--accent); width: 15px; height: 15px; }

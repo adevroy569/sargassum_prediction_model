@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 from pathlib import Path
 from typing import Dict, List
 
@@ -170,6 +171,30 @@ def map_emissions(res, h2s_kg_day_km: np.ndarray, cfg, out: Path) -> Path:
 
 
 # ------------------------------------------------------------------- web data
+M_PER_DEG_LAT = 111_320.0
+
+
+def segment_line(s) -> List[List[float]]:
+    """The shoreline a segment actually covers, as [[lon, lat], ...].
+
+    Segments are stored as a centre point plus a unit *seaward* normal. The
+    along-shore direction is that normal rotated 90 degrees, so a segment of
+    length L spans centre +/- L/2 along it. Drawing this instead of the centre
+    point is what lets the map read as "these beaches" rather than as a
+    scatter of pins.
+    """
+    half = float(s.length_m) / 2.0
+    # perpendicular of the seaward normal, in (north, east) metric components
+    a_north = -float(s.normal_lon)
+    a_east = float(s.normal_lat)
+    m_per_deg_lon = M_PER_DEG_LAT * math.cos(math.radians(float(s.lat)))
+    m_per_deg_lon = m_per_deg_lon if m_per_deg_lon > 1.0 else 1.0
+    dlat = (a_north * half) / M_PER_DEG_LAT
+    dlon = (a_east * half) / m_per_deg_lon
+    return [[round(float(s.lon) - dlon, 6), round(float(s.lat) - dlat, 6)],
+            [round(float(s.lon) + dlon, 6), round(float(s.lat) + dlat, 6)]]
+
+
 def write_web_outputs(res, cfg, calib: Dict, web_dir: Path,
                       insitu: pd.DataFrame | None = None,
                       model_meta: Dict | None = None) -> Dict[str, Path]:
@@ -195,10 +220,12 @@ def write_web_outputs(res, cfg, calib: Dict, web_dir: Path,
         tier = emis_mod.risk_tier(float(h2s_peak_per_km[i]), cfg)
         feats.append({
             "type": "Feature",
-            "geometry": {"type": "Point", "coordinates": [s.lon, s.lat]},
+            "geometry": {"type": "LineString",
+                         "coordinates": segment_line(s)},
             "properties": {
                 "seg_id": s.seg_id, "name": s.name, "island": s.island,
                 "coast": s.coast, "length_m": s.length_m,
+                "lat": round(float(s.lat), 6), "lon": round(float(s.lon), 6),
                 "kg_per_m_total": round(float(calib["kg_per_m"][i]), 3),
                 "kg_per_m_physical": round(float(calib["physical_kg_per_m"][i]), 3),
                 "tonnes_total": round(float(res.daily_kg[i].sum() / 1000.0), 3),
@@ -259,6 +286,11 @@ def write_web_outputs(res, cfg, calib: Dict, web_dir: Path,
         "flux_above_literature_fraction": round(
             float(res.emission.flux_above_literature), 3),
         "model": model_meta or {},
+        # The bands the website groups segments into. Served from config so the
+        # legend and the map can never drift apart, and so the thresholds stay
+        # tunable in one place.
+        "stranding_classes": cfg.get_path("web.stranding_classes", []),
+        "h2s_risk_tiers": cfg.get_path("emissions.risk_tiers", {}),
         "notes": res.notes,
         "maps": {
             "offshore": "maps/offshore_biomass.png",
