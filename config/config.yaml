@@ -55,6 +55,10 @@ sources:
   wind:
     server: "https://dm3.caricoos.org/erddap"
     dataset: "wrf_nmm_2km_best_agg"
+    # If the WRF dataset is ever retired or renamed, list replacements here and
+    # they are tried in order. Each unreachable id costs a retry cycle, so only
+    # add ids you have confirmed exist on the server.
+    # dataset_fallback: ["some_other_wrf_agg"]
     u: "U10"
     v: "V10"
   waves:

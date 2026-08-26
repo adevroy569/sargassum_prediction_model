@@ -104,29 +104,89 @@ def fetch_currents(cfg, cache_dir: Optional[Path] = None
 
 
 # --------------------------------------------------------------------- wind
+def _wind_candidates(src) -> List[str]:
+    """Configured wind dataset first, then any declared fallbacks."""
+    out = [src["dataset"]]
+    fb = src.get("dataset_fallback")
+    if isinstance(fb, str):
+        out.append(fb)
+    elif isinstance(fb, (list, tuple)):
+        out.extend(fb)
+    return [d for i, d in enumerate(out) if d and d not in out[:i]]
+
+
+def _wind_report(server: str, dataset: str) -> str:
+    """What the server actually offers, for the log when a fetch fails."""
+    bits = [f"dataset={dataset}"]
+    try:
+        tb = erddap.griddap_time_bounds(server, dataset)
+        bits.append(f"time={tb[0]} .. {tb[1]}" if tb else "time=unreadable")
+    except Exception as exc:  # noqa: BLE001
+        bits.append(f"time=error({exc})")
+    try:
+        b = erddap.griddap_bounds(server, dataset)
+        bits.append(f"lat={b.get('latitude')} lon={b.get('longitude')}")
+    except Exception as exc:  # noqa: BLE001
+        bits.append(f"box=error({exc})")
+    return "; ".join(bits)
+
+
 def fetch_wind(cfg, hours_ahead: int, cache_dir: Optional[Path] = None
                ) -> Tuple[List[VectorField], pd.DatetimeIndex]:
-    """WRF-NMM 10 m wind, now through `hours_ahead`, as hourly fields."""
+    """WRF-NMM 10 m wind, now through `hours_ahead`, as hourly fields.
+
+    The requested window is clamped to the dataset's own time axis. A 2 km WRF
+    nest runs far shorter than the 120 hour drift horizon, and ERDDAP fails the
+    entire request rather than truncating it, so an unclamped ask returned
+    nothing at all and the windage term - the dominant beaching mechanism -
+    was silently switched off for every run.
+    """
     src = cfg["sources"]["wind"]
     dom = cfg["domains"]["seed"]
     now = pd.Timestamp.utcnow().floor("h")
-    t0 = (now - pd.Timedelta(hours=3)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    t1 = (now + pd.Timedelta(hours=hours_ahead)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    ds = erddap.griddap(
-        server=src["server"], dataset=src["dataset"],
-        variables=[src["u"], src["v"]], time_sel=f"({t0}):({t1})",
-        lat=(dom["lat_min"], dom["lat_max"]),
-        lon=(dom["lon_min"], dom["lon_max"]),
-        cache_dir=cache_dir, cache_ttl_s=1800,
-    )
-    lat = np.asarray(ds["latitude"].values, dtype=float)
-    lon = np.asarray(ds["longitude"].values, dtype=float)
-    u = np.asarray(ds[src["u"]].values, dtype=float)
-    v = np.asarray(ds[src["v"]].values, dtype=float)
-    times = pd.to_datetime(ds["time"].values, utc=True)
-    fields = [VectorField(lat, lon, np.nan_to_num(u[i]), np.nan_to_num(v[i]))
-              for i in range(u.shape[0])]
-    return fields, times
+    want0 = now - pd.Timedelta(hours=3)
+    want1 = now + pd.Timedelta(hours=hours_ahead)
+
+    errors = []
+    for dataset in _wind_candidates(src):
+        try:
+            bounds = erddap.griddap_time_bounds(src["server"], dataset)
+            t0, t1 = erddap.clamp_time(want0, want1, bounds)
+            if t1 <= t0:
+                raise erddap.ErddapError(
+                    f"{dataset} holds no times in the requested window "
+                    f"({want0} .. {want1}); dataset covers {bounds}")
+            if bounds and t1 < want1:
+                log.info("%s forecast ends %s, %.0f h short of the %d h "
+                         "horizon; wind is held constant past that point",
+                         dataset, t1, (want1 - t1).total_seconds() / 3600.0,
+                         hours_ahead)
+            ds = erddap.griddap(
+                server=src["server"], dataset=dataset,
+                variables=[src["u"], src["v"]],
+                time_sel=f"({t0.strftime('%Y-%m-%dT%H:%M:%SZ')}):"
+                         f"({t1.strftime('%Y-%m-%dT%H:%M:%SZ')})",
+                lat=(dom["lat_min"], dom["lat_max"]),
+                lon=(dom["lon_min"], dom["lon_max"]),
+                cache_dir=cache_dir, cache_ttl_s=1800,
+            )
+            lat = np.asarray(ds["latitude"].values, dtype=float)
+            lon = np.asarray(ds["longitude"].values, dtype=float)
+            u = np.asarray(ds[src["u"]].values, dtype=float)
+            v = np.asarray(ds[src["v"]].values, dtype=float)
+            times = pd.to_datetime(ds["time"].values, utc=True)
+            fields = [VectorField(lat, lon, np.nan_to_num(u[i]),
+                                  np.nan_to_num(v[i]))
+                      for i in range(u.shape[0])]
+            log.info("wind %s: %d fields, %s .. %s", dataset, len(fields),
+                     times[0], times[-1])
+            return fields, times
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"{dataset}: {type(exc).__name__}: {exc}")
+            log.warning("wind dataset %s failed (%s); server offers: %s",
+                        dataset, exc, _wind_report(src["server"], dataset))
+
+    raise erddap.ErddapError("no wind dataset reachable -> " + " | ".join(errors))
 
 
 def wind_at(fields: List[VectorField], times: pd.DatetimeIndex,

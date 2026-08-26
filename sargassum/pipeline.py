@@ -84,9 +84,22 @@ def run(cfg, offline_bundle: Optional[Dict] = None) -> RunResult:
         cur_latest, cur_mean, cur_time = sources.fetch_currents(cfg, cache)
         try:
             wind_fields, wind_times = sources.fetch_wind(cfg, horizon, cache)
+            # A 2 km WRF nest runs shorter than the drift horizon. `wind_at`
+            # keeps returning the last field past the end of the run, which is
+            # persistence - say so rather than letting it pass as forecast.
+            if len(wind_times):
+                covered_h = (pd.DatetimeIndex(wind_times)[-1]
+                             - issued).total_seconds() / 3600.0
+                if covered_h < horizon - 1:
+                    notes.append(
+                        f"WRF wind runs {covered_h:.0f} h of the {horizon} h "
+                        f"horizon; wind is held constant beyond that")
         except Exception as exc:  # noqa: BLE001
             log.warning("wind fetch failed: %s", exc)
-            notes.append("no WRF wind available; windage term disabled")
+            notes.append(
+                "no WRF wind available, so windage is disabled and rafts move "
+                "on currents alone. Windage is the main mechanism that drives "
+                "Sargassum ashore, so this run understates stranding.")
             wind_fields, wind_times = [], pd.DatetimeIndex([])
 
     bio_seed = bio_mod.biomass_field(ds_seed, cfg)

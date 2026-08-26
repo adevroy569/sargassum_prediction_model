@@ -251,3 +251,21 @@ a:hover { border-bottom-color: currentColor; }
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+
+
+/* -------------------------------------------------------------- run status
+   A run can be degraded - a data source missing, or nothing predicted at all -
+   and that must be visible at the top of the page rather than inferred from an
+   empty map. An all-clear map and a broken run look identical otherwise. */
+.run-status {
+  margin: 18px 0 -6px; padding: 12px 14px;
+  border: 1px solid rgba(250, 178, 25, 0.32);
+  border-left: 3px solid #fab219;
+  border-radius: 8px;
+  background: rgba(250, 178, 25, 0.06);
+  font-size: 13.5px; line-height: 1.5; color: var(--ink-2);
+}
+.run-status[hidden] { display: none; }
+.run-status b { color: var(--ink); font-weight: 600; }
+.run-status ul { margin: 7px 0 0; padding-left: 18px; }
+.run-status li { margin: 3px 0; }

@@ -829,6 +829,40 @@
     }), 'kg per metre');
   }
 
+  /** A degraded run must announce itself. An empty map and a genuinely calm
+   *  week look identical, and of the two only one is safe to act on. */
+  function renderRunStatus(latest, segs) {
+    var box = document.getElementById('runStatus');
+    if (!box) return;
+    var problems = [];
+
+    var noWind = (latest.notes || []).some(function (n) {
+      return /wind/i.test(n) && /disabled|no WRF/i.test(n);
+    });
+    if (noWind) {
+      problems.push('The WRF wind forecast did not load, so windage is switched off and ' +
+        'rafts drift on currents alone. Windage is the main mechanism that pushes ' +
+        'Sargassum onto a beach, so this run <b>understates stranding</b>.');
+    }
+
+    var total = latest.predicted_stranding_tonnes;
+    if (typeof total === 'number' && total <= 0) {
+      var offshore = latest.offshore_wet_tonnes;
+      problems.push('This run predicts <b>no stranding anywhere</b> over the next five days' +
+        (offshore > 0 ? ', while detecting ' + fmt(offshore, 0) + ' tonnes of Sargassum offshore' : '') +
+        '. Treat that as a gap in the inputs, not as an all clear.');
+    }
+
+    var covered = (latest.notes || []).filter(function (n) { return /held constant/i.test(n); });
+    covered.forEach(function (n) { problems.push(n); });
+
+    if (!problems.length) { box.hidden = true; return; }
+
+    box.innerHTML = '<b>This forecast run is incomplete.</b>' +
+      '<ul><li>' + problems.join('</li><li>') + '</li></ul>';
+    box.hidden = false;
+  }
+
   // =============================================================== BOOT
   function mapFail(err) {
     var m = document.getElementById('map');
@@ -881,6 +915,7 @@
     if (notes.length) {
       document.getElementById('notes').textContent = 'Run notes: ' + notes.join('. ') + '.';
     }
+    renderRunStatus(latest, segs);
   }).catch(fail);
 
 })();

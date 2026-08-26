@@ -10,7 +10,7 @@ import io
 import logging
 import time
 from pathlib import Path
-from typing import Iterable, Optional, Sequence
+from typing import Iterable, Optional, Sequence, Tuple
 from urllib.parse import quote
 
 import numpy as np
@@ -143,6 +143,43 @@ def griddap_bounds(server: str, dataset: str) -> dict:
             out[axis] = (min(vals), max(vals))
     _BOUNDS[key] = out
     return out
+
+
+_TIME_BOUNDS: dict = {}
+
+
+def griddap_time_bounds(server: str, dataset: str
+                        ) -> Optional[Tuple[pd.Timestamp, pd.Timestamp]]:
+    """First and last time step a griddap dataset actually holds.
+
+    ERDDAP rejects a value-based subset whose corner falls outside an axis, and
+    the time axis is no exception: asking a 84-hour wind forecast for a step
+    120 hours out fails the *whole* request rather than returning what exists.
+    `griddap_bounds` only ever clamped latitude and longitude, so forecast
+    products were being asked for times past the end of their own run.
+    """
+    key = (server, dataset)
+    if key in _TIME_BOUNDS:
+        return _TIME_BOUNDS[key]
+    out = None
+    try:
+        first = pd.Timestamp(griddap_axis(server, dataset, "time", "0")[0])
+        last = pd.Timestamp(griddap_axis(server, dataset, "time", "last")[-1])
+        out = (first, last)
+    except Exception as exc:  # noqa: BLE001
+        log.warning("could not read %s time axis: %s", dataset, exc)
+    _TIME_BOUNDS[key] = out
+    return out
+
+
+def clamp_time(t0: pd.Timestamp, t1: pd.Timestamp,
+               bounds: Optional[Tuple[pd.Timestamp, pd.Timestamp]]
+               ) -> Tuple[pd.Timestamp, pd.Timestamp]:
+    """Pull a requested window inside what the dataset covers."""
+    if not bounds:
+        return t0, t1
+    lo, hi = bounds
+    return max(t0, lo), min(t1, hi)
 
 
 def clamp(rng_req: tuple, bounds: Optional[tuple]) -> tuple:
