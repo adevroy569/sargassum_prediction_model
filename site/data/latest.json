@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-08-26T16:00:00+00:00",
+ "issued_at": "2026-08-26T20:00:00+00:00",
  "afai_scene_time": "2026-08-25 12:00:00",
- "current_field_time": "2026-08-26 13:00:00",
+ "current_field_time": "2026-08-26 16:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-08-26",
@@ -29,16 +29,16 @@
   "2026-09-10",
   "2026-09-11"
  ],
- "offshore_wet_tonnes": 631956.7,
- "predicted_stranding_tonnes": 0.0,
- "predicted_h2s_tonnes": 0.0,
- "predicted_nh3_tonnes": 0.0,
+ "offshore_wet_tonnes": 4443304.0,
+ "predicted_stranding_tonnes": 19.86,
+ "predicted_h2s_tonnes": 0.0151,
+ "predicted_nh3_tonnes": 0.0047,
  "worst_segments": [
   {
-   "name": "Culebra / Flamenco",
-   "seg_id": "CU003",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU031",
+   "kg_per_m": 3.97,
+   "risk_tier": "low"
   },
   {
    "name": "Culebra / Dewey",
@@ -47,8 +47,8 @@
    "risk_tier": "minimal"
   },
   {
-   "name": "Culebra / Zoni",
-   "seg_id": "CU001",
+   "name": "Culebra / Flamenco",
+   "seg_id": "CU003",
    "kg_per_m": 0.0,
    "risk_tier": "minimal"
   },
@@ -71,8 +71,8 @@
    "risk_tier": "minimal"
   },
   {
-   "name": "Vieques / Esperanza",
-   "seg_id": "VI011",
+   "name": "Culebra / Zoni",
+   "seg_id": "CU001",
    "kg_per_m": 0.0,
    "risk_tier": "minimal"
   },
@@ -128,7 +128,6 @@
   "high": 12.0
  },
  "notes": [
-  "AFAI 1d composite used (7-day scene stale)",
   "no WRF wind available, so windage is disabled and rafts move on currents alone. Windage is the main mechanism that drives Sargassum ashore, so this run understates stranding."
  ],
  "maps": {
