@@ -1,7 +1,7 @@
 {
  "issued_at": "2026-08-25T23:00:00+00:00",
- "afai_scene_time": "2026-08-24 12:00:00",
- "current_field_time": "2026-08-25 19:00:00",
+ "afai_scene_time": "2026-08-25 12:00:00",
+ "current_field_time": "2026-08-25 22:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-08-25",
@@ -29,26 +29,26 @@
   "2026-09-09",
   "2026-09-10"
  ],
- "offshore_wet_tonnes": 5095345.1,
- "predicted_stranding_tonnes": 2298.86,
- "predicted_h2s_tonnes": 1.7496,
- "predicted_nh3_tonnes": 0.5468,
+ "offshore_wet_tonnes": 4356913.0,
+ "predicted_stranding_tonnes": 0.0,
+ "predicted_h2s_tonnes": 0.0,
+ "predicted_nh3_tonnes": 0.0,
  "worst_segments": [
-  {
-   "name": "Toa Baja / Cata\u00f1o",
-   "seg_id": "PU021",
-   "kg_per_m": 301.53,
-   "risk_tier": "high"
-  },
-  {
-   "name": "San Juan / Condado",
-   "seg_id": "PU022",
-   "kg_per_m": 158.24,
-   "risk_tier": "high"
-  },
   {
    "name": "Culebra / Flamenco",
    "seg_id": "CU003",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Culebra / Dewey",
+   "seg_id": "CU002",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
+  },
+  {
+   "name": "Culebra / Zoni",
+   "seg_id": "CU001",
    "kg_per_m": 0.0,
    "risk_tier": "minimal"
   },
@@ -65,14 +65,14 @@
    "risk_tier": "minimal"
   },
   {
-   "name": "Culebra / Dewey",
-   "seg_id": "CU002",
+   "name": "Vieques / Green Beach",
+   "seg_id": "VI012",
    "kg_per_m": 0.0,
    "risk_tier": "minimal"
   },
   {
-   "name": "Culebra / Zoni",
-   "seg_id": "CU001",
+   "name": "Vieques / Esperanza",
+   "seg_id": "VI011",
    "kg_per_m": 0.0,
    "risk_tier": "minimal"
   },
@@ -100,6 +100,33 @@
  "nh3_kg_per_tonne_wet": 0.25,
  "flux_above_literature_fraction": 0.0,
  "model": {},
+ "stranding_classes": [
+  {
+   "name": "Scattered",
+   "max": 5.0,
+   "blurb": "A thin, broken line of weed at the tide mark."
+  },
+  {
+   "name": "Continuous band",
+   "max": 25.0,
+   "blurb": "Unbroken weed along the beach, ankle deep in places."
+  },
+  {
+   "name": "Heavy windrow",
+   "max": 100.0,
+   "blurb": "A packed ridge, shin to knee deep. Clearing needed."
+  },
+  {
+   "name": "Severe pile-up",
+   "max": null,
+   "blurb": "Deep continuous mats. Access blocked, heavy equipment."
+  }
+ ],
+ "h2s_risk_tiers": {
+  "low": 0.5,
+  "moderate": 3.0,
+  "high": 12.0
+ },
  "notes": [
   "no WRF wind available; windage term disabled"
  ],
