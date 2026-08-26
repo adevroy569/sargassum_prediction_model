@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-08-26T09:00:00+00:00",
+ "issued_at": "2026-08-26T16:00:00+00:00",
  "afai_scene_time": "2026-08-25 12:00:00",
- "current_field_time": "2026-08-26 06:00:00",
+ "current_field_time": "2026-08-26 13:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-08-26",
@@ -29,7 +29,7 @@
   "2026-09-10",
   "2026-09-11"
  ],
- "offshore_wet_tonnes": 4443304.0,
+ "offshore_wet_tonnes": 631956.7,
  "predicted_stranding_tonnes": 0.0,
  "predicted_h2s_tonnes": 0.0,
  "predicted_nh3_tonnes": 0.0,
@@ -128,6 +128,7 @@
   "high": 12.0
  },
  "notes": [
+  "AFAI 1d composite used (7-day scene stale)",
   "no WRF wind available, so windage is disabled and rafts move on currents alone. Windage is the main mechanism that drives Sargassum ashore, so this run understates stranding."
  ],
  "maps": {
