@@ -1,17 +1,16 @@
 {
- "issued_at": "2026-08-25T23:00:00+00:00",
+ "issued_at": "2026-08-26T00:00:00+00:00",
  "afai_scene_time": "2026-08-25 12:00:00",
  "current_field_time": "2026-08-25 22:00:00",
  "horizon_hours": 120,
  "days": [
-  "2026-08-25",
   "2026-08-26",
   "2026-08-27",
   "2026-08-28",
-  "2026-08-29"
+  "2026-08-29",
+  "2026-08-30"
  ],
  "gas_days": [
-  "2026-08-25",
   "2026-08-26",
   "2026-08-27",
   "2026-08-28",
@@ -27,7 +26,8 @@
   "2026-09-07",
   "2026-09-08",
   "2026-09-09",
-  "2026-09-10"
+  "2026-09-10",
+  "2026-09-11"
  ],
  "offshore_wet_tonnes": 4356913.0,
  "predicted_stranding_tonnes": 0.0,
@@ -128,7 +128,7 @@
   "high": 12.0
  },
  "notes": [
-  "no WRF wind available; windage term disabled"
+  "no WRF wind available, so windage is disabled and rafts move on currents alone. Windage is the main mechanism that drives Sargassum ashore, so this run understates stranding."
  ],
  "maps": {
   "offshore": "maps/offshore_biomass.png",
