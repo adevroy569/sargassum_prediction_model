@@ -22,10 +22,6 @@
   </div>
 </header>
 
-<div class="wrap">
-  <div id="runStatus" class="run-status" role="status" hidden></div>
-</div>
-
 <main class="wrap">
 
   <section class="prose cols" id="about">
@@ -71,7 +67,29 @@
         <button role="tab" data-layer="h2s">Predicted H&#8322;S</button>
       </div>
     </div>
+    <!-- Degraded-input alert. Sits immediately above the map because an empty
+         map and a genuinely calm week look identical, and only one of the two
+         is safe to act on. Populated by app.js; hidden when the run is clean. -->
+    <div id="runStatus" class="run-alert" role="alert" hidden></div>
+
     <div id="map" role="region" aria-label="Sargassum map"></div>
+
+    <!-- Unified playback scrubber. Drives the map, the stranding chart and the
+         gas chart off one clock, so the ~48 h lag between mass landing and gas
+         peaking is something you can scrub through rather than infer. -->
+    <div class="timeline" id="timeline" hidden>
+      <button type="button" id="tlPlay" class="tl-btn tl-play" aria-label="Play the forecast">
+        <span class="tl-ico" aria-hidden="true"></span>
+      </button>
+      <button type="button" id="tlTotal" class="tl-btn tl-total is-on">Whole window</button>
+      <div class="tl-track">
+        <input type="range" id="tlRange" class="tl-range" min="0" max="1" step="1" value="0"
+               aria-label="Forecast day">
+        <div class="tl-scale" id="tlScale" aria-hidden="true"></div>
+      </div>
+      <div class="tl-read" id="tlRead" aria-live="polite"></div>
+    </div>
+
     <div class="map-foot">
       <div id="legend" class="legend" aria-live="polite"></div>
       <label class="toggle">

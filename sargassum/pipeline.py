@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -35,6 +35,9 @@ class RunResult:
     tracks: List[Dict]
     total_offshore_tonnes: float
     notes: List[str]
+    # Machine-readable health of each input, so the website can raise a precise
+    # alert instead of regex-matching the prose in `notes`.
+    status: Dict = field(default_factory=dict)
 
 
 def _segments(cfg) -> List[Segment]:
@@ -54,6 +57,7 @@ def run(cfg, offline_bundle: Optional[Dict] = None) -> RunResult:
     cfg_mod.ensure_dirs()
     cache = cfg_mod.PATHS["cache"]
     notes: List[str] = []
+    status: Dict = {"wind": {"ok": False, "reason": "not attempted"}}
     segs = _segments(cfg)
 
     horizon = int(cfg.get_path("run.horizon_hours", 120))
@@ -69,6 +73,8 @@ def run(cfg, offline_bundle: Optional[Dict] = None) -> RunResult:
         cur_latest, cur_mean, cur_time = offline_bundle["currents"]
         wind_fields, wind_times = offline_bundle.get("wind", ([], []))
         afai_time = offline_bundle.get("afai_time")
+        status["wind"] = {"ok": bool(len(wind_fields)), "dataset": "synthetic",
+                          "reason": "" if len(wind_fields) else "none supplied"}
     else:
         product = sources.choose_afai_product(cfg)
         if product != "7d":
@@ -87,6 +93,7 @@ def run(cfg, offline_bundle: Optional[Dict] = None) -> RunResult:
             # A 2 km WRF nest runs shorter than the drift horizon. `wind_at`
             # keeps returning the last field past the end of the run, which is
             # persistence - say so rather than letting it pass as forecast.
+            covered_h = float(horizon)
             if len(wind_times):
                 covered_h = (pd.DatetimeIndex(wind_times)[-1]
                              - issued).total_seconds() / 3600.0
@@ -94,6 +101,14 @@ def run(cfg, offline_bundle: Optional[Dict] = None) -> RunResult:
                     notes.append(
                         f"WRF wind runs {covered_h:.0f} h of the {horizon} h "
                         f"horizon; wind is held constant beyond that")
+            status["wind"] = {
+                "ok": bool(len(wind_fields)),
+                "dataset": cfg["sources"]["wind"]["dataset"],
+                "n_fields": int(len(wind_fields)),
+                "covered_hours": round(covered_h, 1),
+                "horizon_hours": horizon,
+                "reason": "",
+            }
         except Exception as exc:  # noqa: BLE001
             log.warning("wind fetch failed: %s", exc)
             notes.append(
@@ -101,6 +116,10 @@ def run(cfg, offline_bundle: Optional[Dict] = None) -> RunResult:
                 "on currents alone. Windage is the main mechanism that drives "
                 "Sargassum ashore, so this run understates stranding.")
             wind_fields, wind_times = [], pd.DatetimeIndex([])
+            status["wind"] = {"ok": False, "n_fields": 0,
+                              "dataset": cfg["sources"]["wind"]["dataset"],
+                              "horizon_hours": horizon,
+                              "reason": f"{type(exc).__name__}: {exc}"[:400]}
 
     bio_seed = bio_mod.biomass_field(ds_seed, cfg)
     bio_map = bio_mod.biomass_field(ds_map, cfg)
@@ -173,6 +192,7 @@ def run(cfg, offline_bundle: Optional[Dict] = None) -> RunResult:
         tracks=[t for t in tracks if t["lat"]],
         total_offshore_tonnes=total_t,
         notes=notes,
+        status=status,
     )
 
 

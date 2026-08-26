@@ -143,7 +143,7 @@ def fetch_wind(cfg, hours_ahead: int, cache_dir: Optional[Path] = None
     """
     src = cfg["sources"]["wind"]
     dom = cfg["domains"]["seed"]
-    now = pd.Timestamp.utcnow().floor("h")
+    now = erddap.as_utc(pd.Timestamp.utcnow()).floor("h")
     want0 = now - pd.Timedelta(hours=3)
     want1 = now + pd.Timedelta(hours=hours_ahead)
 

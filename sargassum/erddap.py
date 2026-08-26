@@ -163,8 +163,8 @@ def griddap_time_bounds(server: str, dataset: str
         return _TIME_BOUNDS[key]
     out = None
     try:
-        first = pd.Timestamp(griddap_axis(server, dataset, "time", "0")[0])
-        last = pd.Timestamp(griddap_axis(server, dataset, "time", "last")[-1])
+        first = as_utc(griddap_axis(server, dataset, "time", "0")[0])
+        last = as_utc(griddap_axis(server, dataset, "time", "last")[-1])
         out = (first, last)
     except Exception as exc:  # noqa: BLE001
         log.warning("could not read %s time axis: %s", dataset, exc)
@@ -172,13 +172,30 @@ def griddap_time_bounds(server: str, dataset: str
     return out
 
 
+def as_utc(t) -> pd.Timestamp:
+    """Coerce anything timestamp-like to a tz-aware UTC Timestamp.
+
+    `griddap_axis` hands back numpy datetime64, which cannot carry a timezone,
+    so a value read off a dataset axis is always tz-naive while
+    `pd.Timestamp.utcnow()` is tz-aware. Comparing the two raises TypeError,
+    which is what silently killed `fetch_wind` on every single run: the clamp
+    blew up before the request was ever made, every wind candidate was recorded
+    as unreachable, and windage - the dominant beaching mechanism - was
+    disabled for the whole life of the site. Normalise at the boundary so a
+    naive dataset time and an aware wall clock can never meet.
+    """
+    ts = pd.Timestamp(t)
+    return ts.tz_localize("UTC") if ts.tzinfo is None else ts.tz_convert("UTC")
+
+
 def clamp_time(t0: pd.Timestamp, t1: pd.Timestamp,
                bounds: Optional[Tuple[pd.Timestamp, pd.Timestamp]]
                ) -> Tuple[pd.Timestamp, pd.Timestamp]:
     """Pull a requested window inside what the dataset covers."""
+    t0, t1 = as_utc(t0), as_utc(t1)
     if not bounds:
         return t0, t1
-    lo, hi = bounds
+    lo, hi = as_utc(bounds[0]), as_utc(bounds[1])
     return max(t0, lo), min(t1, hi)
 
 

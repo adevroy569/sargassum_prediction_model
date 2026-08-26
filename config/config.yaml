@@ -55,10 +55,13 @@ sources:
   wind:
     server: "https://dm3.caricoos.org/erddap"
     dataset: "wrf_nmm_2km_best_agg"
-    # If the WRF dataset is ever retired or renamed, list replacements here and
-    # they are tried in order. Each unreachable id costs a retry cycle, so only
-    # add ids you have confirmed exist on the server.
-    # dataset_fallback: ["some_other_wrf_agg"]
+    # Tried in order if the primary is unreachable. All three aggregates were
+    # confirmed live on dm3.caricoos.org and carry the same U10/V10 variables;
+    # the 6 km nest covers the widest box, the 1 km nest the smallest.
+    # Each unreachable id costs a retry cycle, so only add confirmed ids.
+    dataset_fallback:
+      - "wrf_nmm_6km_best_agg"
+      - "wrf_nmm_1km_best_agg"
     u: "U10"
     v: "V10"
   waves:

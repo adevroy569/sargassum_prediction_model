@@ -292,6 +292,9 @@ def write_web_outputs(res, cfg, calib: Dict, web_dir: Path,
         "stranding_classes": cfg.get_path("web.stranding_classes", []),
         "h2s_risk_tiers": cfg.get_path("emissions.risk_tiers", {}),
         "notes": res.notes,
+        # Machine-readable input health. The site raises its alert banner off
+        # this rather than pattern-matching the prose above.
+        "status": getattr(res, "status", {}) or {},
         "maps": {
             "offshore": "maps/offshore_biomass.png",
             "beaching": "maps/beaching_forecast.png",
