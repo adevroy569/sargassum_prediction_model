@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-08-26T04:00:00+00:00",
+ "issued_at": "2026-08-26T07:00:00+00:00",
  "afai_scene_time": "2026-08-25 12:00:00",
- "current_field_time": "2026-08-26 00:00:00",
+ "current_field_time": "2026-08-26 04:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-08-26",
@@ -30,15 +30,15 @@
   "2026-09-11"
  ],
  "offshore_wet_tonnes": 4443304.0,
- "predicted_stranding_tonnes": 947.58,
- "predicted_h2s_tonnes": 0.7424,
- "predicted_nh3_tonnes": 0.232,
+ "predicted_stranding_tonnes": 0.0,
+ "predicted_h2s_tonnes": 0.0,
+ "predicted_nh3_tonnes": 0.0,
  "worst_segments": [
   {
-   "name": "Luquillo",
-   "seg_id": "PU030",
-   "kg_per_m": 189.52,
-   "risk_tier": "high"
+   "name": "Culebra / Flamenco",
+   "seg_id": "CU003",
+   "kg_per_m": 0.0,
+   "risk_tier": "minimal"
   },
   {
    "name": "Culebra / Dewey",
@@ -47,8 +47,8 @@
    "risk_tier": "minimal"
   },
   {
-   "name": "Culebra / Flamenco",
-   "seg_id": "CU003",
+   "name": "Culebra / Zoni",
+   "seg_id": "CU001",
    "kg_per_m": 0.0,
    "risk_tier": "minimal"
   },
@@ -71,8 +71,8 @@
    "risk_tier": "minimal"
   },
   {
-   "name": "Culebra / Zoni",
-   "seg_id": "CU001",
+   "name": "Vieques / Esperanza",
+   "seg_id": "VI011",
    "kg_per_m": 0.0,
    "risk_tier": "minimal"
   },
