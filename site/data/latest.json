@@ -1,17 +1,16 @@
 {
- "issued_at": "2026-08-26T20:00:00+00:00",
- "afai_scene_time": "2026-08-25 12:00:00",
- "current_field_time": "2026-08-26 16:00:00",
+ "issued_at": "2026-08-27T00:00:00+00:00",
+ "afai_scene_time": "2026-08-26 12:00:00",
+ "current_field_time": "2026-08-26 20:00:00",
  "horizon_hours": 120,
  "days": [
-  "2026-08-26",
   "2026-08-27",
   "2026-08-28",
   "2026-08-29",
-  "2026-08-30"
+  "2026-08-30",
+  "2026-08-31"
  ],
  "gas_days": [
-  "2026-08-26",
   "2026-08-27",
   "2026-08-28",
   "2026-08-29",
@@ -27,72 +26,73 @@
   "2026-09-08",
   "2026-09-09",
   "2026-09-10",
-  "2026-09-11"
+  "2026-09-11",
+  "2026-09-12"
  ],
- "offshore_wet_tonnes": 4443304.0,
- "predicted_stranding_tonnes": 19.86,
- "predicted_h2s_tonnes": 0.0151,
- "predicted_nh3_tonnes": 0.0047,
+ "offshore_wet_tonnes": 3852272.0,
+ "predicted_stranding_tonnes": 61461.77,
+ "predicted_h2s_tonnes": 47.0035,
+ "predicted_nh3_tonnes": 14.6886,
  "worst_segments": [
+  {
+   "name": "Yabucoa",
+   "seg_id": "PU040",
+   "kg_per_m": 758.0,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Vega Baja / Manat\u00ed",
+   "seg_id": "PU014",
+   "kg_per_m": 480.22,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU032",
+   "kg_per_m": 470.66,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Aguadilla / Crash Boat",
+   "seg_id": "PU000",
+   "kg_per_m": 450.33,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Isla Verde / Carolina",
+   "seg_id": "PU024",
+   "kg_per_m": 446.15,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Arecibo",
+   "seg_id": "PU008",
+   "kg_per_m": 434.76,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU039",
+   "kg_per_m": 426.73,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU069",
+   "kg_per_m": 417.03,
+   "risk_tier": "high"
+  },
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU031",
-   "kg_per_m": 3.97,
-   "risk_tier": "low"
+   "kg_per_m": 412.27,
+   "risk_tier": "high"
   },
   {
-   "name": "Culebra / Dewey",
-   "seg_id": "CU002",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
-  },
-  {
-   "name": "Culebra / Flamenco",
-   "seg_id": "CU003",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
-  },
-  {
-   "name": "Culebra / Flamenco",
-   "seg_id": "CU000",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
-  },
-  {
-   "name": "Vieques / Green Beach",
-   "seg_id": "VI013",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
-  },
-  {
-   "name": "Vieques / Green Beach",
-   "seg_id": "VI012",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
-  },
-  {
-   "name": "Culebra / Zoni",
-   "seg_id": "CU001",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
-  },
-  {
-   "name": "Vieques / Sun Bay",
-   "seg_id": "VI010",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
-  },
-  {
-   "name": "Vieques / Sun Bay",
-   "seg_id": "VI009",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
-  },
-  {
-   "name": "Vieques / Sun Bay",
-   "seg_id": "VI008",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
+   "name": "Luquillo",
+   "seg_id": "PU029",
+   "kg_per_m": 363.42,
+   "risk_tier": "high"
   }
  ],
  "calibration_scale": 1.0,
@@ -128,8 +128,18 @@
   "high": 12.0
  },
  "notes": [
-  "no WRF wind available, so windage is disabled and rafts move on currents alone. Windage is the main mechanism that drives Sargassum ashore, so this run understates stranding."
+  "WRF wind runs 108 h of the 120 h horizon; wind is held constant beyond that"
  ],
+ "status": {
+  "wind": {
+   "ok": true,
+   "dataset": "wrf_nmm_2km_best_agg",
+   "n_fields": 112,
+   "covered_hours": 108.0,
+   "horizon_hours": 120,
+   "reason": ""
+  }
+ },
  "maps": {
   "offshore": "maps/offshore_biomass.png",
   "beaching": "maps/beaching_forecast.png",
