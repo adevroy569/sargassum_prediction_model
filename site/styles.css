@@ -224,6 +224,23 @@ a:hover { border-bottom-color: currentColor; }
 }
 .maplibregl-popup-tip { border-top-color: #0a0d0f !important; border-bottom-color: #0a0d0f !important; }
 .maplibregl-popup-close-button { color: var(--muted); font-size: 17px; padding: 2px 7px; }
+/* Basemap place names. Rendered as DOM text rather than as MapLibre symbol
+   layers, which would need a hosted glyph server: this keeps the map free of
+   any external request and gives the labels the device's own text rendering.
+   They must never intercept a click meant for the shoreline underneath. */
+.map-place {
+  pointer-events: none;
+  white-space: nowrap;
+  font-size: 10.5px;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+  color: #6f7a82;
+  text-shadow: 0 0 4px #080b0d, 0 0 8px #080b0d;
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+.map-place.on { opacity: 1; }
+
 .maplibregl-ctrl-attrib { background: rgba(10,13,15,.82) !important; }
 .maplibregl-ctrl-attrib a { color: var(--ink-2) !important; }
 .maplibregl-ctrl-group { background: var(--panel-2) !important; border: 1px solid var(--line); }

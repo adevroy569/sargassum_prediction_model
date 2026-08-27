@@ -11,3 +11,7 @@ __pycache__/
 !data/models/
 .pytest_cache/
 .ipynb_checkpoints/
+
+# jsdom, installed on demand by tests/test_site_js.mjs
+node_modules/
+package-lock.json

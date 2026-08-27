@@ -1,4 +1,6 @@
 """Physical sanity checks. Run with: pytest -q"""
+import json
+
 import numpy as np
 import pytest
 
@@ -64,27 +66,105 @@ def test_emission_flux_within_published_range():
 def test_beaching_conserves_mass():
     segs = build_segments(5.0)
     acc = BeachingAccumulator(segs, 24)
-    east = [s for s in segs if s.coast == "east" and s.island == "puerto_rico"][0]
-    # place the raft 1 km seaward of a real east-coast segment
-    p = Particles(lat=np.array([east.lat + east.normal_lat * 0.009]),
-                  lon=np.array([east.lon + east.normal_lon * 0.009]),
+    # The most east-facing segment on the main island. Picking it by normal
+    # rather than by taking the first of the "east" bucket keeps the test
+    # meaningful on a real shoreline, where that bucket also holds segments
+    # tucked inside bays that no eastward drift can reach.
+    target = max((s for s in segs if s.island == "puerto_rico"),
+                 key=lambda s: s.normal_lon)
+    # place the raft 1 km seaward of it
+    p = Particles(lat=np.array([target.lat + target.normal_lat * 0.009]),
+                  lon=np.array([target.lon + target.normal_lon * 0.009]),
                   mass_kg=np.array([1000.0]))
     before = p.mass_kg.sum()
     total = 0.0
     for t in range(24):
-        u = np.array([-0.4])   # heading west, onto the east coast
-        v = np.array([0.0])
+        # drive it straight back down the seaward normal, onto the beach
+        u = np.array([-0.4 * target.normal_lon])
+        v = np.array([-0.4 * target.normal_lat])
         total += acc.capture(p, u, v, t, 1.0, cfg)
     assert total + p.mass_kg.sum() == pytest.approx(before, rel=1e-9)
     assert total > 0
 
 
 def test_coast_normals_point_seaward():
+    """Every receptor's normal must lead off the island.
+
+    This used to assert that segments north of 18.45 face north and segments
+    south of 17.97 face south, which is true of a smooth traced outline and
+    false of the real coastline: San Juan Bay, Bahia de Guanica and Ensenada
+    Honda all contain shoreline whose genuine seaward direction is the
+    opposite of the coast they sit on. Walking seaward off the land is the
+    property that actually has to hold, and it holds everywhere.
+    """
+    from sargassum.coastline import ISLANDS, _point_in_ring
+
     segs = build_segments(5.0)
-    north = [s for s in segs if s.island == "puerto_rico" and s.lat > 18.45]
-    south = [s for s in segs if s.island == "puerto_rico" and s.lat < 17.97]
-    assert all(s.normal_lat > 0 for s in north)
-    assert all(s.normal_lat < 0 for s in south)
+    for s in segs:
+        ring = ISLANDS[s.island]
+        for km in (0.5, 1.0, 2.0):   # well past the ~150 m offset of a receptor
+            d = km / 111.0
+            assert not _point_in_ring(s.lon + s.normal_lon * d,
+                                      s.lat + s.normal_lat * d, ring), (
+                f"{s.seg_id} ({s.name}) normal re-enters {s.island} at {km} km")
+
+    # And the open coast should still broadly face the way it looks on a map.
+    north = [s for s in segs if s.island == "puerto_rico" and s.lat > 18.48]
+    south = [s for s in segs if s.island == "puerto_rico" and s.lat < 17.94]
+    assert np.mean([s.normal_lat > 0 for s in north]) > 0.9
+    assert np.mean([s.normal_lat < 0 for s in south]) > 0.9
+
+
+def test_receptor_cache_notices_a_changed_shoreline(tmp_path):
+    """The cached receptor list must be keyed on the shoreline, not on mere
+    existence: it silently outlived the outline it was derived from once."""
+    from sargassum.coastline import segments_are_current, write_segments
+
+    p = tmp_path / "coast_segments.geojson"
+    write_segments(p, 5.0)
+    assert segments_are_current(p)
+
+    stale = json.loads(p.read_text())
+    stale["properties"]["islands_sha"] = "0" * 16
+    p.write_text(json.dumps(stale))
+    assert not segments_are_current(p)
+
+
+def test_receptors_sit_on_the_shoreline():
+    """Receptors must be on the water's edge, not a kilometre inland.
+
+    The hand-traced outline they used to come from was accurate to 5-15 km
+    between vertices, which put the drawn segments visibly off the coast.
+    """
+    from sargassum.coastline import ISLANDS
+
+    segs = build_segments(5.0)
+    assert len(segs) > 100, f"only {len(segs)} receptors"
+    for s in segs:
+        km = _km_to_ring(s.lon, s.lat, ISLANDS[s.island])
+        assert km < 0.3, (
+            f"{s.seg_id} ({s.name}) is {km:.2f} km from its shoreline")
+
+
+def _km_to_ring(px, py, ring):
+    """Distance from a point to the nearest edge of a closed ring, in km.
+
+    Measured to the edges rather than to the vertices: a receptor lands part
+    way along an edge, so vertex distance would report up to half an edge
+    length even for a receptor sitting exactly on the line.
+    """
+    best = float("inf")
+    mx = np.cos(np.radians(py))
+    n = len(ring)
+    for i in range(n):
+        x1, y1 = ring[i]
+        x2, y2 = ring[(i + 1) % n]
+        ax, ay = (x2 - x1) * mx, y2 - y1
+        bx, by = (px - x1) * mx, py - y1
+        den = ax * ax + ay * ay
+        t = 0.0 if den == 0 else max(0.0, min(1.0, (bx * ax + by * ay) / den))
+        best = min(best, np.hypot(bx - t * ax, by - t * ay))
+    return float(best) * 111.195
 
 
 def test_land_blocks_drift():

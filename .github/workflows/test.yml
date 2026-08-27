@@ -21,3 +21,12 @@ jobs:
         run: python scripts/update.py --offline --no-archive
       - name: Unit tests
         run: pytest -q
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Site tests
+        run: |
+          npm install --no-save --silent jsdom
+          node tests/test_site_js.mjs

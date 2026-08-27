@@ -103,7 +103,14 @@ the coarse coastline.
 
 ### 3. Beaching
 
-The coast is resampled into 103 segments of ~5 km, each with a seaward normal.
+The coast is resampled into 137 segments of ~5 km, each with a seaward normal.
+The shoreline is GSHHS full resolution, clipped to the three monitored islands
+by `scripts/build_basemap.py` and cached in `data/static/`; receptors land
+within ~130 m of the water's edge. Segments whose seaward normal runs back into
+their own island within 2 km — the heads of San Juan Bay, Bahía de Guánica,
+Bahía de Guayanilla — are dropped, because open-ocean Sargassum cannot reach
+them and an always-zero receptor only dilutes the worst-affected ranking.
+
 Per time step, a raft inside a segment's capture zone loses
 
 ```
@@ -225,8 +232,32 @@ away from their darkest end so low values stay visible against the dark
 basemap. Risk tiers always carry a written label, so colour never carries
 meaning on its own.
 
+The basemap is vector geometry shipped in this repository, not hosted tiles.
+Raster tiles are baked at fixed zoom levels, so the coastline softens at every
+zoom between them; and a hosted tile service is someone else's to withdraw —
+the CDN this site used previously began returning tiles stamped
+`API KEY REQUIRED` across the middle of the island. Place names are DOM markers
+rather than MapLibre symbol layers, since symbols would need a hosted glyph
+server and put the dependency straight back.
+
 The page sets no cookies, loads no analytics and stores nothing. The only third
-party requests are the CARTO basemap tiles and the MapLibre script.
+party request left is the MapLibre script itself.
+
+### Rebuilding the basemap
+
+Only needed if the clip box, the detail box or the island set changes. The
+output is committed, so a normal checkout never runs this:
+
+```bash
+pip install shapely basemap-data basemap-data-hires
+python scripts/build_basemap.py
+```
+
+It writes the drawn coastline and labels into `site/data/`, and the receptor
+outlines into `data/static/islands.json`. The pipeline notices that the outlines
+changed — the receptor cache is keyed on a hash of them, not on file
+timestamps, which a git checkout does not preserve — and rebuilds the segment
+list on its next run.
 
 Develop locally with a real HTTP server, since browsers block `fetch` on
 `file://` pages:
@@ -301,7 +332,11 @@ scripts/
   update.py                 the scheduled job
   backfill.py               historical training set
   train_model.py            fit / refit
-tests/                      physical sanity checks + synthetic fields
+  build_basemap.py          GSHHS → drawn coastline + receptor outlines
+tests/
+  test_pipeline.py          physical sanity checks + synthetic fields
+  test_site_js.mjs          site/app.js against a headless DOM
 data/archive/               accumulating record (committed)
+data/static/                shoreline + derived receptors (committed)
 site/                       published output (GitHub Pages)
 ```

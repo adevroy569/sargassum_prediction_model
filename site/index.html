@@ -7,7 +7,6 @@
 <meta name="description" content="Live satellite Sargassum observations and a five day drift, stranding and gas release forecast for Puerto Rico, Vieques and Culebra.">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#127807;</text></svg>">
-<link rel="preconnect" href="https://basemaps.cartocdn.com" crossorigin>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -132,7 +131,7 @@
       Satellite reflectance from the USF and NOAA Alternative Floating Algae Index is converted to wet
       biomass, then carried forward with observed surface currents from the CariCOOS high frequency
       radar network and forecast winds from the CariCOOS WRF model. Rafts that reach the nearshore zone
-      strand onto one of 103 coastal segments of about 5 km each. Gas release is calculated from the
+      strand onto one of <span id="segCount">the</span> coastal segments of about 5 km each. Gas release is calculated from the
       stranded mass on a conserved yield basis, so the total released always matches the mass that
       landed, and the resulting areal flux is checked against published field measurements.
     </p>

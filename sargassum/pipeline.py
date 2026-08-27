@@ -14,6 +14,7 @@ from . import biomass as bio_mod
 from . import beaching as beach_mod
 from . import config as cfg_mod
 from . import drift, emissions, features, sources
+from . import coastline as coastline_mod
 from .coastline import Segment, load_segments, write_segments
 from .model import BeachingModel
 
@@ -41,11 +42,21 @@ class RunResult:
 
 
 def _segments(cfg) -> List[Segment]:
+    """Cached receptor list, rebuilt whenever the shoreline it came from
+    changes.
+
+    The cache used to be keyed on existence alone, so editing the island
+    outlines silently had no effect: every later run kept reusing receptors
+    derived from the previous shoreline.
+    """
     p = cfg_mod.PATHS["segments"]
-    if not p.exists():
-        return write_segments(p, float(cfg.get_path(
-            "beaching.segment_spacing_km", 5.0)))
-    return load_segments(p)
+    spacing = float(cfg.get_path("beaching.segment_spacing_km", 5.0))
+    if p.exists():
+        if coastline_mod.segments_are_current(p):
+            return load_segments(p)
+        log.info("shoreline has changed since %s was built; rebuilding "
+                 "receptors", p.name)
+    return write_segments(p, spacing)
 
 
 def run(cfg, offline_bundle: Optional[Dict] = None) -> RunResult:

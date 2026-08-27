@@ -67,26 +67,37 @@
 
   var PLAY_MS = 780;
 
+  /* How many hours of the drift horizon may run on held-constant wind before
+   * the run is called degraded. The CariCOOS 2 km WRF nest is a ~108 h
+   * product against a 120 h horizon, so a gap of roughly half a day is the
+   * normal, permanent state of a healthy run and must not raise an alarm. */
+  var WIND_GAP_ALERT_H = 24;
+
+  /* The basemap is drawn from GeoJSON shipped in this repository rather than
+   * fetched as raster tiles from a third party. Two reasons. Raster tiles are
+   * baked at fixed zoom levels, so the map goes soft everywhere between them,
+   * which is most of the time on a map you pan and pinch. And a hosted tile
+   * service is a dependency someone else controls: the previous CDN started
+   * returning tiles stamped API KEY REQUIRED across the middle of the island.
+   * Vector geometry is resolution independent and cannot be revoked.
+   *
+   * Geometry comes from GSHHS (Wessel & Smith) via scripts/build_basemap.py.
+   */
+  // Ocean sits a shade below the page background so the map reads as a
+  // recessed panel rather than a floating rectangle of the same colour.
+  var OCEAN = '#080b0d';
+  var LAND = '#171c20';
+  var LAND_EDGE = '#333c43';
+
+  /* No `glyphs` entry, and so no symbol layers: serving font PBFs would mean
+   * reintroducing exactly the hosted dependency this change removes. Place
+   * names are HTML markers instead, which also renders them at the device's
+   * own text resolution rather than from a texture atlas. */
   var BASEMAP = {
     version: 8,
-    sources: {
-      carto: {
-        type: 'raster',
-        tiles: [
-          'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-          'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-          'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-          'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'
-        ],
-        tileSize: 256,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-          '&copy; <a href="https://carto.com/attributions">CARTO</a>'
-      }
-    },
+    sources: {},
     layers: [
-      { id: 'bg', type: 'background', paint: { 'background-color': '#0c0f11' } },
-      { id: 'carto', type: 'raster', source: 'carto' }
+      { id: 'ocean', type: 'background', paint: { 'background-color': OCEAN } }
     ]
   };
 
@@ -386,6 +397,79 @@
     redraw: null
   };
 
+  /* ------------------------------------------------------------ basemap
+   * Land is added as vector polygons under everything else. The layers go on
+   * inside `load` rather than in the style object because the GeoJSON arrives
+   * asynchronously and the map should not wait on it: if the shoreline file
+   * is slow or missing, the forecast still draws over open ocean.
+   */
+  function addBasemapLayers(map) {
+    if (!App.basemapLand) return;
+
+    map.addSource('land', {
+      type: 'geojson',
+      data: App.basemapLand,
+      attribution: 'Shoreline: <a href="https://www.soest.hawaii.edu/pwessel/gshhg/">GSHHG</a>'
+    });
+
+    // A soft halo just outside the coast. Shallow water is genuinely brighter
+    // than deep water, and the gradient gives the island an edge to sit on
+    // instead of a hard cut between two flat greys.
+    map.addLayer({
+      id: 'land-halo', type: 'line', source: 'land',
+      layout: { 'line-join': 'round' },
+      paint: {
+        'line-color': '#123038',
+        // Eased off at the wide zooms: with the whole Caribbean in frame the
+        // halo is being drawn around several hundred islands at once, and at
+        // full strength that reads as haze rather than as shallow water.
+        'line-opacity': ['interpolate', ['linear'], ['zoom'],
+          5, 0.22, 7, 0.4, 9, 0.55, 12, 0.6],
+        'line-blur': ['interpolate', ['linear'], ['zoom'], 5, 6, 9, 14, 12, 26],
+        'line-width': ['interpolate', ['linear'], ['zoom'], 5, 7, 9, 16, 12, 30]
+      }
+    });
+    map.addLayer({
+      id: 'land-fill', type: 'fill', source: 'land',
+      paint: { 'fill-color': LAND }
+    });
+    // The waterline itself. Hairline-thin, but it is vector, so it stays a
+    // hairline at zoom 12 instead of turning into a four-pixel smear.
+    map.addLayer({
+      id: 'land-outline', type: 'line', source: 'land',
+      layout: { 'line-join': 'round' },
+      paint: {
+        'line-color': LAND_EDGE,
+        'line-width': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 9, 0.9, 12, 1.3]
+      }
+    });
+  }
+
+  /* Place names as DOM markers. They fade in only once the view is tight
+   * enough for them not to collide, and they never capture pointer events, so
+   * they cannot block a click on the shoreline segment underneath. */
+  function addPlaceLabels(map, places) {
+    var feats = (places && places.features) || [];
+    if (!feats.length || typeof maplibregl.Marker !== 'function') return;
+
+    var markers = feats.map(function (f) {
+      var node = el('div', 'map-place');
+      node.textContent = f.properties.name;
+      return new maplibregl.Marker({ element: node, anchor: 'center' })
+        .setLngLat(f.geometry.coordinates)
+        .addTo(map);
+    });
+
+    function sync() {
+      var on = map.getZoom() >= 8.4;
+      markers.forEach(function (m) {
+        m.getElement().classList.toggle('on', on);
+      });
+    }
+    map.on('zoom', sync);
+    sync();
+  }
+
   function buildMap(bio, segs, tracks, latest) {
     var map = new maplibregl.Map({
       container: 'map',
@@ -404,42 +488,18 @@
     var current = segmentGeoJSON(segs, 'stranding', latest, -1);
 
     map.on('load', function () {
+      addBasemapLayers(map);
+      addPlaceLabels(map, App.basemapPlaces);
+
       map.addSource('biomass', { type: 'geojson', data: bioData.gj });
       map.addSource('segments', { type: 'geojson', data: current.gj });
       map.addSource('tracks', { type: 'geojson', data: tracksGeoJSON(tracks) });
 
-      /* --------------------------------------------------- coastline relief
-       * The 103 segments trace the whole monitored shoreline, so they double
-       * as a coast outline. A wide blurred dark stroke offset downward reads
-       * as a drop shadow and lifts the island body off the ocean; a faint
-       * cool edge on top of it draws the waterline itself. Both stay on for
-       * every layer, including offshore biomass, because the separation is a
-       * basemap property, not a data property.
-       */
-      map.addLayer({
-        id: 'coast-shadow', type: 'line', source: 'segments',
-        layout: { 'line-cap': 'round', 'line-join': 'round' },
-        filter: ['==', ['geometry-type'], 'LineString'],
-        paint: {
-          'line-color': '#000000',
-          'line-opacity': 0.6,
-          'line-blur': ['interpolate', ['linear'], ['zoom'], 5, 5, 9, 9, 12, 15],
-          'line-width': ['interpolate', ['linear'], ['zoom'], 5, 9, 9, 18, 12, 30],
-          'line-translate': [0, 2.5],
-          'line-translate-anchor': 'viewport'
-        }
-      });
-      map.addLayer({
-        id: 'coast-edge', type: 'line', source: 'segments',
-        layout: { 'line-cap': 'round', 'line-join': 'round' },
-        filter: ['==', ['geometry-type'], 'LineString'],
-        paint: {
-          'line-color': '#8fd9cf',
-          'line-opacity': 0.22,
-          'line-blur': 1.2,
-          'line-width': ['interpolate', ['linear'], ['zoom'], 5, 2.2, 9, 3.4, 12, 5]
-        }
-      });
+      /* The 103 segments used to stand in for a coast outline, drawn with a
+       * heavy blurred black stroke to lift the island off the water. The
+       * basemap now carries a real shoreline with its own edge and halo, so
+       * that stand-in has been removed: two coastlines a kilometre apart is
+       * worse than one. */
 
       map.addLayer({
         id: 'tracks-line', type: 'line', source: 'tracks',
@@ -1141,8 +1201,36 @@
                         ' tonnes of Sargassum offshore' : '') +
         '. Treat that as a gap in the inputs, not as an all clear.');
     }
-    notes.filter(function (n) { return /held constant/i.test(n); })
-         .forEach(function (n) { extra.push(n); });
+
+    /* The 2 km WRF nest is a ~4.5 day run and the drift horizon is 5 days, so
+     * the wind record is a few hours short on *every* single run. Treating
+     * that as a degraded forecast fired the banner permanently, which is the
+     * fastest way to teach someone to ignore a warning that will one day
+     * matter. A short tail is a known property of the model and is already
+     * described in the methodology; only a materially uncovered horizon is
+     * worth interrupting for. */
+    var covered = null, horizon = null;
+    if (wind && typeof wind.covered_hours === 'number' &&
+        typeof wind.horizon_hours === 'number') {
+      covered = wind.covered_hours;
+      horizon = wind.horizon_hours;
+    } else {
+      // Older runs carry the numbers only in prose. Recover them so the same
+      // threshold applies to archived data instead of it warning either
+      // always or never.
+      notes.some(function (n) {
+        var m = /runs\s+([\d.]+)\s*h of the\s+([\d.]+)\s*h horizon/i.exec(n);
+        if (m) { covered = parseFloat(m[1]); horizon = parseFloat(m[2]); }
+        return !!m;
+      });
+    }
+    if (covered !== null && horizon !== null &&
+        horizon - covered > WIND_GAP_ALERT_H) {
+      extra.push('Wind forecast covers only ' + Math.round(covered) +
+        ' h of the ' + Math.round(horizon) + ' h horizon, so the last ' +
+        Math.round(horizon - covered) + ' h of drift run on <b>held constant ' +
+        'wind</b> and should be read as persistence, not forecast.');
+    }
 
     if (!noWind && !extra.length) { box.hidden = true; return; }
 
@@ -1192,12 +1280,26 @@
     loadJSON('latest.json'),
     loadJSON('forecast_segments.geojson'),
     loadJSON('biomass_field.json'),
-    loadJSON('drift_tracks.json').catch(function () { return { tracks: [] }; })
+    loadJSON('drift_tracks.json').catch(function () { return { tracks: [] }; }),
+    // The basemap is decoration: a missing shoreline file should cost the
+    // coastline, not the forecast, so both of these degrade to empty.
+    loadJSON('basemap_land.geojson').catch(function () { return null; }),
+    loadJSON('basemap_places.geojson').catch(function () { return null; })
   ]).then(function (res) {
     var latest = res[0], segs = res[1], bio = res[2], tracks = res[3];
+    App.basemapLand = res[4];
+    App.basemapPlaces = res[5];
     App.latest = latest;
     App.segs = segs;
     (segs.features || []).forEach(function (f) { App.segIndex[f.properties.seg_id] = f; });
+
+    // Counted from the data rather than written into the prose: the segment
+    // list is derived from the shoreline and changes when the shoreline does,
+    // and a hardcoded figure had already gone stale once.
+    var segCount = document.getElementById('segCount');
+    if (segCount && (segs.features || []).length) {
+      segCount.textContent = segs.features.length;
+    }
 
     renderAlert(latest);
     renderStamp(latest);
