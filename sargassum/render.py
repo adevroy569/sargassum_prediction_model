@@ -291,6 +291,27 @@ def write_web_outputs(res, cfg, calib: Dict, web_dir: Path,
         # tunable in one place.
         "stranding_classes": cfg.get_path("web.stranding_classes", []),
         "h2s_risk_tiers": cfg.get_path("emissions.risk_tiers", {}),
+        # Every coefficient the site prints in its published equations. Served
+        # from the same config the run used, so the formulas on the page cannot
+        # quietly drift away from the ones the model actually applied.
+        "coefficients": {
+            "windage": cfg.get_path("drift.windage", 0.012),
+            "horizontal_diffusivity": cfg.get_path(
+                "drift.horizontal_diffusivity", 30.0),
+            "capture_km": cfg.get_path("beaching.capture_km", 2.0),
+            "onshore_efficiency": cfg.get_path(
+                "beaching.onshore_efficiency", 0.35),
+            "min_onshore_speed": cfg.get_path(
+                "beaching.min_onshore_speed", 0.02),
+            "segment_spacing_km": cfg.get_path(
+                "beaching.segment_spacing_km", 5.0),
+            "onset_lag_hours": cfg.get_path("emissions.onset_lag_hours", 48),
+            "peak_hours": cfg.get_path("emissions.peak_hours", 72),
+            "decay_efold_hours": cfg.get_path(
+                "emissions.decay_efold_hours", 120),
+            "deposit_width_m": cfg.get_path("emissions.deposit_width_m", 8.0),
+            "mixing_height_m": cfg.get_path("emissions.mixing_height_m", 2.5),
+        },
         "notes": res.notes,
         # Machine-readable input health. The site raises its alert banner off
         # this rather than pattern-matching the prose above.

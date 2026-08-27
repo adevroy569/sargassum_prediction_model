@@ -38,6 +38,10 @@
    * opacity so it still recedes behind anything that matters.
    */
   var NONE_COLOR = '#3fa596';
+  // "We modelled this stretch and nothing lands on it" and "we did not model
+  // this date at all" are different claims. NONE_COLOR makes the first; this
+  // deliberately lifeless grey makes the second, and never appears otherwise.
+  var OUTSIDE_COLOR = '#4a5157';
   var NONE_OPACITY = 0.62;
   var VALUE_OPACITY = 0.96;
 
@@ -73,48 +77,53 @@
    * normal, permanent state of a healthy run and must not raise an alarm. */
   var WIND_GAP_ALERT_H = 24;
 
-  /* Esri Dark Gray Canvas, served keyless from services.arcgisonline.com.
-   * The previous CDN began stamping API KEY REQUIRED across its tiles, which
-   * is what this replaces.
+  /* Esri World Imagery Firefly, served keyless from fly.maptiles.arcgis.com.
    *
-   * Ships as two layers by design: a base carrying land, water and roads, and
-   * a transparent reference layer carrying the labels. Keeping them apart lets
-   * the forecast ribbons sit between them, and lets the labels keep their own
-   * exposure when the base is pushed down into the page's tonal range.
+   * Firefly is Esri's satellite imagery deliberately muted and darkened to act
+   * as a backdrop for glowing data, which is exactly this map's job. It also
+   * earns its place on a drift map specifically: the shelf edge and the Puerto
+   * Rico Trench are visible in it, so the water the rafts cross stops being a
+   * flat void and starts showing the bathymetry that shapes the currents.
+   *
+   * Labels come from a separate transparent reference layer. Keeping them
+   * apart lets the forecast ribbons sit between base and labels, and lets the
+   * labels hold their own exposure while the imagery is pushed down.
    */
-  var ESRI = 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/';
+  var ESRI_FLY = 'https://fly.maptiles.arcgis.com/arcgis/rest/services/' +
+                 'World_Imagery_Firefly/MapServer/tile/{z}/{y}/{x}';
+  var ESRI_REF = 'https://services.arcgisonline.com/ArcGIS/rest/services/' +
+                 'Reference/World_Boundaries_and_Places_Alternate/MapServer/' +
+                 'tile/{z}/{y}/{x}';
   var ESRI_ATTRIB =
-    'Basemap &copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin, ' +
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    'Imagery &copy; <a href="https://www.esri.com/">Esri</a>, Vantor, ' +
+    'Earthstar Geographics';
 
-  /* Dark Gray Canvas ships water at #232227 and land at #474749. Both are
-   * considerably lighter than this page, so unfiltered the map reads as a pale
-   * slab dropped onto a dark document. These paint properties pull it down to
-   * roughly #111114 water against #232324 land: still a clear coastline, but
-   * now sitting in the same register as everything around it, and dark enough
-   * that the cividis and inferno ramps on top of it keep their contrast.
+  /* Measured off the tiles: Firefly's open ocean sits near rgb(23,29,39) and
+   * land around luminance 50, but scattered highlights - cloud, bright sand,
+   * city lights - run all the way to 254. Those highlights are what compete
+   * with the data, so the lever is the top of the range rather than contrast.
+   * Pulling it to 0.55 keeps the imagery readable while putting every ramp on
+   * top of it comfortably clear of the brightest thing underneath.
    *
-   * Applied as raster paint rather than a CSS filter so it touches only the
-   * tiles - a filter on the canvas would drag the data layers down with it.
+   * Raster paint, not a CSS filter: a filter on the canvas would drag the
+   * forecast layers down with the basemap.
    */
   var DIM_BASE = {
-    'raster-saturation': -0.25,   // Esri's slight blue cast down to near-grey
-    'raster-contrast': 0.08,      // recover the coastline the darkening flattens
+    'raster-saturation': -0.15,   // calm the blue cast without draining it
     'raster-brightness-min': 0,
-    'raster-brightness-max': 0.52
+    'raster-brightness-max': 0.55
   };
-  // Labels are held much higher than the base: dimming them by the same amount
-  // would take Esri's #cac9cb type down to an unreadable #686868.
+  // Held much higher than the base. Firefly is dark enough that dimming the
+  // labels to match would leave nothing legible over the water.
   var DIM_LABELS = {
-    'raster-saturation': -0.35,
     'raster-brightness-min': 0,
-    'raster-brightness-max': 0.78,
-    'raster-opacity': 0.72
+    'raster-brightness-max': 0.82,
+    'raster-opacity': 0.55
   };
 
-  // Shown while tiles are in flight. Matched to the filtered water colour so
+  // Shown while tiles are in flight. Matched to Firefly's dimmed deep water so
   // the map does not flash a different shade on every pan.
-  var OCEAN = '#111114';
+  var OCEAN = '#0a0e12';
 
   var BASEMAP = {
     version: 8,
@@ -122,14 +131,14 @@
       'esri-base': {
         type: 'raster',
         // ArcGIS REST tile paths are {z}/{row}/{col}, i.e. y before x.
-        tiles: [ESRI + 'World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'],
+        tiles: [ESRI_FLY],
         tileSize: 256,
         maxzoom: 16,
         attribution: ESRI_ATTRIB
       },
       'esri-labels': {
         type: 'raster',
-        tiles: [ESRI + 'World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}'],
+        tiles: [ESRI_REF],
         tileSize: 256,
         maxzoom: 16
       }
@@ -346,10 +355,31 @@
     var isGas = mode === 'h2s';
     var counts = [0, 0, 0, 0], nEmpty = 0, hi = 0;
 
+    /* Stranding runs for the 120 h drift horizon; gas keeps releasing for
+     * about twelve days after that, so the shared timeline is the longer of
+     * the two. Past day 5 the stranding layer therefore has no data at all -
+     * which is not the same statement as "nothing comes ashore", and must not
+     * be drawn in the same colour as it. */
+    var outside = !isGas && day >= 0 && day >= (latest.days || []).length;
+
     var feats = segs.features.map(function (f) {
       var p = f.properties;
       var v = segValue(p, mode, day);
       if (v > hi) hi = v;
+
+      if (outside) {
+        return {
+          type: 'Feature',
+          geometry: f.geometry,
+          properties: {
+            seg_id: p.seg_id, name: p.name, coast: p.coast,
+            length_m: p.length_m,
+            color: OUTSIDE_COLOR, band: -2, width: W_EMPTY,
+            _v: null, _label: 'Outside the forecast window',
+            _unit: '', _idx: p.seg_id
+          }
+        };
+      }
 
       var band, color, label;
       if (isGas) {
@@ -604,9 +634,16 @@
   function segmentTip(p) {
     var v = Number(p._v) || 0;
     var strong = Number(p.band) >= 0;
-    return '<b>' + p.name + '</b>' +
+    var head = '<b>' + p.name + '</b>' +
       '<span class="sub">' + p.seg_id +
-        (p.coast ? ' &middot; ' + p.coast + ' facing' : '') + '</span>' +
+        (p.coast ? ' &middot; ' + p.coast + ' facing' : '') + '</span>';
+    // band -2 is "this date was never modelled". Printing "0.00 kg per metre"
+    // there would state a result the run does not have.
+    if (Number(p.band) === -2) {
+      return head + '<div style="margin-top:5px;font-size:12px;color:var(--muted)">' +
+        'Outside the forecast window</div>';
+    }
+    return head +
       '<div style="margin-top:5px;font-size:13px">' +
         '<b>' + fmt(v, v >= 100 ? 0 : v >= 10 ? 1 : 2) + '</b> ' + p._unit +
       '</div>' +
@@ -739,11 +776,34 @@
     // -------------------------------------------------------- stranding
     var classes = latest.stranding_classes || [];
     var sDay = dayLabel(latest, day, 'strand');
+    var nStrandDays = (latest.days || []).length || 5;
     var beyond = day >= 0 && !sDay;
+
+    /* Past the drift horizon the honest legend is one row, not five. Listing
+     * the severity bands next to an entirely grey coast invites the reading
+     * that every stretch was assessed and came back clean. */
+    if (beyond) {
+      box.appendChild(el('span', 'legend-title',
+        'No stranding forecast for ' + (gasDay || 'this day')));
+      var okeys = el('div', 'keys keys-stacked');
+      okeys.appendChild(classRow(OUTSIDE_COLOR, true, 'Outside the forecast window',
+        'no data',
+        'The drift model runs ' + nStrandDays + ' days and stops. This is the ' +
+        'absence of a prediction, not a prediction of nothing.'));
+      box.appendChild(okeys);
+      cap.innerHTML = 'The drift forecast covers <b>' + nStrandDays + ' days</b>, ' +
+        'ending ' + (dayLabel(latest, nStrandDays - 1, 'strand') || 'earlier') +
+        ', because that is as far as the wind and current forecasts driving it ' +
+        'reach. The timeline runs longer than that only because gas keeps ' +
+        'releasing from weed that has <i>already</i> landed — which is why the ' +
+        'H&#8322;S layer still changes on this date and this one does not. ' +
+        'A grey coast here means <b>not forecast</b>, not <b>clear</b>.';
+      return;
+    }
+
     box.appendChild(el('span', 'legend-title',
-      day < 0 ? 'Predicted stranding over the next ' + ((latest.days || []).length || 5) + ' days'
-              : (beyond ? 'Stranding window has ended by ' + (gasDay || 'this day')
-                        : 'Stranding on ' + sDay + ', kg per metre')));
+      day < 0 ? 'Predicted stranding over the next ' + nStrandDays + ' days'
+              : 'Stranding on ' + sDay + ', kg per metre'));
     var keys = el('div', 'keys keys-stacked');
     classes.forEach(function (c, i) {
       keys.appendChild(classRow(SEVERITY[i], false, c.name, bandRange(classes, i), c.blurb));
@@ -753,17 +813,12 @@
     box.appendChild(keys);
 
     var nTotal = segData.nEmpty + segData.counts.reduce(function (a, b) { return a + b; }, 0);
-    cap.innerHTML = 'Wet mass predicted to come ashore on each ~5 km stretch of coast' +
-      (day < 0 ? ' over the whole forecast window'
-               : (beyond ? ' — the ' + ((latest.days || []).length || 5) +
-                           ' day drift window has already closed by this date, so nothing is added'
-                         : ' on ' + sDay)) +
-      ', in kilograms per metre of shoreline — the same unit the traps at La Parguera ' +
-      'measure, so prediction and observation are directly comparable. The bands are indicative ' +
-      'guidance for reading the map, not an official advisory scale. Peak value shown: <b>' +
-      fmt(segData.hi, 1) + ' kg/m</b>. <b>' + segData.nEmpty + ' of ' + nTotal +
-      '</b> stretches show nothing — note that this run cannot tell "no weed expected" ' +
-      'apart from "no current or wind data covering this coast". Click any stretch for the daily breakdown.';
+    cap.innerHTML = 'Wet mass predicted ashore on each ~5 km stretch' +
+      (day < 0 ? ' over the whole window' : ' on ' + sDay) +
+      ', in kilograms per metre — the unit the La Parguera traps measure, so ' +
+      'prediction and observation compare directly. Peak here: <b>' +
+      fmt(segData.hi, 1) + ' kg/m</b>; <b>' + segData.nEmpty + ' of ' + nTotal +
+      '</b> stretches show nothing. Click any stretch for its daily breakdown.';
   }
 
   // ============================================================= CHARTS
@@ -1076,6 +1131,21 @@
       scale.appendChild(el('span', null, shortDay(gasDays[i])));
     });
 
+    /* The track is longer than the stranding forecast, because gas outlives
+     * the drift run by about twelve days. Mark where the drift stops, or the
+     * stranding layer simply empties partway along with no visible reason. */
+    var nStrand = (latest.days || []).length;
+    var track = range.parentNode;
+    var oldEdge = track && track.querySelector('.tl-edge');
+    if (oldEdge) oldEdge.remove();
+    if (nStrand && nStrand < nDays && track) {
+      var edge = el('div', 'tl-edge');
+      edge.style.left = (100 * (nStrand - 1) / (nDays - 1)) + '%';
+      edge.title = 'Drift forecast ends ' + shortDay(gasDays[nStrand - 1]) +
+                   '; beyond here only gas release is modelled';
+      track.appendChild(edge);
+    }
+
     // Where the two curves peak, so the lag can be stated as a fact.
     var pStrand = strandDaily.indexOf(Math.max.apply(null, strandDaily.concat([0])));
     var pGas = h2sDaily.indexOf(Math.max.apply(null, h2sDaily.concat([0])));
@@ -1134,6 +1204,114 @@
 
     wrap.hidden = false;
     App.setDay(-1);
+  }
+
+  // ======================================================== CALIBRATION
+  /* Whether the learned layer is actually running, stated from the run's own
+   * output. The page used to assert flatly that trap-hosting segments are
+   * "served by the trained model and marked as such" - which is false whenever
+   * no model has been fitted yet, and false in the direction that makes the
+   * numbers look better founded than they are. */
+  function renderCalibration(latest, segs) {
+    var box = document.getElementById('calibState');
+    if (!box) return;
+    var m = obj(latest.model);
+    var scale = Number(latest.calibration_scale);
+    var feats = (segs && segs.features) || [];
+    var nLearned = feats.filter(function (f) {
+      return f.properties && f.properties.source === 'learned';
+    }).length;
+
+    if (m && m.n_train) {
+      box.innerHTML = '<b>Calibration:</b> trained on ' + m.n_train +
+        ' weekly trap measurements' +
+        (m.mae_kg_per_m !== undefined
+          ? ', hold-out mean absolute error ' + fmt(m.mae_kg_per_m, 1) + ' kg/m'
+          : '') + '. ' + nLearned + ' of ' + feats.length +
+        ' segments are served by the trained model; the rest are physics ' +
+        'scaled by ' + fmt(scale, 2) + '.';
+      box.className = 'calib';
+      return;
+    }
+
+    box.innerHTML = '<b>Calibration: not yet active.</b> No model has been ' +
+      'fitted, so all ' + feats.length + ' segments run on uncorrected ' +
+      'physics (bias scale ' + (isFinite(scale) ? fmt(scale, 2) : '1.00') +
+      ', i.e. no correction). The <i>ranking</i> of beaches is still ' +
+      'meaningful — the absolute kilograms are not, and currently read well ' +
+      'above what the La Parguera traps measure. Treat the tonnages as an ' +
+      'upper bound until a model is trained.';
+    box.className = 'calib calib-warn';
+  }
+
+  // =========================================================== FORMULAS
+  /* The equations the run actually applied, printed with the coefficients it
+   * actually used. Both come from latest.json, which the pipeline writes from
+   * the config of that run, so a tuning change updates the published formula
+   * on the next run rather than leaving the page quietly describing a model
+   * that no longer exists. */
+  function renderFormulas(latest) {
+    var box = document.getElementById('formulas');
+    if (!box) return;
+    var c = obj(latest.coefficients);
+    var n = function (v, d) {
+      return String((v === undefined || v === null) ? d : v);
+    };
+
+    var windage = n(c.windage, 0.012);
+    var kh = n(c.horizontal_diffusivity, 30);
+    var eff = n(c.onshore_efficiency, 0.35);
+    var capKm = n(c.capture_km, 2.0);
+    var minOn = n(c.min_onshore_speed, 0.02);
+    var lag = n(c.onset_lag_hours, 48);
+    var peak = n(c.peak_hours, 72);
+    var efold = n(c.decay_efold_hours, 120);
+    var width = n(c.deposit_width_m, 8);
+    var mixh = n(c.mixing_height_m, 2.5);
+    var yH2S = n(latest.h2s_kg_per_tonne_wet, 0.8);
+    var yNH3 = n(latest.nh3_kg_per_tonne_wet, 0.25);
+    var horizon = n(latest.horizon_hours, 120);
+
+    var blocks = [
+      ['Drift',
+       'u<sub>raft</sub> = u<sub>current</sub> + ' + windage +
+       ' &middot; u<sub>wind10</sub> + &radic;(2 K<sub>h</sub> &Delta;t) &middot; &xi;',
+       'Heun (2nd order) integration, 1 h steps, over a ' + horizon +
+       ' h horizon. K<sub>h</sub> = ' + kh + ' m&sup2; s<sup>&minus;1</sup>; ' +
+       '&xi; is unit Gaussian noise. Windage is the dominant term for beaching.'],
+
+      ['Stranding',
+       '&Delta;m = m<sub>raft</sub> &middot; ' + eff +
+       ' &middot; min(1, v<sub>onshore</sub> &Delta;t / D)',
+       'Applied each step to rafts within D = ' + capKm + ' km of a segment, ' +
+       'when v<sub>onshore</sub> = &minus;(<b>u</b> &middot; <b>n&#770;</b>) exceeds ' +
+       minOn + ' m s<sup>&minus;1</sup>, where <b>n&#770;</b> is the segment\'s ' +
+       'seaward normal. Mass moves from raft to segment, so the scheme conserves ' +
+       'mass by construction. Divided by segment length to give kg per metre.'],
+
+      ['Gas release',
+       'H&#8322;S(t) = Y &middot; &sum;<sub>&tau;</sub> strand(t &minus; &tau;) &middot; k(&tau;)',
+       'Y = ' + yH2S + ' kg H&#8322;S (and ' + yNH3 + ' kg NH&#8323;) per tonne wet, ' +
+       'integrated over the whole decomposition. k(&tau;) = 0 below ' + lag +
+       ' h, ramps linearly to ' + peak + ' h, then decays exponentially with a ' +
+       efold + ' h e&#8209;folding time. k is normalised so &int;k d&tau; = 1 &mdash; ' +
+       'total gas released therefore equals stranded mass &times; Y exactly.'],
+
+      ['Flux and concentration',
+       'F = H&#8322;S rate / footprint&nbsp;&nbsp;&nbsp;C = F &middot; W / (U &middot; H)',
+       'Derived diagnostics, not the budget. The wrack band is W = ' + width +
+       ' m wide; C is a box model at breathing height H = ' + mixh + ' m with ' +
+       'onshore wind U. The run flags itself if F leaves the range in the ' +
+       'published field measurements.']
+    ];
+
+    box.innerHTML = blocks.map(function (b) {
+      return '<div class="eq">' +
+        '<span class="eq-name">' + b[0] + '</span>' +
+        '<code class="eq-math">' + b[1] + '</code>' +
+        '<p class="eq-note">' + b[2] + '</p>' +
+        '</div>';
+    }).join('');
   }
 
   // ============================================================== ALERT
@@ -1260,6 +1438,8 @@
       segCount.textContent = segs.features.length;
     }
 
+    renderCalibration(latest, segs);
+    renderFormulas(latest);
     renderAlert(latest);
     renderStamp(latest);
     renderStats(latest, segs);

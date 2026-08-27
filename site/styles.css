@@ -224,6 +224,42 @@ a:hover { border-bottom-color: currentColor; }
 }
 .maplibregl-popup-tip { border-top-color: #0a0d0f !important; border-bottom-color: #0a0d0f !important; }
 .maplibregl-popup-close-button { color: var(--muted); font-size: 17px; padding: 2px 7px; }
+.calib {
+  margin: 14px 0 0; font-size: 13px; line-height: 1.6; color: var(--ink-2);
+  border-left: 2px solid var(--line); padding-left: 12px;
+}
+.calib b { color: var(--ink); }
+.calib-warn { border-left-color: #f6820c; }
+
+/* Published equations. Rendered from the run's own coefficients, so the block
+   has to survive numbers of varying width without reflowing awkwardly. */
+.eq-head {
+  font-size: 14px; margin: 26px 0 12px; color: var(--ink);
+  letter-spacing: .01em;
+}
+.eq-grid { display: grid; gap: 10px; }
+@media (min-width: 760px) {
+  .eq-grid { grid-template-columns: 1fr 1fr; }
+}
+.eq {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--panel-2); padding: 12px 14px;
+}
+.eq-name {
+  display: block; font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--muted); margin-bottom: 7px;
+}
+.eq-math {
+  display: block; font-size: 13.5px; line-height: 1.6; color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  overflow-x: auto; padding-bottom: 2px;
+}
+.eq-math sub, .eq-math sup { font-size: .72em; }
+.eq-note {
+  margin: 8px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-2);
+}
+.eq-note b { color: var(--ink); font-weight: 600; }
+
 .maplibregl-ctrl-attrib { background: rgba(10,13,15,.82) !important; }
 .maplibregl-ctrl-attrib a { color: var(--ink-2) !important; }
 .maplibregl-ctrl-group { background: var(--panel-2) !important; border: 1px solid var(--line); }
@@ -335,7 +371,22 @@ a:hover { border-bottom-color: currentColor; }
 .tl-total { padding: 7px 11px; flex: none; }
 .tl-total.is-on { background: var(--line); color: var(--ink); border-color: #39434b; }
 
-.tl-track { flex: 1 1 260px; min-width: 200px; }
+.tl-track { flex: 1 1 260px; min-width: 200px; position: relative; }
+
+/* Where the drift forecast stops and only gas release continues. The track
+   spans the gas window, which outlives the drift run by about twelve days,
+   so without this the stranding layer empties partway along for no visible
+   reason. */
+.tl-edge {
+  position: absolute; top: 2px; width: 1px; height: 12px;
+  background: var(--muted); opacity: .75; pointer-events: none;
+}
+.tl-edge::after {
+  content: ''; position: absolute; left: 1px; top: 4px;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--muted);
+  opacity: .5;
+}
+
 .tl-range {
   appearance: none; -webkit-appearance: none;
   width: 100%; height: 4px; margin: 6px 0 0;

@@ -232,24 +232,33 @@ away from their darkest end so low values stay visible against the dark
 basemap. Risk tiers always carry a written label, so colour never carries
 meaning on its own.
 
-The basemap is Esri Dark Gray Canvas, served keyless from
-`services.arcgisonline.com` as two layers: a base carrying land, water and
-roads, and a transparent reference layer carrying the labels. They stay
-separate so the forecast ribbons can sit between them. (The CDN this site used
-previously began returning tiles stamped `API KEY REQUIRED` across the middle
-of the island, which is what this replaced.)
+The basemap is **Esri World Imagery Firefly**, served keyless from
+`fly.maptiles.arcgis.com`, with labels from a separate transparent reference
+layer so the forecast ribbons can sit between the two. Firefly is Esri's
+satellite imagery already muted and darkened to act as a backdrop for glowing
+data. It earns its place on a drift map specifically: the shelf edge and the
+Puerto Rico Trench are visible in it, so the water the rafts cross shows the
+bathymetry that shapes the currents instead of being a flat void.
 
-Esri ships water at `#232227` and land at `#474749`, both far lighter than this
-page, so unfiltered the map reads as a pale slab dropped onto a dark document.
-MapLibre raster paint properties pull the base down to roughly `#111114` water
-against `#232324` land — a clear coastline, sitting in the same register as
-everything around it, and dark enough that the cividis and inferno ramps keep
-their contrast. The labels get a much gentler exposure of their own; dimming
-them as hard as the base takes Esri's `#cac9cb` type to an unreadable `#686868`.
-It is raster paint rather than a CSS filter deliberately: a filter on the canvas
+Measured off the tiles, Firefly's open ocean is near `rgb(23,29,39)` and land
+around luminance 50, but scattered highlights — cloud, bright sand, city lights
+— reach 254. Those highlights are what compete with the data, so the lever is
+`raster-brightness-max` (0.55) rather than contrast. Labels are held much
+higher, since dimming them to match would leave nothing legible over water. It
+is raster paint rather than a CSS filter deliberately: a filter on the canvas
 would drag the data layers down with it.
 
 The page sets no cookies, loads no analytics and stores nothing.
+
+### Published equations
+
+The site prints the drift, stranding, gas-release and flux equations it
+actually applies, with the coefficients of that run. They are injected from
+`latest.json`, which the pipeline writes from the same config it ran on, so a
+tuning change updates the published formula on the next run rather than leaving
+the page describing a model that no longer exists. Same principle as the
+segment count and the calibration state: anything the page asserts about the
+model is read from the run, not written into the markup.
 
 ### Rebuilding the shoreline
 
@@ -298,6 +307,15 @@ code. The ones worth tuning first:
 
 ## Honest limitations
 
+* **No model is fitted yet, so nothing is bias-corrected.** `data/models/` is
+  empty, `calibration_scale` is 1.0 (i.e. no correction) and every segment
+  reports `source: physical`. Cross-checked 2026-08-27 against the only ground
+  truth available: at La Parguera the run predicted 89 and 320 kg/m over five
+  days on two of its four segments, while the traps at that site have measured
+  a **maximum of 18.5 kg/m in a week** and mostly read zero. The absolute
+  tonnage is therefore running one to two orders of magnitude high and should
+  be read as an upper bound. The site now says this on the page, from the run's
+  own output rather than from prose.
 * **The absolute mass scale is the weakest number.** Spatial pattern (which
   coasts get hit, and when) rests on observed currents and forecast winds and is
   the trustworthy part. Absolute kg/m depends on the stranding efficiency, which
@@ -307,12 +325,14 @@ code. The ones worth tuning first:
 * **HF-radar coverage has gaps** — it thins with distance offshore and during
   outages. Gaps are treated as zero current, which biases drift toward
   wind-only motion there.
-* **The coastline is coarse** (~5–15 km vertices, hand-traced). Good enough to
-  place receptors and compute a seaward normal; not navigational. Swap in a real
-  shapefile-derived polygon and everything downstream still works.
-* **The learned model is only trained at La Parguera**, on the south-west coast.
-  It is applied only to the segments that host traps. Everywhere else is
-  physics plus one global bias scale.
+* **The learned model can only ever be trained at La Parguera**, on the
+  south-west coast, because that is the only place with traps. When it is
+  fitted, it applies only to the segments hosting them; everywhere else is
+  physics plus one global bias scale extrapolated from that single site.
+* **Stranding and gas cover different spans.** Drift runs 120 h; gas keeps
+  releasing for about twelve days after. The shared timeline is the longer of
+  the two, so the stranding layer has no data past day 5 — drawn as an explicit
+  "outside the forecast window" state, never as "none predicted".
 * **Gas numbers are order-of-magnitude.** The yield model is defensible and
   mass-conserving, but the escape fraction of sulfide is uncertain to at least
   a factor of a few. Treat tiers and relative ranking as more reliable than
