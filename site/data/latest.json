@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-08-27T14:00:00+00:00",
+ "issued_at": "2026-08-27T20:00:00+00:00",
  "afai_scene_time": "2026-08-26 12:00:00",
- "current_field_time": "2026-08-27 11:00:00",
+ "current_field_time": "2026-08-27 17:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-08-27",
@@ -29,69 +29,69 @@
   "2026-09-11",
   "2026-09-12"
  ],
- "offshore_wet_tonnes": 3852272.0,
- "predicted_stranding_tonnes": 62946.33,
- "predicted_h2s_tonnes": 47.9943,
- "predicted_nh3_tonnes": 14.9982,
+ "offshore_wet_tonnes": 4282465.0,
+ "predicted_stranding_tonnes": 71763.12,
+ "predicted_h2s_tonnes": 55.0213,
+ "predicted_nh3_tonnes": 17.1941,
  "worst_segments": [
   {
+   "name": "R\u00edo Grande",
+   "seg_id": "PU089",
+   "kg_per_m": 661.73,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Isabela / Jobos",
+   "seg_id": "PU057",
+   "kg_per_m": 603.83,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Lo\u00edza / Pi\u00f1ones",
+   "seg_id": "PU086",
+   "kg_per_m": 584.57,
+   "risk_tier": "high"
+  },
+  {
    "name": "Yabucoa",
-   "seg_id": "PU040",
-   "kg_per_m": 873.45,
+   "seg_id": "PU111",
+   "kg_per_m": 569.22,
    "risk_tier": "high"
   },
   {
-   "name": "Aguadilla / Crash Boat",
-   "seg_id": "PU000",
-   "kg_per_m": 634.44,
+   "name": "Isabela / Jobos",
+   "seg_id": "PU058",
+   "kg_per_m": 536.82,
    "risk_tier": "high"
   },
   {
-   "name": "Fajardo / Sardinera",
-   "seg_id": "PU033",
-   "kg_per_m": 553.67,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU069",
-   "kg_per_m": 530.14,
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU028",
+   "kg_per_m": 521.71,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
-   "seg_id": "PU039",
-   "kg_per_m": 485.58,
+   "seg_id": "PU108",
+   "kg_per_m": 506.12,
    "risk_tier": "high"
   },
   {
-   "name": "Lajas / La Parguera",
-   "seg_id": "PU068",
-   "kg_per_m": 478.22,
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU094",
+   "kg_per_m": 469.07,
    "risk_tier": "high"
   },
   {
-   "name": "Vega Baja / Manat\u00ed",
-   "seg_id": "PU015",
-   "kg_per_m": 431.59,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Yabucoa",
-   "seg_id": "PU041",
-   "kg_per_m": 318.84,
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU109",
+   "kg_per_m": 458.62,
    "risk_tier": "high"
   },
   {
    "name": "Arecibo",
-   "seg_id": "PU008",
-   "kg_per_m": 299.95,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Isla Verde / Carolina",
-   "seg_id": "PU024",
-   "kg_per_m": 291.6,
+   "seg_id": "PU063",
+   "kg_per_m": 447.06,
    "risk_tier": "high"
   }
  ],
@@ -128,14 +128,14 @@
   "high": 12.0
  },
  "notes": [
-  "WRF wind runs 106 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 112 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 110,
-   "covered_hours": 106.0,
+   "n_fields": 116,
+   "covered_hours": 112.0,
    "horizon_hours": 120,
    "reason": ""
   }
