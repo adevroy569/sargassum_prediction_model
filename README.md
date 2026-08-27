@@ -33,9 +33,9 @@ Written to `site/` on every run, ready for GitHub Pages:
 | `site/maps/*.png` | Static maps: offshore biomass, beaching forecast, H₂S forecast |
 
 The website itself is three files in `site/`: `index.html`, `styles.css` and
-`app.js`. It has no build step and no dependency beyond MapLibre GL, loaded from
-a CDN. It reads the JSON above at page load, so a new pipeline run updates the
-site without touching any markup.
+`app.js`. It has no build step, and nothing to fetch beyond MapLibre GL and the
+Esri basemap tiles. It reads the JSON above at page load, so a new pipeline run
+updates the site without touching any markup.
 
 The archive that feeds the model keeps growing in `data/archive/`.
 
@@ -103,9 +103,9 @@ the coarse coastline.
 
 ### 3. Beaching
 
-The coast is resampled into 137 segments of ~5 km, each with a seaward normal.
+The coast is resampled into 140 segments of ~5 km, each with a seaward normal.
 The shoreline is GSHHS full resolution, clipped to the three monitored islands
-by `scripts/build_basemap.py` and cached in `data/static/`; receptors land
+by `scripts/build_shoreline.py` and cached in `data/static/`; receptors land
 within ~130 m of the water's edge. Segments whose seaward normal runs back into
 their own island within 2 km — the heads of San Juan Bay, Bahía de Guánica,
 Bahía de Guayanilla — are dropped, because open-ocean Sargassum cannot reach
@@ -232,29 +232,38 @@ away from their darkest end so low values stay visible against the dark
 basemap. Risk tiers always carry a written label, so colour never carries
 meaning on its own.
 
-The basemap is vector geometry shipped in this repository, not hosted tiles.
-Raster tiles are baked at fixed zoom levels, so the coastline softens at every
-zoom between them; and a hosted tile service is someone else's to withdraw —
-the CDN this site used previously began returning tiles stamped
-`API KEY REQUIRED` across the middle of the island. Place names are DOM markers
-rather than MapLibre symbol layers, since symbols would need a hosted glyph
-server and put the dependency straight back.
+The basemap is Esri Dark Gray Canvas, served keyless from
+`services.arcgisonline.com` as two layers: a base carrying land, water and
+roads, and a transparent reference layer carrying the labels. They stay
+separate so the forecast ribbons can sit between them. (The CDN this site used
+previously began returning tiles stamped `API KEY REQUIRED` across the middle
+of the island, which is what this replaced.)
 
-The page sets no cookies, loads no analytics and stores nothing. The only third
-party request left is the MapLibre script itself.
+Esri ships water at `#232227` and land at `#474749`, both far lighter than this
+page, so unfiltered the map reads as a pale slab dropped onto a dark document.
+MapLibre raster paint properties pull the base down to roughly `#111114` water
+against `#232324` land — a clear coastline, sitting in the same register as
+everything around it, and dark enough that the cividis and inferno ramps keep
+their contrast. The labels get a much gentler exposure of their own; dimming
+them as hard as the base takes Esri's `#cac9cb` type to an unreadable `#686868`.
+It is raster paint rather than a CSS filter deliberately: a filter on the canvas
+would drag the data layers down with it.
 
-### Rebuilding the basemap
+The page sets no cookies, loads no analytics and stores nothing.
 
-Only needed if the clip box, the detail box or the island set changes. The
-output is committed, so a normal checkout never runs this:
+### Rebuilding the shoreline
+
+`scripts/build_shoreline.py` produces the island outlines the *model* places
+receptors on — not the basemap, which is fetched. Only needed if the island set
+or the simplification changes; the output is committed, so a normal checkout
+never runs this:
 
 ```bash
 pip install shapely basemap-data basemap-data-hires
-python scripts/build_basemap.py
+python scripts/build_shoreline.py
 ```
 
-It writes the drawn coastline and labels into `site/data/`, and the receptor
-outlines into `data/static/islands.json`. The pipeline notices that the outlines
+It writes `data/static/islands.json`. The pipeline notices that the outlines
 changed — the receptor cache is keyed on a hash of them, not on file
 timestamps, which a git checkout does not preserve — and rebuilds the segment
 list on its next run.
@@ -332,7 +341,7 @@ scripts/
   update.py                 the scheduled job
   backfill.py               historical training set
   train_model.py            fit / refit
-  build_basemap.py          GSHHS → drawn coastline + receptor outlines
+  build_shoreline.py        GSHHS → island outlines for receptor placement
 tests/
   test_pipeline.py          physical sanity checks + synthetic fields
   test_site_js.mjs          site/app.js against a headless DOM

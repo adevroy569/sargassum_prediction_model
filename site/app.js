@@ -73,31 +73,72 @@
    * normal, permanent state of a healthy run and must not raise an alarm. */
   var WIND_GAP_ALERT_H = 24;
 
-  /* The basemap is drawn from GeoJSON shipped in this repository rather than
-   * fetched as raster tiles from a third party. Two reasons. Raster tiles are
-   * baked at fixed zoom levels, so the map goes soft everywhere between them,
-   * which is most of the time on a map you pan and pinch. And a hosted tile
-   * service is a dependency someone else controls: the previous CDN started
-   * returning tiles stamped API KEY REQUIRED across the middle of the island.
-   * Vector geometry is resolution independent and cannot be revoked.
+  /* Esri Dark Gray Canvas, served keyless from services.arcgisonline.com.
+   * The previous CDN began stamping API KEY REQUIRED across its tiles, which
+   * is what this replaces.
    *
-   * Geometry comes from GSHHS (Wessel & Smith) via scripts/build_basemap.py.
+   * Ships as two layers by design: a base carrying land, water and roads, and
+   * a transparent reference layer carrying the labels. Keeping them apart lets
+   * the forecast ribbons sit between them, and lets the labels keep their own
+   * exposure when the base is pushed down into the page's tonal range.
    */
-  // Ocean sits a shade below the page background so the map reads as a
-  // recessed panel rather than a floating rectangle of the same colour.
-  var OCEAN = '#080b0d';
-  var LAND = '#171c20';
-  var LAND_EDGE = '#333c43';
+  var ESRI = 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/';
+  var ESRI_ATTRIB =
+    'Basemap &copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin, ' +
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-  /* No `glyphs` entry, and so no symbol layers: serving font PBFs would mean
-   * reintroducing exactly the hosted dependency this change removes. Place
-   * names are HTML markers instead, which also renders them at the device's
-   * own text resolution rather than from a texture atlas. */
+  /* Dark Gray Canvas ships water at #232227 and land at #474749. Both are
+   * considerably lighter than this page, so unfiltered the map reads as a pale
+   * slab dropped onto a dark document. These paint properties pull it down to
+   * roughly #111114 water against #232324 land: still a clear coastline, but
+   * now sitting in the same register as everything around it, and dark enough
+   * that the cividis and inferno ramps on top of it keep their contrast.
+   *
+   * Applied as raster paint rather than a CSS filter so it touches only the
+   * tiles - a filter on the canvas would drag the data layers down with it.
+   */
+  var DIM_BASE = {
+    'raster-saturation': -0.25,   // Esri's slight blue cast down to near-grey
+    'raster-contrast': 0.08,      // recover the coastline the darkening flattens
+    'raster-brightness-min': 0,
+    'raster-brightness-max': 0.52
+  };
+  // Labels are held much higher than the base: dimming them by the same amount
+  // would take Esri's #cac9cb type down to an unreadable #686868.
+  var DIM_LABELS = {
+    'raster-saturation': -0.35,
+    'raster-brightness-min': 0,
+    'raster-brightness-max': 0.78,
+    'raster-opacity': 0.72
+  };
+
+  // Shown while tiles are in flight. Matched to the filtered water colour so
+  // the map does not flash a different shade on every pan.
+  var OCEAN = '#111114';
+
   var BASEMAP = {
     version: 8,
-    sources: {},
+    sources: {
+      'esri-base': {
+        type: 'raster',
+        // ArcGIS REST tile paths are {z}/{row}/{col}, i.e. y before x.
+        tiles: [ESRI + 'World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'],
+        tileSize: 256,
+        maxzoom: 16,
+        attribution: ESRI_ATTRIB
+      },
+      'esri-labels': {
+        type: 'raster',
+        tiles: [ESRI + 'World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}'],
+        tileSize: 256,
+        maxzoom: 16
+      }
+    },
     layers: [
-      { id: 'ocean', type: 'background', paint: { 'background-color': OCEAN } }
+      { id: 'ocean', type: 'background', paint: { 'background-color': OCEAN } },
+      { id: 'esri-base', type: 'raster', source: 'esri-base', paint: DIM_BASE },
+      { id: 'esri-labels', type: 'raster', source: 'esri-labels',
+        paint: DIM_LABELS }
     ]
   };
 
@@ -397,79 +438,6 @@
     redraw: null
   };
 
-  /* ------------------------------------------------------------ basemap
-   * Land is added as vector polygons under everything else. The layers go on
-   * inside `load` rather than in the style object because the GeoJSON arrives
-   * asynchronously and the map should not wait on it: if the shoreline file
-   * is slow or missing, the forecast still draws over open ocean.
-   */
-  function addBasemapLayers(map) {
-    if (!App.basemapLand) return;
-
-    map.addSource('land', {
-      type: 'geojson',
-      data: App.basemapLand,
-      attribution: 'Shoreline: <a href="https://www.soest.hawaii.edu/pwessel/gshhg/">GSHHG</a>'
-    });
-
-    // A soft halo just outside the coast. Shallow water is genuinely brighter
-    // than deep water, and the gradient gives the island an edge to sit on
-    // instead of a hard cut between two flat greys.
-    map.addLayer({
-      id: 'land-halo', type: 'line', source: 'land',
-      layout: { 'line-join': 'round' },
-      paint: {
-        'line-color': '#123038',
-        // Eased off at the wide zooms: with the whole Caribbean in frame the
-        // halo is being drawn around several hundred islands at once, and at
-        // full strength that reads as haze rather than as shallow water.
-        'line-opacity': ['interpolate', ['linear'], ['zoom'],
-          5, 0.22, 7, 0.4, 9, 0.55, 12, 0.6],
-        'line-blur': ['interpolate', ['linear'], ['zoom'], 5, 6, 9, 14, 12, 26],
-        'line-width': ['interpolate', ['linear'], ['zoom'], 5, 7, 9, 16, 12, 30]
-      }
-    });
-    map.addLayer({
-      id: 'land-fill', type: 'fill', source: 'land',
-      paint: { 'fill-color': LAND }
-    });
-    // The waterline itself. Hairline-thin, but it is vector, so it stays a
-    // hairline at zoom 12 instead of turning into a four-pixel smear.
-    map.addLayer({
-      id: 'land-outline', type: 'line', source: 'land',
-      layout: { 'line-join': 'round' },
-      paint: {
-        'line-color': LAND_EDGE,
-        'line-width': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 9, 0.9, 12, 1.3]
-      }
-    });
-  }
-
-  /* Place names as DOM markers. They fade in only once the view is tight
-   * enough for them not to collide, and they never capture pointer events, so
-   * they cannot block a click on the shoreline segment underneath. */
-  function addPlaceLabels(map, places) {
-    var feats = (places && places.features) || [];
-    if (!feats.length || typeof maplibregl.Marker !== 'function') return;
-
-    var markers = feats.map(function (f) {
-      var node = el('div', 'map-place');
-      node.textContent = f.properties.name;
-      return new maplibregl.Marker({ element: node, anchor: 'center' })
-        .setLngLat(f.geometry.coordinates)
-        .addTo(map);
-    });
-
-    function sync() {
-      var on = map.getZoom() >= 8.4;
-      markers.forEach(function (m) {
-        m.getElement().classList.toggle('on', on);
-      });
-    }
-    map.on('zoom', sync);
-    sync();
-  }
-
   function buildMap(bio, segs, tracks, latest) {
     var map = new maplibregl.Map({
       container: 'map',
@@ -488,9 +456,6 @@
     var current = segmentGeoJSON(segs, 'stranding', latest, -1);
 
     map.on('load', function () {
-      addBasemapLayers(map);
-      addPlaceLabels(map, App.basemapPlaces);
-
       map.addSource('biomass', { type: 'geojson', data: bioData.gj });
       map.addSource('segments', { type: 'geojson', data: current.gj });
       map.addSource('tracks', { type: 'geojson', data: tracksGeoJSON(tracks) });
@@ -1280,15 +1245,9 @@
     loadJSON('latest.json'),
     loadJSON('forecast_segments.geojson'),
     loadJSON('biomass_field.json'),
-    loadJSON('drift_tracks.json').catch(function () { return { tracks: [] }; }),
-    // The basemap is decoration: a missing shoreline file should cost the
-    // coastline, not the forecast, so both of these degrade to empty.
-    loadJSON('basemap_land.geojson').catch(function () { return null; }),
-    loadJSON('basemap_places.geojson').catch(function () { return null; })
+    loadJSON('drift_tracks.json').catch(function () { return { tracks: [] }; })
   ]).then(function (res) {
     var latest = res[0], segs = res[1], bio = res[2], tracks = res[3];
-    App.basemapLand = res[4];
-    App.basemapPlaces = res[5];
     App.latest = latest;
     App.segs = segs;
     (segs.features || []).forEach(function (f) { App.segIndex[f.properties.seg_id] = f; });

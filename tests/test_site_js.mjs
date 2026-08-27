@@ -36,8 +36,6 @@ async function boot(latest, missing = []) {
     'forecast_segments.geojson': read('forecast_segments.geojson'),
     'biomass_field.json': read('biomass_field.json'),
     'drift_tracks.json': read('drift_tracks.json'),
-    'basemap_land.geojson': read('basemap_land.geojson'),
-    'basemap_places.geojson': read('basemap_places.geojson'),
   };
   missing.forEach((f) => { delete files[f]; });
 
@@ -63,10 +61,10 @@ async function boot(latest, missing = []) {
   // not under test here; the code paths around it are.
   // app.js keeps its state inside an IIFE, so the map instance is captured
   // here on construction rather than read off a global.
-  const layers = [], sources = [], markers = [], maps = [];
+  const layers = [], sources = [], markers = [], maps = [], styles = [];
   window.maplibregl = {
     Map: class {
-      constructor() { this._h = {}; maps.push(this); }
+      constructor(opts) { this._h = {}; maps.push(this); styles.push(opts.style); }
       on(ev, a, b) { (this._h[ev] = this._h[ev] || []).push(b || a); }
       once(ev, cb) { this.on(ev, cb); }
       fire(ev) { (this._h[ev] || []).forEach((f) => f({})); }
@@ -98,7 +96,8 @@ async function boot(latest, missing = []) {
   if (maps.length) maps[0].fire('load');
   await new Promise((r) => setTimeout(r, 150));
 
-  return { doc: window.document, window, layers, sources, markers };
+  return { doc: window.document, window, layers, sources, markers,
+           style: styles[0] };
 }
 
 const base = JSON.parse(readFileSync(join(SITE, 'data', 'latest.json'), 'utf8'));
@@ -164,19 +163,51 @@ console.log('site/app.js');
 
 // --------------------------------------------------------------- basemap
 {
-  const { doc, layers, sources, markers } = await boot(clone(base));
-  check('land is drawn from the bundled vector source', () => {
-    assert(sources.includes('land'), 'no land source; got ' + sources.join(', '));
-    ['land-halo', 'land-fill', 'land-outline'].forEach((id) =>
-      assert(layers.includes(id), 'missing layer ' + id));
+  const { doc, layers, style } = await boot(clone(base));
+
+  check('the basemap is Esri Dark Gray Canvas, base plus labels', () => {
+    const ids = style.layers.map((l) => l.id);
+    assert(ids.includes('esri-base') && ids.includes('esri-labels'),
+           'style layers: ' + ids.join(', '));
+    ['esri-base', 'esri-labels'].forEach((k) => {
+      const tiles = style.sources[k].tiles.join(' ');
+      assert(/services\.arcgisonline\.com/.test(tiles), k + ': ' + tiles);
+      // ArcGIS REST tile paths are {z}/{row}/{col}. Getting x and y the wrong
+      // way round still returns valid tiles, just of somewhere else entirely.
+      assert(/\{z\}\/\{y\}\/\{x\}/.test(tiles),
+             k + ' has x and y transposed: ' + tiles);
+    });
   });
-  check('the segment stand-in coastline is gone', () => {
-    assert(!layers.includes('coast-shadow') && !layers.includes('coast-edge'),
-           'stale coastline layers: ' + layers.join(', '));
+
+  check('the base is dimmed into the page palette, labels less so', () => {
+    const byId = Object.fromEntries(style.layers.map((l) => [l.id, l]));
+    const b = byId['esri-base'].paint;
+    const t = byId['esri-labels'].paint;
+    // Esri ships water at #232227 (35/255 = 0.137). Anything near 1.0 here
+    // means the filter was dropped and the map is a pale slab again.
+    assert(b['raster-brightness-max'] <= 0.7,
+           'base not dimmed: ' + b['raster-brightness-max']);
+    assert(b['raster-saturation'] < 0, 'base not desaturated');
+    // Labels dimmed as hard as the base would be illegible.
+    assert(t['raster-brightness-max'] > b['raster-brightness-max'],
+           'labels dimmed as hard as the base');
   });
-  check('place labels are added as markers', () => {
-    assert(markers.length > 20, 'only ' + markers.length + ' place markers');
+
+  check('Esri attribution is carried', () => {
+    const a = style.sources['esri-base'].attribution || '';
+    assert(/esri/i.test(a), 'no Esri attribution: ' + a);
   });
+
+  check('the retired vector basemap leaves nothing behind', () => {
+    ['land-halo', 'land-fill', 'land-outline', 'coast-shadow', 'coast-edge']
+      .forEach((id) => assert(!layers.includes(id), 'stale layer ' + id));
+    const js = readFileSync(join(SITE, 'app.js'), 'utf8');
+    const css = readFileSync(join(SITE, 'styles.css'), 'utf8');
+    assert(!/basemap_land|basemap_places|addPlaceLabels|addBasemapLayers/
+           .test(js), 'app.js still references the vector basemap');
+    assert(!/\.map-place/.test(css), 'styles.css still has the marker rules');
+  });
+
   check('the segment count in the methodology comes from the data', () => {
     const n = readFileSync(join(SITE, 'data', 'forecast_segments.geojson'),
                            'utf8');
@@ -191,13 +222,11 @@ console.log('site/app.js');
   });
 }
 {
-  // A missing basemap must cost the coastline and nothing else.
-  const { doc, layers } = await boot(clone(base),
-    ['basemap_land.geojson', 'basemap_places.geojson']);
-  check('a missing basemap does not take the forecast down with it', () => {
-    assert(!layers.includes('land-fill'), 'land drew without its source');
+  // Losing the drift tracks must cost the tracks and nothing else.
+  const { doc, layers } = await boot(clone(base), ['drift_tracks.json']);
+  check('a missing optional file does not take the forecast down with it', () => {
     assert(layers.includes('segment-line'),
-           'forecast layers missing too: ' + layers.join(', '));
+           'forecast layers missing: ' + layers.join(', '));
     assert(!/could not start/i.test(doc.getElementById('map').textContent),
            'the map bailed out');
     assert(/t wet|tonnes/i.test(doc.getElementById('stats').textContent),
@@ -205,15 +234,16 @@ console.log('site/app.js');
   });
 }
 
-// ------------------------------------------------------- no external hosts
-check('no third-party tile or glyph host is referenced', () => {
+// ------------------------------------------------------------ dependencies
+check('the withdrawn CARTO basemap is not referenced anywhere', () => {
   const js = readFileSync(join(SITE, 'app.js'), 'utf8');
   const html = readFileSync(join(SITE, 'index.html'), 'utf8');
-  [/cartocdn/i, /basemaps\./i, /api[_-]?key/i, /tile\.openstreetmap/i]
-    .forEach((re) => {
-      assert(!re.test(js), 'app.js still references ' + re);
-      assert(!re.test(html), 'index.html still references ' + re);
-    });
+  // Not a generic third-party ban - Esri is a deliberate dependency now. This
+  // guards the specific host that began stamping API KEY REQUIRED on tiles.
+  [/cartocdn/i, /basemaps\.carto/i].forEach((re) => {
+    assert(!re.test(js), 'app.js still references ' + re);
+    assert(!re.test(html), 'index.html still references ' + re);
+  });
 });
 
 console.log(failures ? `\n${failures} failed` : '\nall passed');
