@@ -1,17 +1,16 @@
 {
- "issued_at": "2026-08-27T20:00:00+00:00",
- "afai_scene_time": "2026-08-26 12:00:00",
- "current_field_time": "2026-08-27 17:00:00",
+ "issued_at": "2026-08-28T00:00:00+00:00",
+ "afai_scene_time": "2026-08-27 12:00:00",
+ "current_field_time": "2026-08-27 22:00:00",
  "horizon_hours": 120,
  "days": [
-  "2026-08-27",
   "2026-08-28",
   "2026-08-29",
   "2026-08-30",
-  "2026-08-31"
+  "2026-08-31",
+  "2026-09-01"
  ],
  "gas_days": [
-  "2026-08-27",
   "2026-08-28",
   "2026-08-29",
   "2026-08-30",
@@ -27,71 +26,72 @@
   "2026-09-09",
   "2026-09-10",
   "2026-09-11",
-  "2026-09-12"
+  "2026-09-12",
+  "2026-09-13"
  ],
- "offshore_wet_tonnes": 4282465.0,
- "predicted_stranding_tonnes": 71763.12,
- "predicted_h2s_tonnes": 55.0213,
- "predicted_nh3_tonnes": 17.1941,
+ "offshore_wet_tonnes": 3819391.5,
+ "predicted_stranding_tonnes": 60934.16,
+ "predicted_h2s_tonnes": 46.7999,
+ "predicted_nh3_tonnes": 14.625,
  "worst_segments": [
   {
-   "name": "R\u00edo Grande",
-   "seg_id": "PU089",
-   "kg_per_m": 661.73,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Isabela / Jobos",
-   "seg_id": "PU057",
-   "kg_per_m": 603.83,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Lo\u00edza / Pi\u00f1ones",
-   "seg_id": "PU086",
-   "kg_per_m": 584.57,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Yabucoa",
-   "seg_id": "PU111",
-   "kg_per_m": 569.22,
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU093",
+   "kg_per_m": 728.0,
    "risk_tier": "high"
   },
   {
    "name": "Isabela / Jobos",
    "seg_id": "PU058",
-   "kg_per_m": 536.82,
+   "kg_per_m": 717.73,
    "risk_tier": "high"
   },
   {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU028",
-   "kg_per_m": 521.71,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU108",
-   "kg_per_m": 506.12,
+   "name": "Quebradillas",
+   "seg_id": "PU060",
+   "kg_per_m": 600.2,
    "risk_tier": "high"
   },
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU094",
-   "kg_per_m": 469.07,
+   "kg_per_m": 572.55,
    "risk_tier": "high"
   },
   {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU109",
-   "kg_per_m": 458.62,
+   "name": "Vega Baja / Manat\u00ed",
+   "seg_id": "PU073",
+   "kg_per_m": 571.38,
    "risk_tier": "high"
   },
   {
-   "name": "Arecibo",
-   "seg_id": "PU063",
-   "kg_per_m": 447.06,
+   "name": "Isabela / Jobos",
+   "seg_id": "PU057",
+   "kg_per_m": 555.17,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU027",
+   "kg_per_m": 520.8,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Quebradillas",
+   "seg_id": "PU059",
+   "kg_per_m": 474.12,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Guayama / Punta Pozuelo",
+   "seg_id": "PU003",
+   "kg_per_m": 448.0,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Barceloneta / Punta Morillos",
+   "seg_id": "PU068",
+   "kg_per_m": 427.34,
    "risk_tier": "high"
   }
  ],
@@ -99,7 +99,42 @@
  "h2s_kg_per_tonne_wet": 0.8,
  "nh3_kg_per_tonne_wet": 0.25,
  "flux_above_literature_fraction": 0.0,
- "model": {},
+ "model": {
+  "n_train": 2331,
+  "n_test": 583,
+  "mae_log": 0.5734561569491765,
+  "r2_log": 0.30592054352088216,
+  "mae_kg_per_m": 3.0023137939172817,
+  "median_obs_kg_per_m": 0.0,
+  "trained_at": "2026-08-28T00:22:43.140434+00:00",
+  "features": [
+   "biomass_t_domain",
+   "biomass_t_domain_lag1w",
+   "biomass_t_domain_lag2w",
+   "biomass_t_domain_lag3w",
+   "biomass_t_domain_trend",
+   "biomass_t_r100",
+   "biomass_t_r100_lag1w",
+   "biomass_t_r100_lag2w",
+   "biomass_t_r100_lag3w",
+   "biomass_t_r100_trend",
+   "biomass_t_r250",
+   "biomass_t_r250_lag1w",
+   "biomass_t_r250_lag2w",
+   "biomass_t_r250_lag3w",
+   "biomass_t_r250_trend",
+   "biomass_t_r600",
+   "biomass_t_r600_lag1w",
+   "biomass_t_r600_lag2w",
+   "biomass_t_r600_lag3w",
+   "biomass_t_r600_trend",
+   "doy_cos",
+   "doy_cos2",
+   "doy_sin",
+   "doy_sin2",
+   "station_code"
+  ]
+ },
  "stranding_classes": [
   {
    "name": "Scattered",
@@ -127,15 +162,28 @@
   "moderate": 3.0,
   "high": 12.0
  },
+ "coefficients": {
+  "windage": 0.012,
+  "horizontal_diffusivity": 30.0,
+  "capture_km": 2.0,
+  "onshore_efficiency": 0.35,
+  "min_onshore_speed": 0.02,
+  "segment_spacing_km": 5.0,
+  "onset_lag_hours": 48,
+  "peak_hours": 72,
+  "decay_efold_hours": 120,
+  "deposit_width_m": 8.0,
+  "mixing_height_m": 2.5
+ },
  "notes": [
-  "WRF wind runs 112 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 108 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 116,
-   "covered_hours": 112.0,
+   "n_fields": 112,
+   "covered_hours": 108.0,
    "horizon_hours": 120,
    "reason": ""
   }
