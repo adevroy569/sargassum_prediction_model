@@ -35,7 +35,7 @@ logging.basicConfig(level=logging.INFO,
 log = logging.getLogger("backfill")
 
 TRAINING_TABLE = cfg_mod.PATHS["archive"] / "training_table.csv"
-INDEX_CACHE = cfg_mod.PATHS["archive"] / "catchment_index_history.csv"
+INDEX_CACHE = cfg_mod.PATHS["catchment_history"]
 
 
 def main() -> int:

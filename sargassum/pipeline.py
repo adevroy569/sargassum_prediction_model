@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import logging
+import traceback
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -229,12 +230,33 @@ def apply_calibration(res: RunResult, cfg, model: Optional[BeachingModel],
     source = np.array(["physical"] * len(phys), dtype=object)
 
     if model is None or model.model is None or insitu is None or insitu.empty:
+        why = ("no model file" if model is None or model.model is None
+               else "no in-situ station data")
         return {"physical_kg_per_m": phys, "kg_per_m": out,
-                "scale": scale, "source": source}
+                "scale": scale, "source": source,
+                "status": {"ok": False, "n_learned": 0, "reason": why}}
 
+    st_out: Dict = {"ok": False, "n_learned": 0, "reason": ""}
     try:
-        hist_path = cfg_mod.PATHS["archive"] / "catchment_index_history.csv"
+        hist_path = cfg_mod.PATHS["catchment_history"]
         hist = pd.read_csv(hist_path) if hist_path.exists() else pd.DataFrame()
+
+        # Lag features reach 1-3 weeks back. If the history has not been
+        # extended in a while - the weekly backfill failing is the usual
+        # cause - those lags quietly come from the wrong weeks, and the run
+        # still produces confident-looking numbers. Measure the gap and let
+        # it be reported rather than inferred.
+        age_days = None
+        if not hist.empty and "time" in hist.columns:
+            newest = pd.to_datetime(hist["time"], utc=True,
+                                    errors="coerce").max()
+            if pd.notna(newest):
+                age_days = round(
+                    (pd.Timestamp(res.issued_at) - newest).total_seconds()
+                    / 86400.0, 1)
+        st_out["history_age_days"] = age_days
+        st_out["history_rows"] = int(len(hist))
+
         stations = (insitu.groupby("station")[["latitude", "longitude"]]
                     .median().reset_index())
         now_key = pd.Timestamp(res.afai_time).strftime("%Y-%m-%d")
@@ -264,9 +286,19 @@ def apply_calibration(res: RunResult, cfg, model: Optional[BeachingModel],
                                        float(row.longitude.iloc[0]))
             out[i] = float(pred)
             source[i] = "learned"
-        log.info("learned model applied to %d segments", int((source == "learned").sum()))
+        n_learned = int((source == "learned").sum())
+        log.info("learned model applied to %d segments", n_learned)
+        st_out["ok"] = n_learned > 0
+        st_out["n_learned"] = n_learned
+        if not n_learned:
+            st_out["reason"] = "model ran but matched no segment"
     except Exception as exc:  # noqa: BLE001 - never let calibration break a run
-        log.warning("learned calibration skipped: %s", exc)
+        # Falling back to physics is the right behaviour; doing it silently is
+        # not. The run keeps going, but it now says what it lost, so a broken
+        # weekly retrain cannot masquerade as a healthy uncalibrated forecast.
+        log.warning("learned calibration skipped:\n%s", traceback.format_exc())
+        st_out["ok"] = False
+        st_out["reason"] = f"{type(exc).__name__}: {exc}"[:400]
 
     return {"physical_kg_per_m": phys, "kg_per_m": out,
-            "scale": scale, "source": source}
+            "scale": scale, "source": source, "status": st_out}

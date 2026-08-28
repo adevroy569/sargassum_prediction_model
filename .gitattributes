@@ -1,0 +1,11 @@
+# Data and published output are written by the Linux CI bot and only ever read
+# by code. On a Windows checkout git would otherwise rewrite every line ending,
+# so a plain `git pull` leaves thousands of lines showing as locally modified
+# and it becomes very easy to commit that churn on top of real work.
+*.csv       -text
+*.json      -text
+*.geojson   -text
+
+# Keep the shell scripts and workflows LF regardless of platform.
+*.sh        text eol=lf
+*.yml       text eol=lf

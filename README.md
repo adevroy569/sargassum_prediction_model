@@ -176,6 +176,23 @@ twice:
 Segments carry a `source` field of `learned` or `physical`, so the output never
 hides which path produced a number.
 
+**Feature history.** The lag features need catchment indices from 1–3 weeks
+back, kept in `data/archive/catchment_index_history.csv`. Both `backfill.py`
+and every scheduled run write to it, and `apply_calibration` reads it. Those
+three used to disagree: scheduled runs appended to a separate `features.csv`
+that nothing ever read, so each run's contribution was discarded and the lag
+features rested entirely on the weekly backfill. They now share one path
+(`PATHS["catchment_history"]`), and the first run after this change folds any
+legacy `features.csv` in and renames it aside.
+
+**Failure is reported, not swallowed.** Calibration is wrapped so a fault can
+never take a run down, but falling back to physics silently would leave the
+page advertising a calibration that did not happen. Each run publishes
+`status.calibration` with whether the learned layer applied, how many segments
+it reached, why it did not if it failed, and how old the catchment history is.
+A history older than three weeks means the lag features are coming from the
+wrong weeks, usually because the weekly retrain has stopped; the page says so.
+
 ---
 
 ## Running it
@@ -307,15 +324,18 @@ code. The ones worth tuning first:
 
 ## Honest limitations
 
-* **No model is fitted yet, so nothing is bias-corrected.** `data/models/` is
-  empty, `calibration_scale` is 1.0 (i.e. no correction) and every segment
-  reports `source: physical`. Cross-checked 2026-08-27 against the only ground
-  truth available: at La Parguera the run predicted 89 and 320 kg/m over five
-  days on two of its four segments, while the traps at that site have measured
-  a **maximum of 18.5 kg/m in a week** and mostly read zero. The absolute
-  tonnage is therefore running one to two orders of magnitude high and should
-  be read as an upper bound. The site now says this on the page, from the run's
-  own output rather than from prose.
+* **The learned layer covers 4 segments out of 140.** Trained 2026-08-28 on
+  2,331 rows, hold-out MAE 3.0 kg/m, log-space R2 0.31. It applies only at the
+  La Parguera traps (`PU030`-`PU033`); the other 136 segments are physics times
+  `physical_scale`, which is still 1.0 because fitting it needs forecast and
+  observation records that overlap in time, and those have only just started
+  accumulating. Until it converges, absolute tonnage elsewhere is uncalibrated:
+  cross-checked 2026-08-27, the physics alone predicted 89 and 320 kg/m over
+  five days at La Parguera while the traps there have measured a **maximum of
+  18.5 kg/m in a week**. Read the tonnages as an upper bound and the ranking as
+  the useful part. The page states its calibration status from the run's own
+  output rather than from prose, including when a fitted model failed to apply
+  or its lag history has gone stale.
 * **The absolute mass scale is the weakest number.** Spatial pattern (which
   coasts get hit, and when) rests on observed currents and forecast winds and is
   the trustworthy part. Absolute kg/m depends on the stranding efficiency, which

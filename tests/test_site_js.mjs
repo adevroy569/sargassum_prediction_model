@@ -343,12 +343,47 @@ console.log('site/app.js');
   const l = clone(base);
   l.model = { n_train: 812, mae_kg_per_m: 3.4 };
   l.calibration_scale = 0.41;
+  l.status.calibration = { ok: true, n_learned: 4, history_age_days: 2.0 };
   const { doc } = await boot(l);
   check('a trained run reports its training size and error', () => {
     const t = doc.getElementById('calibState').textContent;
     assert(/812/.test(t), 'training size missing: ' + t);
     assert(/3\.4/.test(t), 'hold-out error missing: ' + t);
     assert(!/not yet active/i.test(t), 'still claiming untrained: ' + t);
+    assert(!doc.getElementById('calibState').className.includes('calib-warn'),
+           'healthy run flagged as a problem');
+  });
+}
+{
+  // A model on disk that did not run this time. It falls back to physics,
+  // which is right, but the page must not keep advertising a calibration
+  // that was not applied.
+  const l = clone(base);
+  l.model = { n_train: 812, mae_kg_per_m: 3.4 };
+  l.status.calibration = { ok: false, n_learned: 0,
+                           reason: 'KeyError: biomass_t_r100_lag2w' };
+  const { doc } = await boot(l);
+  check('a calibration that silently fell back to physics is reported', () => {
+    const t = doc.getElementById('calibState').textContent;
+    assert(/did not apply/i.test(t), 'fallback not disclosed: ' + t);
+    assert(/KeyError/.test(t), 'reason not carried through: ' + t);
+    assert(doc.getElementById('calibState').className.includes('calib-warn'),
+           'fallback not visually flagged');
+  });
+}
+{
+  // Lag features look 1-3 weeks back. A history that stopped being extended
+  // feeds the model the wrong weeks while still looking healthy.
+  const l = clone(base);
+  l.model = { n_train: 812, mae_kg_per_m: 3.4 };
+  l.status.calibration = { ok: true, n_learned: 4, history_age_days: 47.0 };
+  const { doc } = await boot(l);
+  check('stale lag history is called out', () => {
+    const t = doc.getElementById('calibState').textContent;
+    assert(/47 days old/i.test(t), 'staleness not reported: ' + t);
+    assert(/weekly retrain/i.test(t), 'no pointer to the likely cause: ' + t);
+    assert(doc.getElementById('calibState').className.includes('calib-warn'),
+           'staleness not visually flagged');
   });
 }
 
@@ -394,6 +429,30 @@ console.log('site/app.js');
            'still showing the out-of-window legend');
   });
 }
+
+// ----------------------------------------------------------------- copy
+check('no em dashes in the page copy', () => {
+  ['index.html', 'app.js'].forEach((f) => {
+    const s = readFileSync(join(SITE, f), 'utf8');
+    const hits = (s.match(/—|&mdash;/g) || []).length;
+    assert(hits === 0, hits + ' em dash(es) left in ' + f);
+  });
+});
+
+check('the footer says only that nothing is collected', () => {
+  const s = readFileSync(join(SITE, 'index.html'), 'utf8');
+  assert(/The website does not collect any information\./.test(s),
+         'privacy line missing or reworded');
+  ['cookies', 'analytics', 'trackers', 'IP address'].forEach((w) =>
+    assert(!new RegExp(w, 'i').test(s), 'privacy line still elaborates: ' + w));
+});
+
+check('the basemap credit names the basemap actually in use', () => {
+  const s = readFileSync(join(SITE, 'index.html'), 'utf8');
+  // The footer credited CARTO for a year after the tiles stopped being CARTO.
+  assert(!/carto/i.test(s), 'footer still credits CARTO');
+  assert(/Esri/.test(s), 'footer does not credit Esri');
+});
 
 // ------------------------------------------------------------ dependencies
 check('the withdrawn CARTO basemap is not referenced anywhere', () => {

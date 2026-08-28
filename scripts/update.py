@@ -48,6 +48,34 @@ def append_archive(path: Path, rows: pd.DataFrame, key_cols,
     log.info("archive %s -> %d rows", path.name, len(rows))
 
 
+def _migrate_feature_archive() -> None:
+    """Fold the retired features.csv into the catchment history, once.
+
+    Scheduled runs used to append their catchment indices to features.csv,
+    which nothing ever read: prediction time loads
+    catchment_index_history.csv, written only by backfill.py. Same columns,
+    same dedupe keys, different filename, so every run's contribution was
+    discarded and the lag features rested entirely on the weekly backfill.
+
+    The rows are real and worth keeping, so they are merged rather than
+    dropped. The legacy file is then renamed aside rather than deleted, so a
+    mistake here is recoverable.
+    """
+    legacy = cfg_mod.PATHS["legacy_feature_archive"]
+    if not legacy.exists():
+        return
+    try:
+        rows = pd.read_csv(legacy)
+        if not rows.empty:
+            append_archive(cfg_mod.PATHS["catchment_history"], rows,
+                           ["station", "time"])
+        legacy.rename(legacy.with_suffix(".csv.migrated"))
+        log.info("folded %d rows from %s into %s", len(rows), legacy.name,
+                 cfg_mod.PATHS["catchment_history"].name)
+    except Exception:  # noqa: BLE001 - never let a migration break a run
+        log.warning("could not migrate %s:\n%s", legacy, traceback.format_exc())
+
+
 def segments_near_stations(segments, insitu: pd.DataFrame,
                            radius_km: float = 25.0):
     """Only these segments are worth archiving forecasts for - they are the
@@ -73,6 +101,8 @@ def main() -> int:
 
     cfg = cfg_mod.load()
     cfg_mod.ensure_dirs()
+    _migrate_feature_archive()
+    cfg_mod.ensure_dirs()
 
     bundle = None
     if args.offline:
@@ -90,6 +120,10 @@ def main() -> int:
 
     model = BeachingModel.load(cfg_mod.PATHS["model_file"], cfg)
     calib = pipeline.apply_calibration(res, cfg, model, insitu)
+    # Carried alongside the wind health so the site can report a calibration
+    # that quietly fell back to physics, rather than the reader having to
+    # notice that every segment says "physical" again.
+    res.status["calibration"] = calib.get("status", {})
 
     # ------------------------------------------------------------- outputs
     maps = cfg_mod.PATHS["maps"]
@@ -130,7 +164,7 @@ def main() -> int:
                             "longitude": float(st.longitude)})
                 rows.append(idx)
             if rows:
-                append_archive(cfg_mod.PATHS["feature_archive"],
+                append_archive(cfg_mod.PATHS["catchment_history"],
                                pd.DataFrame(rows), ["station", "time"])
         except Exception:  # noqa: BLE001
             log.warning("feature archiving failed:\n%s", traceback.format_exc())

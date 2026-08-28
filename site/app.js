@@ -764,7 +764,7 @@
       cap.innerHTML = 'Hydrogen sulfide given off as stranded weed rots' +
         (day < 0 ? ', at its worst day on each stretch of coast'
                  : ', on ' + (gasDay || 'the selected day')) +
-        '. Release lags the stranding by about two days — scrub the timeline and you can watch ' +
+        '. Release lags the stranding by about two days, so scrub the timeline and you can watch ' +
         'the mass land first and the gas follow. Every tier carries a written label, so colour is ' +
         'never the only cue. Click a stretch for the estimated concentration at the wrack line and ' +
         'how it compares with health guideline levels.' +
@@ -795,7 +795,7 @@
         'ending ' + (dayLabel(latest, nStrandDays - 1, 'strand') || 'earlier') +
         ', because that is as far as the wind and current forecasts driving it ' +
         'reach. The timeline runs longer than that only because gas keeps ' +
-        'releasing from weed that has <i>already</i> landed — which is why the ' +
+        'releasing from weed that has <i>already</i> landed, which is why the ' +
         'H&#8322;S layer still changes on this date and this one does not. ' +
         'A grey coast here means <b>not forecast</b>, not <b>clear</b>.';
       return;
@@ -815,7 +815,7 @@
     var nTotal = segData.nEmpty + segData.counts.reduce(function (a, b) { return a + b; }, 0);
     cap.innerHTML = 'Wet mass predicted ashore on each ~5 km stretch' +
       (day < 0 ? ' over the whole window' : ' on ' + sDay) +
-      ', in kilograms per metre — the unit the La Parguera traps measure, so ' +
+      ', in kilograms per metre, the unit the La Parguera traps measure, so ' +
       'prediction and observation compare directly. Peak here: <b>' +
       fmt(segData.hi, 1) + ' kg/m</b>; <b>' + segData.nEmpty + ' of ' + nTotal +
       '</b> stretches show nothing. Click any stretch for its daily breakdown.';
@@ -1217,20 +1217,41 @@
     if (!box) return;
     var m = obj(latest.model);
     var scale = Number(latest.calibration_scale);
+    var cal = obj(obj(latest.status).calibration);
     var feats = (segs && segs.features) || [];
     var nLearned = feats.filter(function (f) {
       return f.properties && f.properties.source === 'learned';
     }).length;
 
     if (m && m.n_train) {
-      box.innerHTML = '<b>Calibration:</b> trained on ' + m.n_train +
+      var parts = ['<b>Calibration:</b> trained on ' + m.n_train +
         ' weekly trap measurements' +
         (m.mae_kg_per_m !== undefined
           ? ', hold-out mean absolute error ' + fmt(m.mae_kg_per_m, 1) + ' kg/m'
           : '') + '. ' + nLearned + ' of ' + feats.length +
         ' segments are served by the trained model; the rest are physics ' +
-        'scaled by ' + fmt(scale, 2) + '.';
-      box.className = 'calib';
+        'scaled by ' + fmt(scale, 2) + '.'];
+
+      /* A model that exists but did not run this time is the case worth
+       * catching. It falls back to physics, which is correct, but silently:
+       * every segment simply reads "physical" again and the page would
+       * otherwise keep advertising a trained calibration. */
+      var warn = false;
+      if (cal.ok === false) {
+        warn = true;
+        parts.push('<b>This run did not apply it</b> and fell back to ' +
+          'physics' + (cal.reason ? ' (' + cal.reason + ')' : '') + '.');
+      }
+      // Lag features look 1 to 3 weeks back, so a history that has stopped
+      // being extended silently feeds the model the wrong weeks.
+      if (typeof cal.history_age_days === 'number' && cal.history_age_days > 21) {
+        warn = true;
+        parts.push('The catchment history behind its lag features is <b>' +
+          fmt(cal.history_age_days, 0) + ' days old</b>, so those inputs are ' +
+          'stale; the weekly retrain has probably stopped running.');
+      }
+      box.innerHTML = parts.join(' ');
+      box.className = warn ? 'calib calib-warn' : 'calib';
       return;
     }
 
@@ -1238,8 +1259,8 @@
       'fitted, so all ' + feats.length + ' segments run on uncorrected ' +
       'physics (bias scale ' + (isFinite(scale) ? fmt(scale, 2) : '1.00') +
       ', i.e. no correction). The <i>ranking</i> of beaches is still ' +
-      'meaningful — the absolute kilograms are not, and currently read well ' +
-      'above what the La Parguera traps measure. Treat the tonnages as an ' +
+      'meaningful. The absolute kilograms are not, and currently read well ' +
+      'above what the La Parguera traps measure, so treat the tonnages as an ' +
       'upper bound until a model is trained.';
     box.className = 'calib calib-warn';
   }
@@ -1294,7 +1315,7 @@
        'Y = ' + yH2S + ' kg H&#8322;S (and ' + yNH3 + ' kg NH&#8323;) per tonne wet, ' +
        'integrated over the whole decomposition. k(&tau;) = 0 below ' + lag +
        ' h, ramps linearly to ' + peak + ' h, then decays exponentially with a ' +
-       efold + ' h e&#8209;folding time. k is normalised so &int;k d&tau; = 1 &mdash; ' +
+       efold + ' h e&#8209;folding time. k is normalised so &int;k d&tau; = 1, so ' +
        'total gas released therefore equals stranded mass &times; Y exactly.'],
 
       ['Flux and concentration',
