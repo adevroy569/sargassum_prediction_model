@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-09-02T16:00:00+00:00",
+ "issued_at": "2026-09-02T20:00:00+00:00",
  "afai_scene_time": "2026-08-31 12:00:00",
- "current_field_time": "2026-09-02 14:00:00",
+ "current_field_time": "2026-09-02 16:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-09-02",
@@ -30,68 +30,68 @@
   "2026-09-18"
  ],
  "offshore_wet_tonnes": 4000802.9,
- "predicted_stranding_tonnes": 26530.6,
- "predicted_h2s_tonnes": 20.3459,
- "predicted_nh3_tonnes": 6.3581,
+ "predicted_stranding_tonnes": 25187.42,
+ "predicted_h2s_tonnes": 19.3264,
+ "predicted_nh3_tonnes": 6.0395,
  "worst_segments": [
   {
    "name": "Lajas / La Parguera",
    "seg_id": "PU033",
-   "kg_per_m": 741.35,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU028",
-   "kg_per_m": 426.45,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Juana D\u00edaz",
-   "seg_id": "PU015",
-   "kg_per_m": 373.63,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Dorado",
-   "seg_id": "PU075",
-   "kg_per_m": 362.38,
+   "kg_per_m": 623.34,
    "risk_tier": "high"
   },
   {
    "name": "Isabela / Jobos",
    "seg_id": "PU058",
-   "kg_per_m": 341.39,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Yabucoa",
-   "seg_id": "PU111",
-   "kg_per_m": 337.39,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Arecibo",
-   "seg_id": "PU063",
-   "kg_per_m": 316.14,
+   "kg_per_m": 580.47,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU027",
-   "kg_per_m": 218.29,
+   "kg_per_m": 373.84,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU028",
+   "kg_per_m": 360.56,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Yabucoa",
+   "seg_id": "PU111",
+   "kg_per_m": 340.13,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Juana D\u00edaz",
+   "seg_id": "PU015",
+   "kg_per_m": 309.45,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Dorado",
+   "seg_id": "PU075",
+   "kg_per_m": 224.07,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Arecibo",
+   "seg_id": "PU063",
+   "kg_per_m": 202.13,
    "risk_tier": "high"
   },
   {
    "name": "Guayanilla",
    "seg_id": "PU024",
-   "kg_per_m": 156.18,
+   "kg_per_m": 134.96,
    "risk_tier": "high"
   },
   {
-   "name": "Quebradillas",
-   "seg_id": "PU060",
-   "kg_per_m": 139.68,
+   "name": "Vieques / Sun Bay",
+   "seg_id": "VI011",
+   "kg_per_m": 129.22,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 104 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 112 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 108,
-   "covered_hours": 104.0,
+   "n_fields": 115,
+   "covered_hours": 112.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": false,
    "n_learned": 0,
    "reason": "ValueError: unconverted data remains when parsing with format \"%Y-%m-%d\": \" 12:00:00\". You might want to try:\n    - passing `format` if your strings have a consistent format;\n    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;\n    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to",
-   "history_age_days": 6.7,
+   "history_age_days": 6.8,
    "history_rows": 3640
   }
  },
