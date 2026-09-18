@@ -1,17 +1,16 @@
 {
- "issued_at": "2026-09-17T21:00:00+00:00",
- "afai_scene_time": "2026-09-16 12:00:00",
- "current_field_time": "2026-09-17 19:00:00",
+ "issued_at": "2026-09-18T04:00:00+00:00",
+ "afai_scene_time": "2026-09-17 12:00:00",
+ "current_field_time": "2026-09-18 00:00:00",
  "horizon_hours": 120,
  "days": [
-  "2026-09-17",
   "2026-09-18",
   "2026-09-19",
   "2026-09-20",
-  "2026-09-21"
+  "2026-09-21",
+  "2026-09-22"
  ],
  "gas_days": [
-  "2026-09-17",
   "2026-09-18",
   "2026-09-19",
   "2026-09-20",
@@ -27,71 +26,72 @@
   "2026-09-30",
   "2026-10-01",
   "2026-10-02",
-  "2026-10-03"
+  "2026-10-03",
+  "2026-10-04"
  ],
- "offshore_wet_tonnes": 814953.4,
- "predicted_stranding_tonnes": 4974.2,
- "predicted_h2s_tonnes": 3.8276,
- "predicted_nh3_tonnes": 1.1961,
+ "offshore_wet_tonnes": 1175303.7,
+ "predicted_stranding_tonnes": 7041.71,
+ "predicted_h2s_tonnes": 5.4007,
+ "predicted_nh3_tonnes": 1.6877,
  "worst_segments": [
+  {
+   "name": "Lajas / La Parguera",
+   "seg_id": "PU033",
+   "kg_per_m": 337.78,
+   "risk_tier": "high"
+  },
   {
    "name": "Cabo Rojo / El Combate",
    "seg_id": "PU036",
-   "kg_per_m": 331.69,
+   "kg_per_m": 255.72,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Guayama / Punta Pozuelo",
+   "seg_id": "PU003",
+   "kg_per_m": 111.25,
    "risk_tier": "high"
   },
   {
    "name": "Isabela / Jobos",
    "seg_id": "PU058",
-   "kg_per_m": 179.58,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Lajas / La Parguera",
-   "seg_id": "PU033",
-   "kg_per_m": 119.62,
-   "risk_tier": "high"
+   "kg_per_m": 102.02,
+   "risk_tier": "moderate"
   },
   {
    "name": "Quebradillas",
-   "seg_id": "PU059",
-   "kg_per_m": 78.69,
-   "risk_tier": "moderate"
+   "seg_id": "PU060",
+   "kg_per_m": 99.46,
+   "risk_tier": "high"
   },
   {
    "name": "Isabela / Jobos",
    "seg_id": "PU057",
-   "kg_per_m": 56.09,
+   "kg_per_m": 78.69,
    "risk_tier": "moderate"
   },
   {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU034",
-   "kg_per_m": 53.88,
+   "name": "Quebradillas",
+   "seg_id": "PU059",
+   "kg_per_m": 74.2,
    "risk_tier": "moderate"
   },
   {
-   "name": "Arroyo",
-   "seg_id": "PU002",
-   "kg_per_m": 43.83,
-   "risk_tier": "moderate"
-  },
-  {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU035",
-   "kg_per_m": 32.35,
-   "risk_tier": "moderate"
-  },
-  {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU028",
-   "kg_per_m": 28.37,
+   "name": "Santa Isabel",
+   "seg_id": "PU010",
+   "kg_per_m": 51.72,
    "risk_tier": "moderate"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU027",
-   "kg_per_m": 26.33,
+   "kg_per_m": 48.4,
+   "risk_tier": "moderate"
+  },
+  {
+   "name": "Guayanilla",
+   "seg_id": "PU024",
+   "kg_per_m": 33.26,
    "risk_tier": "moderate"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 111 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 104 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 115,
-   "covered_hours": 111.0,
+   "n_fields": 108,
+   "covered_hours": 104.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": false,
    "n_learned": 0,
    "reason": "ValueError: unconverted data remains when parsing with format \"%Y-%m-%d\": \" 12:00:00\". You might want to try:\n    - passing `format` if your strings have a consistent format;\n    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;\n    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to",
-   "history_age_days": 21.9,
+   "history_age_days": 22.2,
    "history_rows": 3850
   }
  },
