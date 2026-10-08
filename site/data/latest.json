@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-10-08T00:00:00+00:00",
+ "issued_at": "2026-10-08T10:00:00+00:00",
  "afai_scene_time": "2026-10-07 12:00:00",
- "current_field_time": "2026-10-07 22:00:00",
+ "current_field_time": "2026-10-08 06:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-10-08",
@@ -30,68 +30,68 @@
   "2026-10-24"
  ],
  "offshore_wet_tonnes": 2538295.9,
- "predicted_stranding_tonnes": 40703.71,
- "predicted_h2s_tonnes": 31.4239,
- "predicted_nh3_tonnes": 9.82,
+ "predicted_stranding_tonnes": 38096.55,
+ "predicted_h2s_tonnes": 29.3916,
+ "predicted_nh3_tonnes": 9.1849,
  "worst_segments": [
   {
    "name": "Yabucoa",
    "seg_id": "PU111",
-   "kg_per_m": 1250.45,
+   "kg_per_m": 1216.43,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU109",
-   "kg_per_m": 658.95,
+   "kg_per_m": 665.77,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU027",
-   "kg_per_m": 554.37,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU028",
-   "kg_per_m": 550.79,
+   "kg_per_m": 661.8,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU108",
-   "kg_per_m": 540.87,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Isabela / Jobos",
-   "seg_id": "PU058",
-   "kg_per_m": 388.33,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Maunabo / Punta Tuna",
-   "seg_id": "PU113",
-   "kg_per_m": 335.23,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Guayanilla",
-   "seg_id": "PU023",
-   "kg_per_m": 326.12,
+   "kg_per_m": 554.02,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU106",
-   "kg_per_m": 252.1,
+   "kg_per_m": 332.22,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Isabela / Jobos",
+   "seg_id": "PU058",
+   "kg_per_m": 314.33,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Guayanilla",
+   "seg_id": "PU023",
+   "kg_per_m": 302.38,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU028",
+   "kg_per_m": 279.54,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Quebradillas",
+   "seg_id": "PU059",
+   "kg_per_m": 276.95,
    "risk_tier": "high"
   },
   {
    "name": "Naguabo",
    "seg_id": "PU104",
-   "kg_per_m": 225.93,
+   "kg_per_m": 260.22,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 108 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 98 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 112,
-   "covered_hours": 108.0,
+   "n_fields": 102,
+   "covered_hours": 98.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,8 +191,8 @@
    "ok": false,
    "n_learned": 0,
    "reason": "ValueError: unconverted data remains when parsing with format \"%Y-%m-%d\": \" 12:00:00\". You might want to try:\n    - passing `format` if your strings have a consistent format;\n    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;\n    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to",
-   "history_age_days": 42.0,
-   "history_rows": 4130
+   "history_age_days": 42.4,
+   "history_rows": 4144
   }
  },
  "maps": {
