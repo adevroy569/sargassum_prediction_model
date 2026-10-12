@@ -153,11 +153,14 @@ a:hover { border-bottom-color: currentColor; }
 }
 .prose p { margin: 0 0 15px; color: var(--ink-2); }
 
+/* Full-width text sections, split into equal columns so both edges of the
+   page line up with the map and the charts above. */
+.prose.wide { max-width: none; }
+.trio, .pair { display: grid; gap: 20px 48px; }
+.trio p, .pair p { margin: 0; }
 @media (min-width: 900px) {
-  .prose.cols { max-width: none; }
-  .prose.cols .body { column-count: 2; column-gap: 48px; }
-  .prose.cols .body p { break-inside: avoid; margin: 0 0 15px; }
-  .prose.cols .body p:last-child { margin-bottom: 0; }
+  .trio { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .prose .muted { color: var(--muted); font-size: 14.5px; }
 
@@ -269,9 +272,11 @@ a:hover { border-bottom-color: currentColor; }
 
 /* ------------------------------------------------------------ footer */
 .site-foot { border-top: 1px solid var(--line); margin-top: 46px; padding: 30px 0 46px; }
-.privacy { margin: 0 0 14px; font-size: 14px; color: var(--ink-2); max-width: 78ch; }
+.site-foot .wrap { display: grid; gap: 14px 48px; }
+@media (min-width: 900px) { .site-foot .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.privacy { margin: 0; font-size: 14px; color: var(--ink-2); }
 .privacy strong { color: var(--ink); }
-.sources { margin: 0; font-size: 12.5px; color: var(--muted); max-width: 78ch; }
+.sources { margin: 0; font-size: 12.5px; color: var(--muted); }
 
 /* --------------------------------------------------------- maplibre */
 .maplibregl-popup-content {
@@ -282,26 +287,27 @@ a:hover { border-bottom-color: currentColor; }
 }
 .maplibregl-popup-tip { border-top-color: #0a1820 !important; border-bottom-color: #0a1820 !important; }
 .maplibregl-popup-close-button { color: var(--muted); font-size: 17px; padding: 2px 7px; }
-.calib {
-  margin: 14px 0 0; font-size: 13px; line-height: 1.6; color: var(--ink-2);
+.prose .calib {
+  margin: 24px 0 0; font-size: 13px; line-height: 1.6; color: var(--ink-2);
   border-left: 2px solid var(--line); padding-left: 12px;
 }
-.calib b { color: var(--ink); }
-.calib-warn { border-left-color: #f6820c; }
+.prose .calib b { color: var(--ink); }
+.prose .calib-warn { border-left-color: #f6820c; }
 
 /* Published equations. Rendered from the run's own coefficients, so the block
    has to survive numbers of varying width without reflowing awkwardly. */
 .eq-head {
-  font-size: 14px; margin: 26px 0 12px; color: var(--ink);
-  letter-spacing: .01em;
+  font-size: 17px; font-weight: 700; margin: 36px 0 14px; color: var(--ink);
+  font-variation-settings: "wdth" 112;
 }
-.eq-grid { display: grid; gap: 10px; }
+.eq-grid { display: grid; gap: 14px; }
 @media (min-width: 760px) {
-  .eq-grid { grid-template-columns: 1fr 1fr; }
+  .eq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .eq {
   border: 1px solid var(--line); border-radius: var(--radius);
-  background: var(--panel-2); padding: 12px 14px;
+  background: var(--panel); padding: 18px 20px;
+  display: flex; flex-direction: column;
 }
 .eq-name {
   display: block; font-size: 13px; font-weight: 600; text-transform: lowercase;
@@ -309,13 +315,13 @@ a:hover { border-bottom-color: currentColor; }
 }
 .eq-name::first-letter { text-transform: uppercase; }
 .eq-math {
-  display: block; font-size: 13.5px; line-height: 1.6; color: var(--accent);
+  display: block; font-size: 15px; line-height: 1.6; color: var(--accent);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   overflow-x: auto; padding-bottom: 2px;
 }
 .eq-math sub, .eq-math sup { font-size: .72em; }
 .eq-note {
-  margin: 8px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-2);
+  margin: 10px 0 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2);
 }
 .eq-note b { color: var(--ink); font-weight: 600; }
 
@@ -500,3 +506,5 @@ main.wrap > .panel:first-child { margin-top: 8px; }
   .tile + .tile { padding-left: 14px; }
   .tile:nth-child(3) { padding-left: 0; }
 }
+
+.prose .notes { margin: 18px 0 0; font-size: 13px; }

@@ -101,56 +101,52 @@
     </figure>
   </section>
 
-  <section class="prose cols" id="about">
+  <section class="prose wide" id="about">
     <h2>What Sargassum is, and why it matters</h2>
-    <div class="body">
-    <p>
-      Sargassum is a brown seaweed that never attaches to the seabed. It spends its whole life
-      drifting, reproducing by breaking apart, so a mat keeps growing as it travels. Since 2011 the
-      Great Atlantic Sargassum Belt has bloomed every year from West Africa to the Caribbean, the
-      largest macroalgae bloom on Earth, and the trade winds push a share of it onto Puerto Rico.
-    </p>
-    <p>
-      What lands is more than an eyesore. Thick mats smother seagrass and reef, trap turtle hatchlings,
-      and strip oxygen from nearshore water. On the beach, bacteria break the pile down without oxygen
-      and release hydrogen sulfide, the rotten egg gas, along with ammonia. That is enough to cause headaches,
-      nausea and breathing trouble, and to close beaches and schools for weeks.
-    </p>
-    <p>
-      Knowing where it will be in five days, how much lands on a given stretch, and how much gas that
-      mass gives off is what lets a town stage equipment and clear a beach before the pile starts to
-      smell. That is what this site is for.
-    </p>
+    <div class="trio">
+      <p>
+        Sargassum is a brown seaweed that never attaches to the seabed. It drifts its whole life and
+        grows as it travels. Since 2011 the Great Atlantic Sargassum Belt has bloomed every year from
+        West Africa to the Caribbean, and the trade winds push part of it onto Puerto Rico.
+      </p>
+      <p>
+        Thick mats smother seagrass and reef, trap turtle hatchlings and strip oxygen from nearshore
+        water. On the beach the pile rots and releases hydrogen sulfide and ammonia, enough to cause
+        headaches, nausea and breathing trouble, and to close beaches and schools for weeks.
+      </p>
+      <p>
+        Knowing where it will be in five days, how much lands on each stretch of coast and how much gas
+        it gives off lets towns stage equipment and clear beaches before the smell starts. That is
+        what this forecast is for.
+      </p>
     </div>
   </section>
 
-  <section class="prose" id="method">
+  <section class="prose wide" id="method">
     <h2>How the forecast is made</h2>
-    <p>
-      Satellite reflectance (USF/NOAA Alternative Floating Algae Index) becomes wet biomass, which is
-      carried forward on observed CariCOOS HF-radar currents and forecast CariCOOS WRF winds. Rafts
-      reaching the nearshore strand onto one of <span id="segCount">the</span> coastal segments of
-      about 5 km. Fourteen Sargassum traps at La Parguera have measured actual influx weekly since 2020,
-      and are what the model is trained and bias-corrected against.
-    </p>
-    <!-- Calibration state, read from the run rather than asserted in prose:
-         claiming a trained layer that is not active is the one error here that
-         would make the numbers look more trustworthy than they are. -->
+    <div class="pair">
+      <p>
+        Satellite images (the USF/NOAA Floating Algae Index) are converted to wet biomass, which is
+        carried forward on CariCOOS HF-radar currents and WRF wind forecasts. Rafts that reach the
+        coast strand onto one of <span id="segCount">the</span> shoreline segments of about 5 km.
+        Fourteen Sargassum traps at La Parguera, measured weekly since 2020, are what the model is
+        trained and checked against.
+      </p>
+      <p>
+        Which coasts get hit, and when, is the reliable part. Tonnages carry wide uncertainty and the
+        gas figures are order-of-magnitude, so trust the ranking of beaches more than the numbers.
+        Currents after day three are held at their recent average, so the last two days are
+        indicative only.
+      </p>
+    </div>
+    <!-- Calibration state, read from the run rather than asserted in prose. -->
     <p id="calibState" class="calib"></p>
 
-    <!-- The equations the run actually applies. Coefficients are injected from
-         latest.json, which the pipeline writes from the same config it ran on,
-         so the published formulas cannot drift from the executed ones. -->
     <h3 class="eq-head">The equations</h3>
+    <!-- Coefficients are injected from latest.json, so the published formulas
+         cannot drift from the ones the run executed. -->
     <div class="eq-grid" id="formulas"></div>
-
-    <p class="muted">
-      Spatial pattern, meaning which coasts get hit and when, is the reliable part. Absolute tonnage carries
-      wide uncertainty and the gas figures are order-of-magnitude. Treat the ranking of beaches as far
-      more dependable than the numbers. Currents past day three are persistence, so the last two days
-      are indicative only.
-    </p>
-    <p class="muted" id="notes"></p>
+    <p class="muted notes" id="notes"></p>
   </section>
 
 </main>

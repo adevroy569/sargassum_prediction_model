@@ -153,10 +153,7 @@ const base = {
   status: {
     wind: { ok: true, dataset: 'wrf_nmm_2km_best_agg', n_fields: 110,
             covered_hours: 106.0, horizon_hours: 120, reason: '' }
-  },
-  maps: { offshore: 'maps/offshore_biomass.png',
-          beaching: 'maps/beaching_forecast.png',
-          emissions: 'maps/h2s_forecast.png' }
+  }
 };
 const clone = (o) => JSON.parse(JSON.stringify(o));
 

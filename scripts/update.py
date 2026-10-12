@@ -126,15 +126,11 @@ def main() -> int:
     res.status["calibration"] = calib.get("status", {})
 
     # ------------------------------------------------------------- outputs
-    maps = cfg_mod.PATHS["maps"]
-    render.map_offshore_biomass(res, maps / "offshore_biomass.png")
-    render.map_beaching(res, calib["kg_per_m"], maps / "beaching_forecast.png")
     dt_h = float(cfg.get_path("run.dt_hours", 1))
     per_day = max(1, int(round(24.0 / dt_h)))
     h2s_daily = render._daily(res.emission.h2s_kg_per_h * dt_h, per_day)
     length_km = np.array([s.length_m for s in res.segments]) / 1000.0
     h2s_peak_km = h2s_daily.max(axis=1) / length_km
-    render.map_emissions(res, h2s_peak_km, cfg, maps / "h2s_forecast.png")
 
     meta = {}
     if model and model.metrics:

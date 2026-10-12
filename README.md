@@ -29,8 +29,6 @@ Written to `site/` on every run, ready for GitHub Pages:
 | `site/data/forecast_segments.geojson` | Per coast segment: stranded kg/m, tonnes/day, H₂S and NH₃ kg/day, risk tier, indicative ppm |
 | `site/data/biomass_field.json` | Sparse offshore biomass field for the web map |
 | `site/data/drift_tracks.json` | Sample raft trajectories, for animating the drift |
-| `site/data/stations.json` | Latest in-situ trap measurements |
-| `site/maps/*.png` | Static maps: offshore biomass, beaching forecast, H₂S forecast |
 
 The website itself is three files in `site/`: `index.html`, `styles.css` and
 `app.js`. It has no build step, and nothing to fetch beyond MapLibre GL and the
@@ -302,9 +300,6 @@ python -m http.server 8000     # from the repo root
 # then open http://localhost:8000/site/
 ```
 
-Before the first pipeline run there is no `site/data/`, so the page falls back
-to the sample outputs in `examples/data/` when it is served from the repo root.
-
 ## Configuration
 
 Every physical coefficient lives in `config/config.yaml` — nothing is buried in
@@ -375,8 +370,7 @@ sargassum/
   features.py               catchment indices, lags, seasonality
   model.py                  learned calibration layer
   pipeline.py               end-to-end run
-  render.py                 maps + the website data contract
-  palette.py                shared colour tokens
+  render.py                 the website data contract
 scripts/
   update.py                 the scheduled job
   backfill.py               historical training set

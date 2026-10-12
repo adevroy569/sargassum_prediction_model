@@ -1,4 +1,4 @@
-"""Static maps and the JSON/GeoJSON contract the website consumes."""
+"""The JSON/GeoJSON contract the website consumes."""
 from __future__ import annotations
 
 import json
@@ -7,167 +7,12 @@ import math
 from pathlib import Path
 from typing import Dict, List
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-import numpy as np  # noqa: E402
-import pandas as pd  # noqa: E402
-from matplotlib.colors import LinearSegmentedColormap, LogNorm  # noqa: E402
+import numpy as np
+import pandas as pd
 
-from . import emissions as emis_mod  # noqa: E402
-from .coastline import ISLANDS  # noqa: E402
-from .palette import BLUE_RAMP, INK, ORANGE_RAMP, STATUS  # noqa: E402
+from . import emissions as emis_mod
 
 log = logging.getLogger(__name__)
-
-CMAP_BIOMASS = LinearSegmentedColormap.from_list("sarg_blue", BLUE_RAMP)
-CMAP_BEACH = LinearSegmentedColormap.from_list("sarg_orange", ORANGE_RAMP)
-
-
-def _set_extent(ax, extent=None):
-    lon0, lon1, lat0, lat1 = extent or ISLAND_EXTENT
-    ax.set_xlim(lon0, lon1)
-    ax.set_ylim(lat0, lat1)
-    ax.set_aspect(1 / np.cos(np.radians((lat0 + lat1) / 2)))
-
-
-def _draw_land(ax):
-    for poly in ISLANDS.values():
-        xs = [p[0] for p in poly] + [poly[0][0]]
-        ys = [p[1] for p in poly] + [poly[0][1]]
-        ax.fill(xs, ys, color=INK["land"], zorder=3, linewidth=0.8,
-                edgecolor=INK["land_edge"])
-
-
-ISLAND_EXTENT = (-67.50, -65.10, 17.82, 18.62)  # lon0, lon1, lat0, lat1
-
-
-def _label_top(ax, lons, lats, vals, names, unit, n=4):
-    """Annotate the n largest values with staggered offsets to avoid overlap."""
-    order = [i for i in np.argsort(vals)[::-1][:n] if vals[i] > 0]
-    offsets = [(10, 14), (10, -20), (-12, 16), (-12, -22)]
-    for k, i in enumerate(order):
-        dx, dy = offsets[k % len(offsets)]
-        ax.annotate(f"{names[i]}  {vals[i]:,.0f} {unit}",
-                    (lons[i], lats[i]), textcoords="offset points",
-                    xytext=(dx, dy), fontsize=7.5, color=INK["primary"],
-                    ha="left" if dx > 0 else "right", zorder=7,
-                    bbox=dict(boxstyle="round,pad=0.28", fc=INK["surface"],
-                              ec=INK["axis"], lw=0.5),
-                    arrowprops=dict(arrowstyle="-", color=INK["axis"], lw=0.7))
-
-
-def _style(ax, title: str, subtitle: str):
-    ax.set_facecolor(INK["surface"])
-    ax.grid(True, color=INK["grid"], linewidth=0.5, zorder=0)
-    ax.set_xlabel("Longitude", color=INK["secondary"], fontsize=9)
-    ax.set_ylabel("Latitude", color=INK["secondary"], fontsize=9)
-    ax.tick_params(colors=INK["muted"], labelsize=8)
-    for s in ax.spines.values():
-        s.set_color(INK["axis"])
-    ax.set_title(title, color=INK["primary"], fontsize=13, loc="left",
-                 pad=26, fontweight="600")
-    ax.text(0, 1.012, subtitle, transform=ax.transAxes, fontsize=8.5,
-            color=INK["secondary"], va="bottom")
-
-
-def map_offshore_biomass(res, out: Path) -> Path:
-    bio = res.biomass_map
-    lat = np.asarray(bio["latitude"].values)
-    lon = np.asarray(bio["longitude"].values)
-    dens = np.asarray(bio["wet_kg_m2"].values, dtype=float)
-    dens = np.where(np.isfinite(dens) & (dens > 0), dens, np.nan)
-
-    fig, ax = plt.subplots(figsize=(11, 6.2), dpi=140,
-                           facecolor=INK["surface"])
-    vmax = float(np.nanpercentile(dens, 99.5)) if np.isfinite(dens).any() else 1.0
-    vmax = max(vmax, 0.02)
-    pcm = ax.pcolormesh(lon, lat, dens, cmap=CMAP_BIOMASS, shading="auto",
-                        norm=LogNorm(vmin=max(vmax / 400, 1e-3), vmax=vmax),
-                        zorder=2)
-    _draw_land(ax)
-    cb = fig.colorbar(pcm, ax=ax, pad=0.02, fraction=0.03)
-    cb.set_label("Wet Sargassum, kg per m² of sea surface", fontsize=9,
-                 color=INK["secondary"])
-    cb.ax.tick_params(colors=INK["muted"], labelsize=8)
-    scene = pd.Timestamp(res.afai_time).strftime("%Y-%m-%d") \
-        if res.afai_time is not None else "unknown"
-    _style(ax, "Offshore Sargassum — observed",
-           f"USF AFAI {res.afai_product} composite · scene {scene} · "
-           f"{res.total_offshore_tonnes:,.0f} t wet in the model domain")
-    ax.set_aspect(1 / np.cos(np.radians(float(np.mean(lat)))))
-    fig.tight_layout()
-    out.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out, facecolor=INK["surface"], bbox_inches="tight")
-    plt.close(fig)
-    return out
-
-
-def map_beaching(res, kg_per_m: np.ndarray, out: Path) -> Path:
-    segs = res.segments
-    lons = np.array([s.lon for s in segs])
-    lats = np.array([s.lat for s in segs])
-    vals = np.asarray(kg_per_m, dtype=float)
-
-    fig, ax = plt.subplots(figsize=(12, 5.2), dpi=140,
-                           facecolor=INK["surface"])
-    _draw_land(ax)
-    vmax = max(float(np.nanpercentile(vals, 97)) if vals.size else 1.0, 1e-3)
-    sizes = 30 + 260 * np.clip(vals / vmax, 0, 1)
-    sc = ax.scatter(lons, lats, c=np.clip(vals, 1e-4, None), s=sizes,
-                    cmap=CMAP_BEACH, norm=LogNorm(vmin=max(vmax / 300, 1e-4),
-                                                  vmax=max(vmax, 1e-3)),
-                    zorder=5, edgecolor=INK["surface"], linewidth=0.9)
-    cb = fig.colorbar(sc, ax=ax, pad=0.02, fraction=0.03)
-    cb.set_label("Predicted stranding, kg per m of shoreline", fontsize=9,
-                 color=INK["secondary"])
-    cb.ax.tick_params(colors=INK["muted"], labelsize=8)
-
-    _label_top(ax, lons, lats, vals, [s.name for s in segs], "kg/m")
-    horizon_d = res.daily_kg.shape[1]
-    _style(ax, f"Predicted shoreline accumulation — next {horizon_d} days",
-           f"Issued {res.issued_at:%Y-%m-%d %H:%MZ} · drift from HF-radar "
-           f"currents ({res.current_time}) + WRF winds")
-    _set_extent(ax)
-    fig.tight_layout()
-    fig.savefig(out, facecolor=INK["surface"], bbox_inches="tight")
-    plt.close(fig)
-    return out
-
-
-def map_emissions(res, h2s_kg_day_km: np.ndarray, cfg, out: Path) -> Path:
-    segs = res.segments
-    lons = np.array([s.lon for s in segs])
-    lats = np.array([s.lat for s in segs])
-    tiers = [emis_mod.risk_tier(float(v), cfg) for v in h2s_kg_day_km]
-    colors = [STATUS[t] for t in tiers]
-    sizes = [40 + 200 * min(v / max(np.nanmax(h2s_kg_day_km), 1e-6), 1)
-             for v in h2s_kg_day_km]
-
-    fig, ax = plt.subplots(figsize=(12, 5.2), dpi=140,
-                           facecolor=INK["surface"])
-    _draw_land(ax)
-    ax.scatter(lons, lats, c=colors, s=sizes, zorder=5,
-               edgecolor=INK["surface"], linewidth=0.9)
-    handles = [plt.Line2D([], [], marker="o", linestyle="", markersize=8,
-                          markerfacecolor=STATUS[k], markeredgecolor="none",
-                          label=k.capitalize())
-               for k in ("minimal", "low", "moderate", "high")]
-    leg = ax.legend(handles=handles, title="H₂S emission tier", loc="lower left",
-                    frameon=True, fontsize=8, title_fontsize=8.5)
-    leg.get_frame().set_edgecolor(INK["axis"])
-    leg.get_frame().set_facecolor(INK["surface"])
-
-    _label_top(ax, lons, lats, np.asarray(h2s_kg_day_km),
-               [s.name for s in segs], "kg/day/km")
-    _style(ax, "Predicted hydrogen sulfide release from stranded Sargassum",
-           "Peak daily H₂S per km of shoreline over the forecast window · "
-           "first-order estimate, see model notes")
-    _set_extent(ax)
-    fig.tight_layout()
-    fig.savefig(out, facecolor=INK["surface"], bbox_inches="tight")
-    plt.close(fig)
-    return out
 
 
 # ------------------------------------------------------------------- web data
@@ -253,14 +98,6 @@ def write_web_outputs(res, cfg, calib: Dict, web_dir: Path,
     paths["biomass"] = web_dir / "biomass_field.json"
     paths["biomass"].write_text(json.dumps(_biomass_payload(bio)))
 
-    if insitu is not None and not insitu.empty:
-        latest = (insitu.sort_values("time")
-                  .groupby("station").tail(1)
-                  .to_dict(orient="records"))
-        for r in latest:
-            r["time"] = pd.Timestamp(r["time"]).isoformat()
-        paths["stations"] = web_dir / "stations.json"
-        paths["stations"].write_text(json.dumps(latest, default=float))
 
     total_t = float(res.daily_kg.sum() / 1000.0)
     summary = {
@@ -316,11 +153,6 @@ def write_web_outputs(res, cfg, calib: Dict, web_dir: Path,
         # Machine-readable input health. The site raises its alert banner off
         # this rather than pattern-matching the prose above.
         "status": getattr(res, "status", {}) or {},
-        "maps": {
-            "offshore": "maps/offshore_biomass.png",
-            "beaching": "maps/beaching_forecast.png",
-            "emissions": "maps/h2s_forecast.png",
-        },
     }
     paths["summary"] = web_dir / "latest.json"
     paths["summary"].write_text(json.dumps(summary, indent=1))

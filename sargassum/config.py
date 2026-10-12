@@ -17,7 +17,6 @@ PATHS = {
     "static": ROOT / "data/static",
     "models": ROOT / "data/models",
     # published under site/ so GitHub Pages can serve the repo's site folder
-    "maps": ROOT / "site/maps",
     "web": ROOT / "site/data",
     "cache": ROOT / "data/raw/.cache",
     "segments": ROOT / "data/static/coast_segments.geojson",
@@ -61,5 +60,5 @@ def load(path: Path | str | None = None) -> Config:
 
 
 def ensure_dirs() -> None:
-    for key in ("raw", "archive", "static", "models", "maps", "web", "cache"):
+    for key in ("raw", "archive", "static", "models", "web", "cache"):
         PATHS[key].mkdir(parents=True, exist_ok=True)

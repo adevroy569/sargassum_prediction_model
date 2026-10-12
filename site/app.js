@@ -7,7 +7,7 @@
   'use strict';
 
   // ------------------------------------------------------------ constants
-  var DATA_DIRS = ['data/', '../examples/data/'];
+  var DATA_DIRS = ['data/'];
 
   // cividis, clipped away from its darkest end so low values stay readable on
   // a dark basemap. Perceptually uniform and colourblind safe. Offshore only.
@@ -780,11 +780,9 @@
       stack.appendChild(bar);
       stack.appendChild(ticks);
       box.appendChild(stack);
-      cap.innerHTML = 'Sargassum detected at the sea surface, from the USF and NOAA Alternative Floating ' +
-        'Algae Index. Scale is logarithmic. Colours use <b>cividis</b>, a perceptually uniform ramp ' +
-        'designed to read the same way for people with red green colour vision deficiency. ' +
-        'This layer is a single satellite scene, so the timeline below does not move it. ' +
-        'Scene time ' + String(bio.time || '').slice(0, 10) + '.';
+      cap.innerHTML = 'Sargassum seen at the sea surface by satellite, on a logarithmic scale. ' +
+        'This is a single scene from ' + String(bio.time || '').slice(0, 10) +
+        ', so the timeline does not change it.';
       return;
     }
 
@@ -811,10 +809,8 @@
       cap.innerHTML = 'Hydrogen sulfide given off as stranded weed rots' +
         (day < 0 ? ', at its worst day on each stretch of coast'
                  : ', on ' + (gasDay || 'the selected day')) +
-        '. Release lags the stranding by about two days, so scrub the timeline and you can watch ' +
-        'the mass land first and the gas follow. Every tier carries a written label, so colour is ' +
-        'never the only cue. Click a stretch for the estimated concentration at the wrack line and ' +
-        'how it compares with health guideline levels.' +
+        '. Gas follows stranding by about two days; play the timeline to see it. ' +
+        'Click a stretch of coast for the estimated concentration at the beach.' +
         (segData.nEmpty ? ' <b>' + segData.nEmpty + ' of ' + nTot +
           '</b> stretches are in the minimal tier here.' : '');
       return;
@@ -840,10 +836,7 @@
       box.appendChild(okeys);
       cap.innerHTML = 'The drift forecast covers <b>' + nStrandDays + ' days</b>, ' +
         'ending ' + (dayLabel(latest, nStrandDays - 1, 'strand') || 'earlier') +
-        ', because that is as far as the wind and current forecasts driving it ' +
-        'reach. The timeline runs longer than that only because gas keeps ' +
-        'releasing from weed that has <i>already</i> landed, which is why the ' +
-        'H&#8322;S layer still changes on this date and this one does not. ' +
+        '. Later dates only track gas from weed that has already landed. ' +
         'A grey coast here means <b>not forecast</b>, not <b>clear</b>.';
       return;
     }
@@ -862,8 +855,7 @@
     var nTotal = segData.nEmpty + segData.counts.reduce(function (a, b) { return a + b; }, 0);
     cap.innerHTML = 'Wet mass predicted ashore on each ~5 km stretch' +
       (day < 0 ? ' over the whole window' : ' on ' + sDay) +
-      ', in kilograms per metre, the unit the La Parguera traps measure, so ' +
-      'prediction and observation compare directly. Peak here: <b>' +
+      ', in kilograms per metre of shoreline. Peak: <b>' +
       fmt(segData.hi, 1) + ' kg/m</b>; <b>' + segData.nEmpty + ' of ' + nTotal +
       '</b> stretches show nothing. Click any stretch for its daily breakdown.';
   }
@@ -1478,8 +1470,7 @@
     var box = el('div', 'err',
       '<b>No forecast data found.</b><br>' +
       'This page reads <code>site/data/latest.json</code> and its companions, which the pipeline ' +
-      'writes on every run. Run <code>python scripts/update.py</code> once, or open the page from a ' +
-      'checkout that still has the <code>examples/</code> folder alongside it. ' +
+      'writes on every run. Run <code>python scripts/update.py</code> once. ' +
       'Note that browsers block <code>fetch</code> on <code>file://</code> pages, so serve the folder ' +
       'with <code>python -m http.server</code> rather than double clicking the file.' +
       '<br><br><span style="color:var(--muted)">' + (err && err.message ? err.message : err) + '</span>');
@@ -1548,12 +1539,9 @@
 
     initTimeline(latest, totals);
 
+    // The calibration line above already reports the trained model, so only
+    // the run's own notes are printed here.
     var notes = (latest.notes || []);
-    if (latest.model && latest.model.n_train) {
-      notes = notes.concat(['Learned layer trained on ' + latest.model.n_train +
-        ' weekly trap measurements, hold out mean absolute error ' +
-        fmt(latest.model.mae_kg_per_m, 1) + ' kg per metre.']);
-    }
     if (notes.length) {
       document.getElementById('notes').textContent = 'Run notes: ' + notes.join('. ') + '.';
     }
