@@ -6,9 +6,13 @@
 <title>Sargassum (&ldquo;Seaweed&rdquo;) Forecast &middot; Puerto Rico</title>
 <meta name="description" content="Live satellite Sargassum observations and a five day drift, stranding and gas release forecast for Puerto Rico, Vieques and Culebra.">
 <meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0d1e27">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#127807;</text></svg>">
 <link rel="preconnect" href="https://fly.maptiles.arcgis.com" crossorigin>
 <link rel="preconnect" href="https://services.arcgisonline.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,39 +20,18 @@
 
 <header class="masthead">
   <div class="wrap">
-    <h1>Sargassum (&ldquo;Seaweed&rdquo;) Forecast</h1>
-    <p class="lede">Puerto Rico, Vieques and Culebra. Where the seaweed is now, where it lands next,
-      and how much gas it releases when it rots.</p>
+    <div class="topbar">
+      <p class="brand">Sargassum forecast <span class="brand-place">Puerto Rico, Vieques and Culebra</span></p>
+      <p class="fresh" id="fresh" hidden><span class="fresh-dot" aria-hidden="true"></span><span id="freshText"></span></p>
+    </div>
+    <h1 class="headline" id="headline">Where the seaweed is now, where it lands next, and how much gas it gives off.</h1>
     <p class="stamp" id="stamp">Loading the latest run&hellip;</p>
+    <section class="stats" id="stats" aria-label="Headline figures"></section>
   </div>
 </header>
 
 <main class="wrap">
 
-  <section class="prose cols" id="about">
-    <h2>What Sargassum is, and why it is worth forecasting</h2>
-    <div class="body">
-    <p>
-      Sargassum is a brown seaweed that never attaches to the seabed. It spends its whole life
-      drifting, reproducing by breaking apart, so a mat keeps growing as it travels. Since 2011 the
-      Great Atlantic Sargassum Belt has bloomed every year from West Africa to the Caribbean, the
-      largest macroalgae bloom on Earth, and the trade winds push a share of it onto Puerto Rico.
-    </p>
-    <p>
-      What lands is more than an eyesore. Thick mats smother seagrass and reef, trap turtle hatchlings,
-      and strip oxygen from nearshore water. On the beach, bacteria break the pile down without oxygen
-      and release hydrogen sulfide, the rotten egg gas, along with ammonia. That is enough to cause headaches,
-      nausea and breathing trouble, and to close beaches and schools for weeks.
-    </p>
-    <p>
-      Knowing where it will be in five days, how much lands on a given stretch, and how much gas that
-      mass gives off is what lets a town stage equipment and clear a beach before the pile starts to
-      smell. That is what this site is for.
-    </p>
-    </div>
-  </section>
-
-  <section class="stats" id="stats" aria-label="Headline figures"></section>
 
   <section class="panel" aria-labelledby="map-heading">
     <div class="panel-head">
@@ -116,6 +99,29 @@
       </figcaption>
       <div class="chart" id="chartTop"></div>
     </figure>
+  </section>
+
+  <section class="prose cols" id="about">
+    <h2>What Sargassum is, and why it matters</h2>
+    <div class="body">
+    <p>
+      Sargassum is a brown seaweed that never attaches to the seabed. It spends its whole life
+      drifting, reproducing by breaking apart, so a mat keeps growing as it travels. Since 2011 the
+      Great Atlantic Sargassum Belt has bloomed every year from West Africa to the Caribbean, the
+      largest macroalgae bloom on Earth, and the trade winds push a share of it onto Puerto Rico.
+    </p>
+    <p>
+      What lands is more than an eyesore. Thick mats smother seagrass and reef, trap turtle hatchlings,
+      and strip oxygen from nearshore water. On the beach, bacteria break the pile down without oxygen
+      and release hydrogen sulfide, the rotten egg gas, along with ammonia. That is enough to cause headaches,
+      nausea and breathing trouble, and to close beaches and schools for weeks.
+    </p>
+    <p>
+      Knowing where it will be in five days, how much lands on a given stretch, and how much gas that
+      mass gives off is what lets a town stage equipment and clear a beach before the pile starts to
+      smell. That is what this site is for.
+    </p>
+    </div>
   </section>
 
   <section class="prose" id="method">

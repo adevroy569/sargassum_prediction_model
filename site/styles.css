@@ -1,13 +1,16 @@
-/* Sargassum Forecast - dark, minimal, no external fonts. */
+/* Sargassum Forecast
+   Deep-water palette with the colour of the weed itself as the one accent.
+   Archivo's width axis carries the voice: wide for the forecast sentence,
+   normal for reading, slightly narrow for small figure labels. */
 
 :root {
-  --bg:          #0c0f11;
-  --panel:       #14181b;
-  --panel-2:     #1b2024;
-  --line:        #262c31;
-  --ink:         #e7eaec;
-  --ink-2:       #a8b0b6;
-  --muted:       #767f86;
+  --bg:          #0d1e27;   /* deep water */
+  --panel:       #122a35;   /* shelf */
+  --panel-2:     #183441;   /* shallows */
+  --line:        #234452;   /* reef line */
+  --ink:         #eaf0ef;   /* foam */
+  --ink-2:       #a9bcc0;   /* spray */
+  --muted:       #73898f;
 
   /* cividis, clipped away from its darkest end so low values stay visible */
   --seq-0: #21395f;
@@ -28,10 +31,14 @@
   --hot-5: #fac228;
   --hot-6: #fcffa4;
 
-  --accent: #ffea46;
+  --accent: #d9a441;        /* Sargassum ochre */
+  --ok:     #3fa596;
+  --late:   #f5b52a;
+  --stale:  #ff5a6e;
 
-  --radius: 10px;
-  --maxw: 1120px;
+  --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius: 12px;
+  --maxw: 1180px;
 
   color-scheme: dark;
 }
@@ -44,7 +51,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font: 400 16px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 400 16px/1.65 var(--font);
+  font-variation-settings: "wdth" 100;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -52,56 +60,106 @@ body {
 
 a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
 a:hover { border-bottom-color: currentColor; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---------------------------------------------------------- masthead */
 .masthead {
-  border-bottom: 1px solid var(--line);
-  padding: 52px 0 30px;
+  padding: 22px 0 34px;
   background:
-    radial-gradient(1100px 320px at 12% -40%, rgba(255, 234, 70, .07), transparent 70%),
+    linear-gradient(180deg, rgba(217, 164, 65, .07), transparent 340px),
     var(--bg);
 }
-.masthead h1 {
-  margin: 0;
-  font-size: clamp(28px, 4.4vw, 42px);
-  font-weight: 650;
-  letter-spacing: -.02em;
+.topbar {
+  display: flex; flex-wrap: wrap; gap: 10px 20px;
+  align-items: center; justify-content: space-between;
+  padding-bottom: 18px; margin-bottom: 40px;
+  border-bottom: 1px solid var(--line);
 }
-.lede { margin: 10px 0 0; max-width: 62ch; color: var(--ink-2); font-size: 17px; }
-.stamp { margin: 18px 0 0; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-
-/* ------------------------------------------------------------- prose */
-.prose { max-width: 68ch; padding: 44px 0 8px; }
-.prose h2 { font-size: 21px; font-weight: 620; letter-spacing: -.01em; margin: 0 0 14px; }
-.prose p { margin: 0 0 15px; color: var(--ink-2); }
-
-/* Two columns on wide screens so the explainer does not push the map far
-   down the page. Falls back to a single column below 900px. */
-@media (min-width: 900px) {
-  .prose.cols { max-width: none; }
-  .prose.cols .body { column-count: 2; column-gap: 44px; }
-  .prose.cols .body p { break-inside: avoid; margin: 0 0 15px; }
-  .prose.cols .body p:last-child { margin-bottom: 0; }
+.brand {
+  margin: 0; font-size: 15px; font-weight: 700; letter-spacing: .01em;
+  font-variation-settings: "wdth" 112;
 }
-.prose .muted { color: var(--muted); font-size: 14.5px; }
+.brand-place { font-weight: 400; color: var(--muted); margin-left: 8px; font-variation-settings: "wdth" 100; }
+
+.fresh {
+  margin: 0; display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--ink-2);
+  padding: 5px 12px 5px 10px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.fresh[hidden] { display: none; }
+.fresh-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.fresh.is-fresh .fresh-dot { background: var(--ok); box-shadow: 0 0 0 3px rgba(63,165,150,.22); }
+.fresh.is-late  .fresh-dot { background: var(--late); }
+.fresh.is-stale { color: var(--ink); border-color: rgba(255,90,110,.5); }
+.fresh.is-stale .fresh-dot { background: var(--stale); }
+
+/* The forecast, said as a sentence. The one loud element on the page. */
+.headline {
+  margin: 0; max-width: 24ch;
+  font-size: clamp(30px, 4.1vw, 50px);
+  line-height: 1.06;
+  font-weight: 700;
+  font-variation-settings: "wdth" 116;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+.stamp { margin: 18px 0 0; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 /* ------------------------------------------------------------- stats */
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
-  gap: 12px;
-  margin: 34px 0 26px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 36px 0 0;
+  border-top: 1px solid var(--line);
 }
-.tile {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 16px 18px;
+.tile { padding: 18px 22px 4px 0; }
+.tile + .tile { padding-left: 22px; border-left: 1px solid var(--line); }
+.tile .k {
+  font-size: 13px; color: var(--ink-2);
+  font-variation-settings: "wdth" 92;
 }
-.tile .k { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
-.tile .v { font-size: 28px; font-weight: 640; margin-top: 6px; letter-spacing: -.02em; }
-.tile .v small { font-size: 14px; font-weight: 450; color: var(--ink-2); margin-left: 3px; }
-.tile .s { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.tile .v {
+  font-size: 30px; font-weight: 650; margin-top: 4px; line-height: 1.15;
+  letter-spacing: -.01em; font-variant-numeric: tabular-nums;
+  font-variation-settings: "wdth" 108;
+}
+.tile .v small { font-size: 14px; font-weight: 400; color: var(--ink-2); margin-left: 2px; font-variation-settings: "wdth" 100; }
+.tile .s { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.tile-place .v { font-size: 22px; color: var(--accent); }
+.tile .tier {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 8px; padding: 2px 9px 2px 7px; border-radius: 999px;
+  font-size: 12px; color: var(--ink);
+  background: color-mix(in srgb, var(--tier) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tier) 55%, transparent);
+}
+.tile .tier::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--tier); }
+.tile .s .tier { display: flex; width: fit-content; }
+
+@media (max-width: 860px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .tile:nth-child(3) { padding-left: 0; border-left: 0; }
+  .tile:nth-child(n+3) { border-top: 1px solid var(--line); margin-top: 6px; }
+}
+
+/* ------------------------------------------------------------- prose */
+.prose { max-width: 68ch; padding: 56px 0 8px; }
+.prose h2 {
+  font-size: 24px; font-weight: 700; letter-spacing: -.005em; margin: 0 0 16px;
+  font-variation-settings: "wdth" 112;
+}
+.prose p { margin: 0 0 15px; color: var(--ink-2); }
+
+@media (min-width: 900px) {
+  .prose.cols { max-width: none; }
+  .prose.cols .body { column-count: 2; column-gap: 48px; }
+  .prose.cols .body p { break-inside: avoid; margin: 0 0 15px; }
+  .prose.cols .body p:last-child { margin-bottom: 0; }
+}
+.prose .muted { color: var(--muted); font-size: 14.5px; }
 
 /* ------------------------------------------------------------- panel */
 .panel {
@@ -116,7 +174,7 @@ a:hover { border-bottom-color: currentColor; }
   padding: 14px 16px;
   border-bottom: 1px solid var(--line);
 }
-.panel-head h2 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: .01em; }
+.panel-head h2 { margin: 0; font-size: 17px; font-weight: 700; font-variation-settings: "wdth" 112; }
 
 .layer-switch { display: flex; gap: 4px; background: var(--panel-2); padding: 3px; border-radius: 8px; }
 .layer-switch button {
@@ -177,12 +235,12 @@ a:hover { border-bottom-color: currentColor; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
   gap: 14px;
-  margin-top: 26px;
+  margin-top: 18px;
 }
 .chart-card { margin: 0; display: flex; flex-direction: column; }
 .chart-card.wide { grid-column: 1 / -1; }
 .chart-card figcaption { padding: 15px 16px 4px; }
-.chart-card h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.chart-card h3 { margin: 0; font-size: 16px; font-weight: 700; font-variation-settings: "wdth" 108; }
 .chart-card figcaption p { margin: 5px 0 0; font-size: 12.5px; color: var(--muted); max-width: 56ch; }
 .chart { padding: 6px 8px 12px; overflow-x: auto; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -190,8 +248,8 @@ a:hover { border-bottom-color: currentColor; }
    inside its own card rather than shrinking the type to nothing. */
 .chart-card.wide .chart svg { min-width: 620px; }
 
-.grid-line { stroke: #22282d; stroke-width: 1; }
-.axis-line { stroke: #303840; stroke-width: 1; }
+.grid-line { stroke: #1c3946; stroke-width: 1; }
+.axis-line { stroke: #2b4f5e; stroke-width: 1; }
 .axis-text { fill: var(--muted); font-size: 10.5px; font-variant-numeric: tabular-nums; }
 .value-text { fill: var(--ink-2); font-size: 10.5px; font-variant-numeric: tabular-nums; }
 .series-label { font-size: 11px; font-weight: 550; }
@@ -199,7 +257,7 @@ a:hover { border-bottom-color: currentColor; }
 
 .tip {
   position: fixed; z-index: 40; pointer-events: none;
-  background: #0a0d0f; border: 1px solid var(--line); border-radius: 7px;
+  background: #0a1820; border: 1px solid var(--line); border-radius: 7px;
   padding: 7px 10px; font-size: 12.5px; color: var(--ink);
   box-shadow: 0 6px 22px rgba(0,0,0,.55);
   opacity: 0; transition: opacity .1s;
@@ -217,12 +275,12 @@ a:hover { border-bottom-color: currentColor; }
 
 /* --------------------------------------------------------- maplibre */
 .maplibregl-popup-content {
-  background: #0a0d0f; color: var(--ink);
+  background: #0a1820; color: var(--ink);
   border: 1px solid var(--line); border-radius: 8px;
   padding: 11px 13px; font: inherit; font-size: 13px;
   box-shadow: 0 8px 26px rgba(0,0,0,.6);
 }
-.maplibregl-popup-tip { border-top-color: #0a0d0f !important; border-bottom-color: #0a0d0f !important; }
+.maplibregl-popup-tip { border-top-color: #0a1820 !important; border-bottom-color: #0a1820 !important; }
 .maplibregl-popup-close-button { color: var(--muted); font-size: 17px; padding: 2px 7px; }
 .calib {
   margin: 14px 0 0; font-size: 13px; line-height: 1.6; color: var(--ink-2);
@@ -246,9 +304,10 @@ a:hover { border-bottom-color: currentColor; }
   background: var(--panel-2); padding: 12px 14px;
 }
 .eq-name {
-  display: block; font-size: 10.5px; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--muted); margin-bottom: 7px;
+  display: block; font-size: 13px; font-weight: 600; text-transform: lowercase;
+  color: var(--ink-2); margin-bottom: 7px;
 }
+.eq-name::first-letter { text-transform: uppercase; }
 .eq-math {
   display: block; font-size: 13.5px; line-height: 1.6; color: var(--accent);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -260,7 +319,7 @@ a:hover { border-bottom-color: currentColor; }
 }
 .eq-note b { color: var(--ink); font-weight: 600; }
 
-.maplibregl-ctrl-attrib { background: rgba(10,13,15,.82) !important; }
+.maplibregl-ctrl-attrib { background: rgba(10,24,32,.85) !important; }
 .maplibregl-ctrl-attrib a { color: var(--ink-2) !important; }
 .maplibregl-ctrl-group { background: var(--panel-2) !important; border: 1px solid var(--line); }
 .maplibregl-ctrl-group button + button { border-top: 1px solid var(--line); }
@@ -349,7 +408,7 @@ a:hover { border-bottom-color: currentColor; }
   font: inherit; font-size: 12.5px; border-radius: 7px;
   transition: background .15s, color .15s, border-color .15s;
 }
-.tl-btn:hover { color: var(--ink); border-color: #39434b; }
+.tl-btn:hover { color: var(--ink); border-color: #34606f; }
 .tl-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
 .tl-play { width: 32px; height: 32px; display: grid; place-items: center; flex: none; padding: 0; }
@@ -366,10 +425,10 @@ a:hover { border-bottom-color: currentColor; }
   border-right: 3.5px solid currentColor;
   background: transparent;
 }
-.tl-play.is-playing { color: var(--accent); border-color: rgba(255,234,70,.35); }
+.tl-play.is-playing { color: var(--accent); border-color: rgba(217,164,65,.45); }
 
 .tl-total { padding: 7px 11px; flex: none; }
-.tl-total.is-on { background: var(--line); color: var(--ink); border-color: #39434b; }
+.tl-total.is-on { background: var(--line); color: var(--ink); border-color: #34606f; }
 
 .tl-track { flex: 1 1 260px; min-width: 200px; position: relative; }
 
@@ -395,11 +454,11 @@ a:hover { border-bottom-color: currentColor; }
 .tl-range::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 15px; height: 15px; border-radius: 50%;
-  background: var(--accent); border: 2px solid #0c0f11; cursor: grab;
+  background: var(--accent); border: 2px solid #0d1e27; cursor: grab;
 }
 .tl-range::-moz-range-thumb {
   width: 13px; height: 13px; border-radius: 50%;
-  background: var(--accent); border: 2px solid #0c0f11; cursor: grab;
+  background: var(--accent); border: 2px solid #0d1e27; cursor: grab;
 }
 .tl-range:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .tl-range:disabled { opacity: .4; cursor: default; }
@@ -423,3 +482,21 @@ a:hover { border-bottom-color: currentColor; }
 /* The active day, mirrored into both charts so map and chart share a cursor. */
 .bar-dim { opacity: .28; }
 .day-cursor { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; opacity: .85; }
+
+/* Shown by MapLibre when someone scrolls over the map without Ctrl/Cmd. */
+.maplibregl-cooperative-gesture-screen {
+  background: rgba(10, 24, 32, .72); color: var(--ink);
+  font: 500 15px/1.4 var(--font);
+}
+.panel { box-shadow: 0 1px 0 rgba(255,255,255,.03) inset; }
+main.wrap > .panel:first-child { margin-top: 8px; }
+.maplibregl-ctrl-group button:focus-visible { outline: 2px solid var(--accent); }
+
+@media (max-width: 640px) {
+  .topbar { margin-bottom: 28px; }
+  .brand-place { display: block; margin: 2px 0 0; }
+  .tile .v { font-size: 24px; }
+  .tile { padding-right: 12px; }
+  .tile + .tile { padding-left: 14px; }
+  .tile:nth-child(3) { padding-left: 0; }
+}

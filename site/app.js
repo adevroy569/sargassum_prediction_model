@@ -243,15 +243,53 @@
   // ============================================================== STATS
   function renderStamp(latest) {
     var issued = new Date(latest.issued_at);
-    var scene = latest.afai_scene_time ? String(latest.afai_scene_time).slice(0, 10) : 'unknown';
-    var parts = [
-      'Run issued ' + issued.toLocaleString(undefined, {
-        dateStyle: 'medium', timeStyle: 'short'
-      }) + ' local time',
-      'satellite scene ' + scene,
-      latest.horizon_hours / 24 + ' day outlook'
-    ];
-    document.getElementById('stamp').textContent = parts.join('  ·  ');
+    var scene = latest.afai_scene_time ? new Date(latest.afai_scene_time) : null;
+    var days = latest.horizon_hours / 24;
+    var txt = 'Run issued ' + issued.toLocaleString(undefined, {
+      dateStyle: 'medium', timeStyle: 'short'
+    }) + ' local time, from the ' +
+      (scene && !isNaN(scene) ? scene.toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' }) + ' ' : 'latest ') +
+      'satellite scene. ' + days + '-day outlook.';
+    document.getElementById('stamp').textContent = txt;
+    renderFreshness(issued);
+    renderHeadline(latest);
+  }
+
+  /* How old the published run is. The forecast workflow runs every three
+   * hours, so anything past half a day means the pipeline has stalled and the
+   * reader should know before trusting the map. */
+  function renderFreshness(issued) {
+    var box = document.getElementById('fresh');
+    var txt = document.getElementById('freshText');
+    if (!box || !txt || isNaN(issued)) return;
+    var h = (Date.now() - issued.getTime()) / 36e5;
+    var age = h < 1 ? 'less than an hour ago'
+      : h < 48 ? Math.round(h) + (Math.round(h) === 1 ? ' hour ago' : ' hours ago')
+      : Math.round(h / 24) + ' days ago';
+    box.className = 'fresh ' + (h <= 12 ? 'is-fresh' : h <= 36 ? 'is-late' : 'is-stale');
+    txt.textContent = (h > 36 ? 'Out of date: updated ' : 'Updated ') + age;
+    box.hidden = false;
+  }
+
+  // Round to a number a person would say out loud: 68,045 -> 68,000.
+  function roughly(v) {
+    if (!(v > 0)) return '0';
+    var mag = Math.pow(10, Math.max(0, Math.floor(Math.log10(v)) - 1));
+    return fmt(Math.round(v / mag) * mag, 0);
+  }
+
+  function renderHeadline(latest) {
+    var h = document.getElementById('headline');
+    if (!h) return;
+    var days = latest.horizon_hours / 24;
+    var t = latest.predicted_stranding_tonnes;
+    var worst = (latest.worst_segments || [])[0];
+    if (!(t > 0)) {
+      h.textContent = 'No Sargassum is forecast to wash ashore in the next ' + days + ' days.';
+      return;
+    }
+    h.textContent = 'About ' + roughly(t) + ' tonnes of Sargassum will wash ashore over the next ' +
+      days + ' days' + (worst ? '. ' + worst.name + ' is hit hardest.' : '.');
   }
 
   function renderStats(latest, segs) {
@@ -260,39 +298,46 @@
     var worst = (latest.worst_segments || [])[0];
     var gasDaily = sumByDay(segs, 'h2s_kg_per_day');
     var peakDay = gasDaily.indexOf(Math.max.apply(null, gasDaily.concat([0])));
+    var tier = worst && TIER[worst.risk_tier];
 
     var tiles = [
       {
         k: 'Offshore now',
         v: fmt(latest.offshore_wet_tonnes, 0), u: 't wet',
-        s: 'Detected in the model domain'
+        s: 'Floating in the forecast area'
       },
       {
-        k: 'Predicted stranding',
+        k: 'Coming ashore',
         v: fmt(latest.predicted_stranding_tonnes, 0), u: 't wet',
-        s: 'Island wide over ' + (latest.horizon_hours / 24) + ' days'
+        s: 'All coasts, next ' + (latest.horizon_hours / 24) + ' days'
       },
       {
-        k: 'Hydrogen sulfide',
+        k: 'Hydrogen sulfide released',
         v: fmt(latest.predicted_h2s_tonnes, 1), u: 't',
         s: 'Peaks ' + (latest.gas_days && latest.gas_days[peakDay]
               ? shortDay(latest.gas_days[peakDay]) : 'later this week')
       },
       {
-        k: 'Worst affected',
-        v: worst ? worst.name : 'n/a', u: '',
-        s: worst ? fmt(worst.kg_per_m, 1) + ' kg per metre of shoreline' : '',
-        small: true
+        k: 'Hardest-hit shoreline',
+        v: worst ? worst.name : 'None', u: '',
+        s: worst ? fmt(worst.kg_per_m, 0) + ' kg per metre of beach' : 'Nothing forecast to land',
+        tier: tier,
+        place: true
       }
     ];
     tiles.forEach(function (t) {
-      var n = el('div', 'tile');
+      var n = el('div', 'tile' + (t.place ? ' tile-place' : ''));
       n.appendChild(el('div', 'k', t.k));
       var v = el('div', 'v');
-      v.style.fontSize = t.small ? '19px' : '';
       v.innerHTML = t.v + (t.u ? ' <small>' + t.u + '</small>' : '');
       n.appendChild(v);
-      n.appendChild(el('div', 's', t.s));
+      var sub = el('div', 's', t.s);
+      if (t.tier) {
+        var badge = el('span', 'tier', t.tier.label + ' smell risk');
+        badge.style.setProperty('--tier', t.tier.color);
+        sub.appendChild(badge);
+      }
+      n.appendChild(sub);
       box.appendChild(n);
     });
   }
@@ -476,7 +521,9 @@
       zoom: 7.4,
       minZoom: 5,
       maxZoom: 12,
-      attributionControl: { compact: true }
+      attributionControl: { compact: true },
+      // Page scroll passes over the map; Ctrl/Cmd + scroll (or two fingers) zooms it.
+      cooperativeGestures: true
     });
     App.map = map;
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
@@ -938,7 +985,7 @@
     });
     svg.appendChild(dayLine);
     var dayDots = series.map(function (s) {
-      var c = svgEl('circle', { r: 4.5, fill: s.color, stroke: '#0c0f11',
+      var c = svgEl('circle', { r: 4.5, fill: s.color, stroke: '#0d1e27',
                                 'stroke-width': 2, opacity: 0 });
       svg.appendChild(c);
       return c;
@@ -953,7 +1000,7 @@
       var last = s.values.length - 1;
       svg.appendChild(svgEl('circle', {
         cx: xAt(last), cy: yAt(s.values[last]), r: 4, fill: s.color,
-        stroke: '#14181b', 'stroke-width': 2
+        stroke: '#122a35', 'stroke-width': 2
       }));
       var lab = svgEl('text', {
         x: xAt(last) + 9, y: yAt(s.values[last]) + 4, class: 'series-label', fill: s.color
