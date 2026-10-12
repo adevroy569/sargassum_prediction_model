@@ -63,7 +63,7 @@ def assemble(rows: List[dict], lags_weeks: Sequence[int]) -> pd.DataFrame:
     df = pd.DataFrame(rows)
     if df.empty:
         return df
-    df["time"] = pd.to_datetime(df["time"], utc=True)
+    df["time"] = pd.to_datetime(df["time"], utc=True, format="mixed")
     df = df.sort_values(["station", "time"]).reset_index(drop=True)
     index_cols = [c for c in df.columns if c.startswith("biomass_t_")]
     out = []

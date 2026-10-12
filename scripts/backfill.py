@@ -62,7 +62,7 @@ def main() -> int:
     if obs.empty:
         log.error("no in-situ observations returned; nothing to train on")
         return 1
-    obs["time"] = pd.to_datetime(obs["time"], utc=True)
+    obs["time"] = pd.to_datetime(obs["time"], utc=True, format="mixed")
     if args.end:
         obs = obs[obs["time"] <= pd.Timestamp(args.end, tz="UTC")]
     log.info("%d observations at %d stations, %s -> %s", len(obs),
@@ -85,7 +85,7 @@ def main() -> int:
     if INDEX_CACHE.exists():
         prev = pd.read_csv(INDEX_CACHE)
         rows = prev.to_dict("records")
-        done = set(pd.to_datetime(prev["time"], utc=True)
+        done = set(pd.to_datetime(prev["time"], utc=True, format="mixed")
                    .dt.strftime("%Y-%m-%d"))
         log.info("resuming; %d scenes already indexed", len(done))
 
@@ -135,7 +135,7 @@ def main() -> int:
     # ------------------------------------------------------------- assemble
     lags = list(cfg.get_path("model.lags_weeks", [0, 1, 2, 3]))
     feat = features.assemble(idx_df.to_dict("records"), lags)
-    feat["time"] = pd.to_datetime(feat["time"], utc=True)
+    feat["time"] = pd.to_datetime(feat["time"], utc=True, format="mixed")
 
     obs_r = obs[["time", "station", "biomass_kg_per_m"]].copy()
     merged = pd.merge_asof(

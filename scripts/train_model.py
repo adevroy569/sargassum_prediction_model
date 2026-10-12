@@ -52,8 +52,8 @@ def fit_physical_scale(cfg, model: BeachingModel) -> float:
     obs = pd.read_csv(obs_path)
     if fc.empty or obs.empty:
         return 1.0
-    fc["issued_at"] = pd.to_datetime(fc["issued_at"], utc=True)
-    obs["time"] = pd.to_datetime(obs["time"], utc=True)
+    fc["issued_at"] = pd.to_datetime(fc["issued_at"], utc=True, format="mixed")
+    obs["time"] = pd.to_datetime(obs["time"], utc=True, format="mixed")
 
     segs = load_segments(cfg_mod.PATHS["segments"])
     obs["seg_id"] = [nearest_segment(segs, r.latitude, r.longitude)
@@ -95,7 +95,7 @@ def main() -> int:
         return 1
 
     df = pd.read_csv(path)
-    df["time"] = pd.to_datetime(df["time"], utc=True)
+    df["time"] = pd.to_datetime(df["time"], utc=True, format="mixed")
     model = BeachingModel(cfg)
     try:
         metrics = model.fit(df)

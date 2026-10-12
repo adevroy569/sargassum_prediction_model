@@ -275,7 +275,7 @@ def apply_calibration(res: RunResult, cfg, model: Optional[BeachingModel],
                                             keep="last")
         lags = list(cfg.get_path("model.lags_weeks", [0, 1, 2, 3]))
         feat = features.assemble(combined.to_dict("records"), lags)
-        feat["time"] = pd.to_datetime(feat["time"], utc=True)
+        feat["time"] = pd.to_datetime(feat["time"], utc=True, format="mixed")
         latest = feat.sort_values("time").groupby("station").tail(1)
         preds = model.predict(latest)
         for st, pred in zip(latest["station"], preds):
