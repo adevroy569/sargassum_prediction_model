@@ -1,17 +1,16 @@
 {
- "issued_at": "2026-10-12T21:00:00+00:00",
- "afai_scene_time": "2026-10-11 12:00:00",
+ "issued_at": "2026-10-13T02:00:00+00:00",
+ "afai_scene_time": "2026-10-12 12:00:00",
  "current_field_time": "2026-10-12 01:00:00",
  "horizon_hours": 120,
  "days": [
-  "2026-10-12",
   "2026-10-13",
   "2026-10-14",
   "2026-10-15",
-  "2026-10-16"
+  "2026-10-16",
+  "2026-10-17"
  ],
  "gas_days": [
-  "2026-10-12",
   "2026-10-13",
   "2026-10-14",
   "2026-10-15",
@@ -27,86 +26,87 @@
   "2026-10-25",
   "2026-10-26",
   "2026-10-27",
-  "2026-10-28"
+  "2026-10-28",
+  "2026-10-29"
  ],
- "offshore_wet_tonnes": 3885814.8,
- "predicted_stranding_tonnes": 68045.06,
- "predicted_h2s_tonnes": 52.2039,
- "predicted_nh3_tonnes": 16.3137,
+ "offshore_wet_tonnes": 3347503.9,
+ "predicted_stranding_tonnes": 65925.29,
+ "predicted_h2s_tonnes": 50.7319,
+ "predicted_nh3_tonnes": 15.8537,
  "worst_segments": [
   {
-   "name": "Yabucoa",
-   "seg_id": "PU111",
-   "kg_per_m": 1222.89,
-   "risk_tier": "high"
-  },
-  {
    "name": "Ceiba / Roosevelt Roads",
-   "seg_id": "PU097",
-   "kg_per_m": 1022.65,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Vieques / Green Beach",
-   "seg_id": "VI002",
-   "kg_per_m": 669.96,
+   "seg_id": "PU096",
+   "kg_per_m": 25.1,
    "risk_tier": "high"
   },
   {
    "name": "R\u00edo Grande",
    "seg_id": "PU089",
-   "kg_per_m": 608.84,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Fajardo / Sardinera",
-   "seg_id": "PU095",
-   "kg_per_m": 567.81,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU109",
-   "kg_per_m": 567.79,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU108",
-   "kg_per_m": 523.29,
+   "kg_per_m": 16.35,
    "risk_tier": "high"
   },
   {
    "name": "Ceiba / Roosevelt Roads",
-   "seg_id": "PU096",
-   "kg_per_m": 513.84,
+   "seg_id": "PU097",
+   "kg_per_m": 15.61,
    "risk_tier": "high"
   },
   {
    "name": "Lo\u00edza / Pi\u00f1ones",
    "seg_id": "PU086",
-   "kg_per_m": 511.66,
+   "kg_per_m": 14.54,
    "risk_tier": "high"
   },
   {
-   "name": "R\u00edo Grande",
-   "seg_id": "PU088",
-   "kg_per_m": 495.27,
+   "name": "Yabucoa",
+   "seg_id": "PU111",
+   "kg_per_m": 12.87,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Barceloneta / Punta Morillos",
+   "seg_id": "PU069",
+   "kg_per_m": 11.22,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU027",
+   "kg_per_m": 10.5,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU094",
+   "kg_per_m": 10.06,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU109",
+   "kg_per_m": 9.77,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Guayanilla",
+   "seg_id": "PU023",
+   "kg_per_m": 9.29,
    "risk_tier": "high"
   }
  ],
- "calibration_scale": 1.0,
+ "calibration_scale": 0.02,
  "h2s_kg_per_tonne_wet": 0.8,
  "nh3_kg_per_tonne_wet": 0.25,
  "flux_above_literature_fraction": 0.0,
  "model": {
-  "n_train": 2331,
-  "n_test": 583,
-  "mae_log": 0.5734561569491765,
-  "r2_log": 0.30592054352088216,
-  "mae_kg_per_m": 3.0023137939172817,
+  "n_train": 2178,
+  "n_test": 545,
+  "mae_log": 0.540162991411961,
+  "r2_log": 0.12328063485323038,
+  "mae_kg_per_m": 2.356016307310468,
   "median_obs_kg_per_m": 0.0,
-  "trained_at": "2026-08-28T00:22:43.140434+00:00",
+  "trained_at": "2026-10-12T23:06:54.247710+00:00",
   "features": [
    "biomass_t_domain",
    "biomass_t_domain_lag1w",
@@ -176,28 +176,23 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 111 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 106 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 115,
-   "covered_hours": 111.0,
+   "n_fields": 110,
+   "covered_hours": 106.0,
    "horizon_hours": 120,
    "reason": ""
   },
   "calibration": {
-   "ok": false,
-   "n_learned": 0,
-   "reason": "ValueError: unconverted data remains when parsing with format \"%Y-%m-%d\": \" 12:00:00\". You might want to try:\n    - passing `format` if your strings have a consistent format;\n    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;\n    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to",
-   "history_age_days": 46.9,
-   "history_rows": 4200
+   "ok": true,
+   "n_learned": 4,
+   "reason": "",
+   "history_age_days": 47.1,
+   "history_rows": 4213
   }
- },
- "maps": {
-  "offshore": "maps/offshore_biomass.png",
-  "beaching": "maps/beaching_forecast.png",
-  "emissions": "maps/h2s_forecast.png"
  }
 }
