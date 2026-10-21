@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-10-21T04:00:00+00:00",
+ "issued_at": "2026-10-21T11:00:00+00:00",
  "afai_scene_time": "2026-10-20 12:00:00",
- "current_field_time": "2026-10-21 01:00:00",
+ "current_field_time": "2026-10-21 08:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-10-21",
@@ -30,68 +30,68 @@
   "2026-11-06"
  ],
  "offshore_wet_tonnes": 5499937.1,
- "predicted_stranding_tonnes": 197678.94,
- "predicted_h2s_tonnes": 149.6251,
- "predicted_nh3_tonnes": 46.7579,
+ "predicted_stranding_tonnes": 211903.48,
+ "predicted_h2s_tonnes": 161.0545,
+ "predicted_nh3_tonnes": 50.3295,
  "worst_segments": [
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU106",
-   "kg_per_m": 68.45,
+   "kg_per_m": 63.82,
    "risk_tier": "high"
   },
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU094",
-   "kg_per_m": 60.36,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU109",
-   "kg_per_m": 34.63,
+   "kg_per_m": 62.21,
    "risk_tier": "high"
   },
   {
    "name": "Patillas",
    "seg_id": "PU000",
-   "kg_per_m": 34.31,
+   "kg_per_m": 40.4,
    "risk_tier": "high"
   },
   {
-   "name": "Yabucoa",
-   "seg_id": "PU110",
-   "kg_per_m": 29.4,
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU109",
+   "kg_per_m": 40.03,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Naguabo",
+   "seg_id": "PU104",
+   "kg_per_m": 31.84,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU107",
+   "kg_per_m": 29.79,
    "risk_tier": "high"
   },
   {
    "name": "Guayanilla",
    "seg_id": "PU024",
-   "kg_per_m": 26.62,
+   "kg_per_m": 27.14,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Yabucoa",
+   "seg_id": "PU110",
+   "kg_per_m": 25.78,
    "risk_tier": "high"
   },
   {
    "name": "Naguabo",
    "seg_id": "PU103",
-   "kg_per_m": 26.2,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Fajardo / Sardinera",
-   "seg_id": "PU095",
-   "kg_per_m": 26.11,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Santa Isabel",
-   "seg_id": "PU010",
-   "kg_per_m": 24.36,
+   "kg_per_m": 23.52,
    "risk_tier": "high"
   },
   {
    "name": "Yabucoa",
    "seg_id": "PU111",
-   "kg_per_m": 22.73,
+   "kg_per_m": 23.1,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 104 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 97 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 108,
-   "covered_hours": 104.0,
+   "n_fields": 101,
+   "covered_hours": 97.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 55.2,
+   "history_age_days": 55.5,
    "history_rows": 4339
   }
  }
