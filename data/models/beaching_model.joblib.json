@@ -29,6 +29,7 @@
   "stations": [
     "C1_East",
     "C2_Center",
+    "C3_West",
     "E1",
     "G1",
     "L1",
@@ -38,17 +39,17 @@
     "MJ4",
     "ML1",
     "ML2",
-    "ML3"
+    "SC"
   ],
   "physical_scale": 0.02,
   "metrics": {
-    "n_train": 2006,
-    "n_test": 502,
-    "mae_log": 0.5381611228321314,
-    "r2_log": 0.22264759578660875,
-    "mae_kg_per_m": 2.3924053287449722,
+    "n_train": 2399,
+    "n_test": 600,
+    "mae_log": 0.6266541708913033,
+    "r2_log": 0.06850774564705187,
+    "mae_kg_per_m": 3.038679329357386,
     "median_obs_kg_per_m": 0.0,
-    "trained_at": "2026-10-19T13:59:11.510225+00:00",
+    "trained_at": "2026-10-26T13:34:40.575777+00:00",
     "features": [
       "biomass_t_domain",
       "biomass_t_domain_lag1w",
