@@ -1,5 +1,5 @@
 {
- "issued_at": "2026-10-28T05:00:00+00:00",
+ "issued_at": "2026-10-28T12:00:00+00:00",
  "afai_scene_time": "2026-10-27 12:00:00",
  "current_field_time": "2026-10-27 22:00:00",
  "horizon_hours": 120,
@@ -30,68 +30,68 @@
   "2026-11-13"
  ],
  "offshore_wet_tonnes": 2464686.8,
- "predicted_stranding_tonnes": 82985.82,
- "predicted_h2s_tonnes": 63.7481,
- "predicted_nh3_tonnes": 19.9213,
+ "predicted_stranding_tonnes": 91567.46,
+ "predicted_h2s_tonnes": 70.1437,
+ "predicted_nh3_tonnes": 21.9199,
  "worst_segments": [
   {
    "name": "Ceiba / Roosevelt Roads",
    "seg_id": "PU096",
-   "kg_per_m": 52.03,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU109",
-   "kg_per_m": 35.57,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Fajardo / Las Cabezas",
-   "seg_id": "PU094",
-   "kg_per_m": 32.0,
+   "kg_per_m": 48.86,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU108",
-   "kg_per_m": 30.07,
+   "kg_per_m": 39.92,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU094",
+   "kg_per_m": 35.15,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU109",
+   "kg_per_m": 31.72,
    "risk_tier": "high"
   },
   {
    "name": "Yabucoa",
    "seg_id": "PU111",
-   "kg_per_m": 23.38,
+   "kg_per_m": 29.05,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU106",
-   "kg_per_m": 17.75,
+   "kg_per_m": 18.81,
    "risk_tier": "high"
   },
   {
    "name": "Naguabo",
    "seg_id": "PU104",
-   "kg_per_m": 17.26,
+   "kg_per_m": 17.37,
    "risk_tier": "high"
   },
   {
-   "name": "Culebra / Zoni",
-   "seg_id": "CU002",
-   "kg_per_m": 16.99,
+   "name": "Fajardo / Sardinera",
+   "seg_id": "PU095",
+   "kg_per_m": 11.12,
    "risk_tier": "high"
   },
   {
-   "name": "Fajardo / Las Cabezas",
-   "seg_id": "PU093",
-   "kg_per_m": 14.17,
+   "name": "Maunabo / Punta Tuna",
+   "seg_id": "PU113",
+   "kg_per_m": 9.72,
    "risk_tier": "high"
   },
   {
-   "name": "Vieques / Punta Este",
-   "seg_id": "VI008",
-   "kg_per_m": 7.17,
+   "name": "Santa Isabel",
+   "seg_id": "PU010",
+   "kg_per_m": 8.85,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 103 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 108 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 107,
-   "covered_hours": 103.0,
+   "n_fields": 112,
+   "covered_hours": 108.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,8 +191,8 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 62.2,
-   "history_rows": 4423
+   "history_age_days": 62.5,
+   "history_rows": 4437
   }
  }
 }
