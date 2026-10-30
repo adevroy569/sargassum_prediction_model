@@ -1,5 +1,5 @@
 {
- "issued_at": "2026-10-30T17:00:00+00:00",
+ "issued_at": "2026-10-30T22:00:00+00:00",
  "afai_scene_time": "2026-10-29 12:00:00",
  "current_field_time": "2026-10-29 12:00:00",
  "horizon_hours": 120,
@@ -30,68 +30,68 @@
   "2026-11-15"
  ],
  "offshore_wet_tonnes": 2977033.7,
- "predicted_stranding_tonnes": 74714.46,
- "predicted_h2s_tonnes": 57.2227,
- "predicted_nh3_tonnes": 17.8821,
+ "predicted_stranding_tonnes": 53365.97,
+ "predicted_h2s_tonnes": 41.169,
+ "predicted_nh3_tonnes": 12.8653,
  "worst_segments": [
   {
    "name": "Naguabo",
    "seg_id": "PU104",
-   "kg_per_m": 34.51,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Yabucoa",
-   "seg_id": "PU111",
-   "kg_per_m": 23.05,
+   "kg_per_m": 17.67,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU109",
-   "kg_per_m": 20.98,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Fajardo / Las Cabezas",
-   "seg_id": "PU094",
-   "kg_per_m": 15.81,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU036",
-   "kg_per_m": 15.2,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU027",
-   "kg_per_m": 14.58,
+   "kg_per_m": 16.89,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
-   "seg_id": "PU108",
-   "kg_per_m": 12.17,
+   "seg_id": "PU106",
+   "kg_per_m": 12.69,
    "risk_tier": "high"
   },
   {
-   "name": "Isabela / Jobos",
-   "seg_id": "PU058",
-   "kg_per_m": 10.59,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Culebra / Zoni",
-   "seg_id": "CU002",
-   "kg_per_m": 10.57,
+   "name": "Yabucoa",
+   "seg_id": "PU111",
+   "kg_per_m": 12.23,
    "risk_tier": "high"
   },
   {
    "name": "Fajardo / Sardinera",
    "seg_id": "PU095",
-   "kg_per_m": 10.28,
+   "kg_per_m": 11.85,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU028",
+   "kg_per_m": 10.94,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU093",
+   "kg_per_m": 10.62,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU027",
+   "kg_per_m": 10.51,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU108",
+   "kg_per_m": 10.3,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU094",
+   "kg_per_m": 9.09,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 103 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 110 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 107,
-   "covered_hours": 103.0,
+   "n_fields": 114,
+   "covered_hours": 110.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 64.7,
+   "history_age_days": 64.9,
    "history_rows": 4465
   }
  }
