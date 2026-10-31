@@ -1,5 +1,5 @@
 {
- "issued_at": "2026-10-31T12:00:00+00:00",
+ "issued_at": "2026-10-31T19:00:00+00:00",
  "afai_scene_time": "2026-10-30 12:00:00",
  "current_field_time": "2026-10-29 12:00:00",
  "horizon_hours": 120,
@@ -30,69 +30,69 @@
   "2026-11-16"
  ],
  "offshore_wet_tonnes": 3029248.2,
- "predicted_stranding_tonnes": 0.0,
- "predicted_h2s_tonnes": 0.0,
- "predicted_nh3_tonnes": 0.0,
+ "predicted_stranding_tonnes": 58228.97,
+ "predicted_h2s_tonnes": 44.9357,
+ "predicted_nh3_tonnes": 14.0424,
  "worst_segments": [
   {
-   "name": "Lajas / La Parguera",
-   "seg_id": "PU032",
-   "kg_per_m": 0.79,
-   "risk_tier": "minimal"
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU109",
+   "kg_per_m": 18.87,
+   "risk_tier": "high"
   },
   {
-   "name": "Lajas / La Parguera",
-   "seg_id": "PU033",
-   "kg_per_m": 0.49,
-   "risk_tier": "minimal"
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU094",
+   "kg_per_m": 18.14,
+   "risk_tier": "high"
   },
   {
-   "name": "Lajas / La Parguera",
-   "seg_id": "PU030",
-   "kg_per_m": 0.28,
-   "risk_tier": "minimal"
+   "name": "Fajardo / Sardinera",
+   "seg_id": "PU095",
+   "kg_per_m": 13.94,
+   "risk_tier": "high"
   },
   {
-   "name": "Lajas / La Parguera",
-   "seg_id": "PU031",
-   "kg_per_m": 0.27,
-   "risk_tier": "minimal"
+   "name": "Yabucoa",
+   "seg_id": "PU111",
+   "kg_per_m": 12.95,
+   "risk_tier": "high"
   },
   {
-   "name": "Culebra / Zoni",
-   "seg_id": "CU002",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
+   "name": "Ceiba / Roosevelt Roads",
+   "seg_id": "PU096",
+   "kg_per_m": 12.29,
+   "risk_tier": "high"
   },
   {
-   "name": "Culebra / Flamenco",
-   "seg_id": "CU001",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU108",
+   "kg_per_m": 11.83,
+   "risk_tier": "high"
   },
   {
-   "name": "Culebra / Flamenco",
-   "seg_id": "CU000",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU027",
+   "kg_per_m": 10.82,
+   "risk_tier": "high"
   },
   {
-   "name": "Vieques / Green Beach",
-   "seg_id": "VI016",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
+   "name": "Barceloneta / Punta Morillos",
+   "seg_id": "PU068",
+   "kg_per_m": 9.57,
+   "risk_tier": "high"
   },
   {
-   "name": "Culebra / Flamenco",
-   "seg_id": "CU006",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU036",
+   "kg_per_m": 8.32,
+   "risk_tier": "high"
   },
   {
-   "name": "Culebra / Dewey",
-   "seg_id": "CU005",
-   "kg_per_m": 0.0,
-   "risk_tier": "minimal"
+   "name": "Vieques / Sun Bay",
+   "seg_id": "VI013",
+   "kg_per_m": 7.81,
+   "risk_tier": "high"
   }
  ],
  "calibration_scale": 0.02,
@@ -176,21 +176,22 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "no WRF wind available, so windage is disabled and rafts move on currents alone. Windage is the main mechanism that drives Sargassum ashore, so this run understates stranding."
+  "WRF wind runs 101 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
-   "ok": false,
-   "n_fields": 0,
+   "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
+   "n_fields": 105,
+   "covered_hours": 101.0,
    "horizon_hours": 120,
-   "reason": "ErddapError: no wind dataset reachable -> wrf_nmm_2km_best_agg: ErddapError: HTTP 404 for https://dm3.caricoos.org/erddap/griddap/wrf_nmm_2km_best_agg.nc?U10[(2026-10-31T09:00:00Z):(2026-11-04T12:00:00Z)][(16.98724):(19.498362)][(-68.19038):(-63.72224)],V10[(2026-10-31T09:00:00Z):(2026-11-04T12:00:00Z)][(16.98724):(19.498362)][(-68.19038):(-63.72224)]\nError {\n    code=404;\n    message=\"Not Found: "
+   "reason": ""
   },
   "calibration": {
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 65.5,
+   "history_age_days": 65.8,
    "history_rows": 4479
   }
  }
