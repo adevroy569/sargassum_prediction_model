@@ -1,5 +1,5 @@
 {
- "issued_at": "2026-11-02T10:00:00+00:00",
+ "issued_at": "2026-11-02T21:00:00+00:00",
  "afai_scene_time": "2026-11-01 12:00:00",
  "current_field_time": "2026-10-29 12:00:00",
  "horizon_hours": 120,
@@ -30,68 +30,68 @@
   "2026-11-18"
  ],
  "offshore_wet_tonnes": 3102797.8,
- "predicted_stranding_tonnes": 58195.15,
- "predicted_h2s_tonnes": 45.0754,
- "predicted_nh3_tonnes": 14.0861,
+ "predicted_stranding_tonnes": 50775.68,
+ "predicted_h2s_tonnes": 39.2242,
+ "predicted_nh3_tonnes": 12.2576,
  "worst_segments": [
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU094",
-   "kg_per_m": 42.44,
+   "kg_per_m": 32.17,
    "risk_tier": "high"
   },
   {
    "name": "Ceiba / Roosevelt Roads",
    "seg_id": "PU096",
-   "kg_per_m": 23.99,
+   "kg_per_m": 9.98,
    "risk_tier": "high"
   },
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU093",
-   "kg_per_m": 19.16,
+   "kg_per_m": 8.71,
    "risk_tier": "high"
   },
   {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU035",
-   "kg_per_m": 10.38,
+   "name": "A\u00f1asco / Rinc\u00f3n",
+   "seg_id": "PU048",
+   "kg_per_m": 8.63,
    "risk_tier": "high"
   },
   {
    "name": "Vieques / Sun Bay",
    "seg_id": "VI012",
-   "kg_per_m": 8.83,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU036",
-   "kg_per_m": 7.84,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU034",
-   "kg_per_m": 7.43,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Fajardo / Sardinera",
-   "seg_id": "PU095",
-   "kg_per_m": 6.31,
+   "kg_per_m": 7.75,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU028",
-   "kg_per_m": 5.53,
+   "kg_per_m": 7.59,
    "risk_tier": "high"
   },
   {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU106",
-   "kg_per_m": 5.45,
+   "name": "Fajardo / Sardinera",
+   "seg_id": "PU095",
+   "kg_per_m": 7.12,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU035",
+   "kg_per_m": 6.89,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Vieques / Esperanza",
+   "seg_id": "VI015",
+   "kg_per_m": 6.25,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU034",
+   "kg_per_m": 5.71,
    "risk_tier": "high"
   }
  ],
@@ -100,13 +100,13 @@
  "nh3_kg_per_tonne_wet": 0.25,
  "flux_above_literature_fraction": 0.0,
  "model": {
-  "n_train": 2399,
-  "n_test": 600,
-  "mae_log": 0.6266541708913033,
-  "r2_log": 0.06850774564705187,
-  "mae_kg_per_m": 3.038679329357386,
+  "n_train": 2207,
+  "n_test": 552,
+  "mae_log": 0.5790754501576096,
+  "r2_log": 0.07575038691030411,
+  "mae_kg_per_m": 2.616351488683745,
   "median_obs_kg_per_m": 0.0,
-  "trained_at": "2026-10-26T13:34:40.575777+00:00",
+  "trained_at": "2026-11-02T16:34:58.693180+00:00",
   "features": [
    "biomass_t_domain",
    "biomass_t_domain_lag1w",
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 98 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 111 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 102,
-   "covered_hours": 98.0,
+   "n_fields": 115,
+   "covered_hours": 111.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 67.4,
+   "history_age_days": 67.9,
    "history_rows": 4507
   }
  }
