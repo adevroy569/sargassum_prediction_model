@@ -1,5 +1,5 @@
 {
- "issued_at": "2026-11-03T06:00:00+00:00",
+ "issued_at": "2026-11-03T16:00:00+00:00",
  "afai_scene_time": "2026-11-02 12:00:00",
  "current_field_time": "2026-10-29 12:00:00",
  "horizon_hours": 120,
@@ -30,68 +30,68 @@
   "2026-11-19"
  ],
  "offshore_wet_tonnes": 2891725.6,
- "predicted_stranding_tonnes": 38779.49,
- "predicted_h2s_tonnes": 30.0913,
- "predicted_nh3_tonnes": 9.4035,
+ "predicted_stranding_tonnes": 50572.14,
+ "predicted_h2s_tonnes": 38.7527,
+ "predicted_nh3_tonnes": 12.1102,
  "worst_segments": [
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU094",
-   "kg_per_m": 24.63,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU028",
-   "kg_per_m": 10.59,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Vieques / Sun Bay",
-   "seg_id": "VI012",
-   "kg_per_m": 8.01,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Rinc\u00f3n / Punta Hig\u00fcero",
-   "seg_id": "PU050",
-   "kg_per_m": 6.72,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU025",
-   "kg_per_m": 6.63,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Ceiba / Roosevelt Roads",
-   "seg_id": "PU096",
-   "kg_per_m": 5.63,
+   "kg_per_m": 18.68,
    "risk_tier": "high"
   },
   {
    "name": "A\u00f1asco / Rinc\u00f3n",
    "seg_id": "PU049",
-   "kg_per_m": 5.32,
+   "kg_per_m": 12.79,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
-   "seg_id": "PU027",
-   "kg_per_m": 4.59,
+   "seg_id": "PU029",
+   "kg_per_m": 10.0,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Rinc\u00f3n / Punta Hig\u00fcero",
+   "seg_id": "PU050",
+   "kg_per_m": 9.81,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Mayag\u00fcez",
+   "seg_id": "PU046",
+   "kg_per_m": 8.6,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU038",
+   "kg_per_m": 7.48,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Aguadilla / Crash Boat",
+   "seg_id": "PU054",
+   "kg_per_m": 6.24,
    "risk_tier": "high"
   },
   {
    "name": "Vieques / Sun Bay",
    "seg_id": "VI011",
-   "kg_per_m": 4.54,
+   "kg_per_m": 5.99,
    "risk_tier": "high"
   },
   {
-   "name": "Guayanilla",
-   "seg_id": "PU024",
-   "kg_per_m": 4.25,
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU028",
+   "kg_per_m": 5.88,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Aguadilla / Crash Boat",
+   "seg_id": "PU055",
+   "kg_per_m": 5.25,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 102 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 104 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 106,
-   "covered_hours": 102.0,
+   "n_fields": 107,
+   "covered_hours": 104.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,8 +191,8 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 68.2,
-   "history_rows": 4507
+   "history_age_days": 68.7,
+   "history_rows": 4521
   }
  }
 }
