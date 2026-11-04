@@ -1,17 +1,16 @@
 {
- "issued_at": "2026-11-03T23:00:00+00:00",
- "afai_scene_time": "2026-11-02 12:00:00",
+ "issued_at": "2026-11-04T06:00:00+00:00",
+ "afai_scene_time": "2026-11-03 12:00:00",
  "current_field_time": "2026-10-29 12:00:00",
  "horizon_hours": 120,
  "days": [
-  "2026-11-03",
   "2026-11-04",
   "2026-11-05",
   "2026-11-06",
-  "2026-11-07"
+  "2026-11-07",
+  "2026-11-08"
  ],
  "gas_days": [
-  "2026-11-03",
   "2026-11-04",
   "2026-11-05",
   "2026-11-06",
@@ -27,71 +26,72 @@
   "2026-11-16",
   "2026-11-17",
   "2026-11-18",
-  "2026-11-19"
+  "2026-11-19",
+  "2026-11-20"
  ],
- "offshore_wet_tonnes": 2891725.6,
- "predicted_stranding_tonnes": 43574.68,
- "predicted_h2s_tonnes": 33.3709,
- "predicted_nh3_tonnes": 10.4284,
+ "offshore_wet_tonnes": 3238575.5,
+ "predicted_stranding_tonnes": 55102.22,
+ "predicted_h2s_tonnes": 42.4293,
+ "predicted_nh3_tonnes": 13.2591,
  "worst_segments": [
   {
-   "name": "Rinc\u00f3n / Punta Hig\u00fcero",
-   "seg_id": "PU050",
-   "kg_per_m": 12.52,
+   "name": "A\u00f1asco / Rinc\u00f3n",
+   "seg_id": "PU048",
+   "kg_per_m": 13.09,
    "risk_tier": "high"
   },
   {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU038",
-   "kg_per_m": 10.99,
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU025",
+   "kg_per_m": 10.54,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU029",
-   "kg_per_m": 10.19,
+   "kg_per_m": 10.54,
    "risk_tier": "high"
   },
   {
-   "name": "Fajardo / Las Cabezas",
-   "seg_id": "PU094",
-   "kg_per_m": 8.64,
+   "name": "Ponce",
+   "seg_id": "PU017",
+   "kg_per_m": 9.7,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Santa Isabel",
+   "seg_id": "PU012",
+   "kg_per_m": 7.41,
+   "risk_tier": "high"
+  },
+  {
+   "name": "A\u00f1asco / Rinc\u00f3n",
+   "seg_id": "PU049",
+   "kg_per_m": 7.25,
    "risk_tier": "high"
   },
   {
    "name": "Guayanilla",
    "seg_id": "PU024",
-   "kg_per_m": 7.39,
+   "kg_per_m": 6.98,
    "risk_tier": "high"
   },
   {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU034",
-   "kg_per_m": 6.66,
+   "name": "Vieques / Punta Este",
+   "seg_id": "VI010",
+   "kg_per_m": 6.76,
    "risk_tier": "high"
   },
   {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU026",
-   "kg_per_m": 6.59,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Mayag\u00fcez",
-   "seg_id": "PU047",
-   "kg_per_m": 6.14,
+   "name": "Pe\u00f1uelas / Tallaboa",
+   "seg_id": "PU019",
+   "kg_per_m": 6.01,
    "risk_tier": "high"
   },
   {
    "name": "Vieques / Sun Bay",
-   "seg_id": "VI011",
-   "kg_per_m": 5.37,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU028",
-   "kg_per_m": 4.37,
+   "seg_id": "VI013",
+   "kg_per_m": 5.8,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 109 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 102 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 113,
-   "covered_hours": 109.0,
+   "n_fields": 106,
+   "covered_hours": 102.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 69.0,
+   "history_age_days": 69.2,
    "history_rows": 4521
   }
  }
