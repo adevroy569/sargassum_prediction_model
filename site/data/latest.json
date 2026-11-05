@@ -1,5 +1,5 @@
 {
- "issued_at": "2026-11-05T17:00:00+00:00",
+ "issued_at": "2026-11-05T23:00:00+00:00",
  "afai_scene_time": "2026-11-04 12:00:00",
  "current_field_time": "2026-10-29 12:00:00",
  "horizon_hours": 120,
@@ -30,68 +30,68 @@
   "2026-11-21"
  ],
  "offshore_wet_tonnes": 2914263.4,
- "predicted_stranding_tonnes": 90794.15,
- "predicted_h2s_tonnes": 69.6802,
- "predicted_nh3_tonnes": 21.7751,
+ "predicted_stranding_tonnes": 72528.45,
+ "predicted_h2s_tonnes": 55.9689,
+ "predicted_nh3_tonnes": 17.4903,
  "worst_segments": [
   {
    "name": "A\u00f1asco / Rinc\u00f3n",
-   "seg_id": "PU048",
-   "kg_per_m": 20.38,
-   "risk_tier": "high"
-  },
-  {
-   "name": "A\u00f1asco / Rinc\u00f3n",
    "seg_id": "PU049",
-   "kg_per_m": 20.33,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU025",
-   "kg_per_m": 19.12,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU035",
-   "kg_per_m": 18.86,
+   "kg_per_m": 24.63,
    "risk_tier": "high"
   },
   {
    "name": "Rinc\u00f3n / Punta Hig\u00fcero",
    "seg_id": "PU050",
-   "kg_per_m": 18.56,
+   "kg_per_m": 17.55,
    "risk_tier": "high"
   },
   {
-   "name": "Mayag\u00fcez",
-   "seg_id": "PU047",
-   "kg_per_m": 14.0,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Yabucoa",
-   "seg_id": "PU112",
-   "kg_per_m": 13.34,
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU025",
+   "kg_per_m": 17.4,
    "risk_tier": "high"
   },
   {
    "name": "Mayag\u00fcez",
    "seg_id": "PU046",
-   "kg_per_m": 13.27,
+   "kg_per_m": 17.03,
    "risk_tier": "high"
   },
   {
    "name": "Vieques / Punta Este",
    "seg_id": "VI010",
-   "kg_per_m": 12.0,
+   "kg_per_m": 15.75,
+   "risk_tier": "high"
+  },
+  {
+   "name": "A\u00f1asco / Rinc\u00f3n",
+   "seg_id": "PU048",
+   "kg_per_m": 15.17,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU035",
+   "kg_per_m": 8.77,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU034",
+   "kg_per_m": 8.12,
    "risk_tier": "high"
   },
   {
    "name": "Vieques / Esperanza",
    "seg_id": "VI014",
-   "kg_per_m": 11.92,
+   "kg_per_m": 7.88,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Guayanilla",
+   "seg_id": "PU023",
+   "kg_per_m": 7.81,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 103 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 109 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 107,
-   "covered_hours": 103.0,
+   "n_fields": 113,
+   "covered_hours": 109.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 70.7,
+   "history_age_days": 71.0,
    "history_rows": 4549
   }
  }
