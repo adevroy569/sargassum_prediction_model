@@ -1,5 +1,5 @@
 {
- "issued_at": "2026-11-08T17:00:00+00:00",
+ "issued_at": "2026-11-08T21:00:00+00:00",
  "afai_scene_time": "2026-11-07 12:00:00",
  "current_field_time": "2026-10-29 12:00:00",
  "horizon_hours": 120,
@@ -30,68 +30,68 @@
   "2026-11-24"
  ],
  "offshore_wet_tonnes": 2357303.7,
- "predicted_stranding_tonnes": 63015.83,
- "predicted_h2s_tonnes": 47.481,
- "predicted_nh3_tonnes": 14.8378,
+ "predicted_stranding_tonnes": 59137.02,
+ "predicted_h2s_tonnes": 44.5535,
+ "predicted_nh3_tonnes": 13.923,
  "worst_segments": [
   {
    "name": "Humacao / Punta Santiago",
-   "seg_id": "PU107",
-   "kg_per_m": 34.13,
+   "seg_id": "PU108",
+   "kg_per_m": 36.12,
    "risk_tier": "high"
   },
   {
    "name": "Cabo Rojo / El Combate",
    "seg_id": "PU036",
-   "kg_per_m": 18.19,
+   "kg_per_m": 20.81,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
-   "seg_id": "PU108",
-   "kg_per_m": 15.17,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Naguabo",
-   "seg_id": "PU105",
-   "kg_per_m": 12.8,
+   "seg_id": "PU107",
+   "kg_per_m": 14.59,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU028",
-   "kg_per_m": 12.52,
+   "kg_per_m": 13.59,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU106",
+   "kg_per_m": 10.4,
    "risk_tier": "high"
   },
   {
    "name": "Naguabo",
    "seg_id": "PU104",
-   "kg_per_m": 11.79,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Ceiba / Roosevelt Roads",
-   "seg_id": "PU100",
-   "kg_per_m": 8.95,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Maunabo / Punta Tuna",
-   "seg_id": "PU113",
-   "kg_per_m": 8.52,
+   "kg_per_m": 9.44,
    "risk_tier": "high"
   },
   {
    "name": "Yabucoa",
    "seg_id": "PU111",
-   "kg_per_m": 7.96,
+   "kg_per_m": 8.86,
    "risk_tier": "high"
   },
   {
-   "name": "Vieques / Esperanza",
-   "seg_id": "VI015",
-   "kg_per_m": 7.61,
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU034",
+   "kg_per_m": 8.79,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Naguabo",
+   "seg_id": "PU105",
+   "kg_per_m": 7.74,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Ceiba / Roosevelt Roads",
+   "seg_id": "PU100",
+   "kg_per_m": 5.9,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 103 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 111 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 107,
-   "covered_hours": 103.0,
+   "n_fields": 115,
+   "covered_hours": 111.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 73.7,
+   "history_age_days": 73.9,
    "history_rows": 4591
   }
  }
