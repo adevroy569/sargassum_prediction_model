@@ -38,17 +38,18 @@
     "MJ3",
     "MJ4",
     "ML1",
-    "ML2"
+    "ML3",
+    "SC"
   ],
   "physical_scale": 0.02,
   "metrics": {
-    "n_train": 2207,
-    "n_test": 552,
-    "mae_log": 0.5790754501576096,
-    "r2_log": 0.07575038691030411,
-    "mae_kg_per_m": 2.616351488683745,
+    "n_train": 2403,
+    "n_test": 601,
+    "mae_log": 0.6910218246216359,
+    "r2_log": -0.08874347391919724,
+    "mae_kg_per_m": 3.1743372828407592,
     "median_obs_kg_per_m": 0.0,
-    "trained_at": "2026-11-02T16:34:58.693180+00:00",
+    "trained_at": "2026-11-09T16:52:26.102463+00:00",
     "features": [
       "biomass_t_domain",
       "biomass_t_domain_lag1w",
