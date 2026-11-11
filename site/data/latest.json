@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-11-11T14:00:00+00:00",
+ "issued_at": "2026-11-11T21:00:00+00:00",
  "afai_scene_time": "2026-11-10 12:00:00",
- "current_field_time": "2026-11-11 10:00:00",
+ "current_field_time": "2026-11-11 19:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-11-11",
@@ -30,68 +30,68 @@
   "2026-11-27"
  ],
  "offshore_wet_tonnes": 2675547.1,
- "predicted_stranding_tonnes": 172363.69,
- "predicted_h2s_tonnes": 133.2037,
- "predicted_nh3_tonnes": 41.6262,
+ "predicted_stranding_tonnes": 182444.32,
+ "predicted_h2s_tonnes": 141.2471,
+ "predicted_nh3_tonnes": 44.1397,
  "worst_segments": [
-  {
-   "name": "Naguabo",
-   "seg_id": "PU105",
-   "kg_per_m": 45.08,
-   "risk_tier": "high"
-  },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU106",
-   "kg_per_m": 43.41,
+   "kg_per_m": 57.45,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU107",
-   "kg_per_m": 40.27,
+   "kg_per_m": 44.97,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Naguabo",
+   "seg_id": "PU105",
+   "kg_per_m": 44.57,
    "risk_tier": "high"
   },
   {
    "name": "Yabucoa",
    "seg_id": "PU110",
-   "kg_per_m": 37.72,
+   "kg_per_m": 36.18,
    "risk_tier": "high"
   },
   {
    "name": "Yabucoa",
    "seg_id": "PU112",
-   "kg_per_m": 31.79,
+   "kg_per_m": 34.04,
    "risk_tier": "high"
   },
   {
    "name": "Naguabo",
    "seg_id": "PU104",
-   "kg_per_m": 28.07,
+   "kg_per_m": 27.21,
    "risk_tier": "high"
   },
   {
    "name": "Guayama / Punta Pozuelo",
    "seg_id": "PU003",
-   "kg_per_m": 26.92,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Fajardo / Las Cabezas",
-   "seg_id": "PU094",
-   "kg_per_m": 22.76,
+   "kg_per_m": 25.08,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU027",
-   "kg_per_m": 22.59,
+   "kg_per_m": 22.55,
    "risk_tier": "high"
   },
   {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU108",
-   "kg_per_m": 19.13,
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU094",
+   "kg_per_m": 22.24,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Naguabo",
+   "seg_id": "PU103",
+   "kg_per_m": 21.24,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 106 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 111 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 110,
-   "covered_hours": 106.0,
+   "n_fields": 115,
+   "covered_hours": 111.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 76.6,
+   "history_age_days": 76.9,
    "history_rows": 4633
   }
  }
