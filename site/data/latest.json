@@ -1,17 +1,16 @@
 {
- "issued_at": "2026-11-16T21:00:00+00:00",
- "afai_scene_time": "2026-11-15 12:00:00",
- "current_field_time": "2026-11-16 19:00:00",
+ "issued_at": "2026-11-17T07:00:00+00:00",
+ "afai_scene_time": "2026-11-16 12:00:00",
+ "current_field_time": "2026-11-17 05:00:00",
  "horizon_hours": 120,
  "days": [
-  "2026-11-16",
   "2026-11-17",
   "2026-11-18",
   "2026-11-19",
-  "2026-11-20"
+  "2026-11-20",
+  "2026-11-21"
  ],
  "gas_days": [
-  "2026-11-16",
   "2026-11-17",
   "2026-11-18",
   "2026-11-19",
@@ -27,71 +26,72 @@
   "2026-11-29",
   "2026-11-30",
   "2026-12-01",
-  "2026-12-02"
+  "2026-12-02",
+  "2026-12-03"
  ],
- "offshore_wet_tonnes": 2569630.1,
- "predicted_stranding_tonnes": 43612.79,
- "predicted_h2s_tonnes": 33.5806,
- "predicted_nh3_tonnes": 10.4939,
+ "offshore_wet_tonnes": 2757165.3,
+ "predicted_stranding_tonnes": 47847.0,
+ "predicted_h2s_tonnes": 36.9331,
+ "predicted_nh3_tonnes": 11.5416,
  "worst_segments": [
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU109",
-   "kg_per_m": 29.63,
+   "kg_per_m": 20.98,
    "risk_tier": "high"
   },
   {
    "name": "Yabucoa",
    "seg_id": "PU111",
-   "kg_per_m": 18.04,
+   "kg_per_m": 17.29,
    "risk_tier": "high"
   },
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU094",
-   "kg_per_m": 15.2,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Culebra / Zoni",
-   "seg_id": "CU002",
-   "kg_per_m": 13.64,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU108",
-   "kg_per_m": 12.46,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Guayanilla",
-   "seg_id": "PU024",
-   "kg_per_m": 8.2,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Fajardo / Sardinera",
-   "seg_id": "PU095",
-   "kg_per_m": 7.3,
+   "kg_per_m": 15.94,
    "risk_tier": "high"
   },
   {
    "name": "Ceiba / Roosevelt Roads",
    "seg_id": "PU100",
-   "kg_per_m": 5.43,
+   "kg_per_m": 15.75,
    "risk_tier": "high"
   },
   {
-   "name": "R\u00edo Grande",
-   "seg_id": "PU089",
-   "kg_per_m": 4.6,
+   "name": "Culebra / Zoni",
+   "seg_id": "CU002",
+   "kg_per_m": 11.84,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Ceiba / Roosevelt Roads",
+   "seg_id": "PU096",
+   "kg_per_m": 9.06,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU108",
+   "kg_per_m": 8.46,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU106",
+   "kg_per_m": 7.15,
    "risk_tier": "high"
   },
   {
    "name": "Isabela / Jobos",
    "seg_id": "PU058",
-   "kg_per_m": 4.47,
+   "kg_per_m": 6.82,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Maunabo / Punta Tuna",
+   "seg_id": "PU113",
+   "kg_per_m": 6.02,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 111 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 101 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 115,
-   "covered_hours": 111.0,
+   "n_fields": 105,
+   "covered_hours": 101.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,7 +191,7 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 81.9,
+   "history_age_days": 82.3,
    "history_rows": 4675
   }
  }
