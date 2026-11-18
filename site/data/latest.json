@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-11-18T02:00:00+00:00",
+ "issued_at": "2026-11-18T11:00:00+00:00",
  "afai_scene_time": "2026-11-17 12:00:00",
- "current_field_time": "2026-11-17 23:00:00",
+ "current_field_time": "2026-11-18 07:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-11-18",
@@ -30,68 +30,68 @@
   "2026-12-04"
  ],
  "offshore_wet_tonnes": 2232426.8,
- "predicted_stranding_tonnes": 34290.91,
- "predicted_h2s_tonnes": 26.4424,
- "predicted_nh3_tonnes": 8.2632,
+ "predicted_stranding_tonnes": 38555.17,
+ "predicted_h2s_tonnes": 29.7614,
+ "predicted_nh3_tonnes": 9.3005,
  "worst_segments": [
   {
    "name": "Yabucoa",
    "seg_id": "PU111",
-   "kg_per_m": 22.19,
+   "kg_per_m": 19.41,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU109",
-   "kg_per_m": 16.73,
+   "kg_per_m": 18.67,
    "risk_tier": "high"
   },
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU094",
-   "kg_per_m": 15.81,
+   "kg_per_m": 13.62,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU027",
-   "kg_per_m": 11.33,
+   "kg_per_m": 11.41,
    "risk_tier": "high"
   },
   {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU108",
-   "kg_per_m": 8.3,
+   "name": "Ceiba / Roosevelt Roads",
+   "seg_id": "PU100",
+   "kg_per_m": 9.81,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU028",
-   "kg_per_m": 8.04,
+   "kg_per_m": 9.22,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
-   "seg_id": "PU106",
-   "kg_per_m": 6.01,
+   "seg_id": "PU108",
+   "kg_per_m": 9.08,
    "risk_tier": "high"
   },
   {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU107",
-   "kg_per_m": 4.21,
+   "name": "Maunabo / Punta Tuna",
+   "seg_id": "PU113",
+   "kg_per_m": 6.14,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU025",
+   "kg_per_m": 4.41,
    "risk_tier": "high"
   },
   {
    "name": "Guayama / Punta Pozuelo",
    "seg_id": "PU003",
-   "kg_per_m": 4.19,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Guayanilla",
-   "seg_id": "PU024",
-   "kg_per_m": 3.29,
+   "kg_per_m": 4.25,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 106 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 97 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 110,
-   "covered_hours": 106.0,
+   "n_fields": 101,
+   "covered_hours": 97.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,8 +191,8 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 83.1,
-   "history_rows": 4689
+   "history_age_days": 83.5,
+   "history_rows": 4703
   }
  }
 }
