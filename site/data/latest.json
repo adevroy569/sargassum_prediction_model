@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-11-25T08:00:00+00:00",
+ "issued_at": "2026-11-25T19:00:00+00:00",
  "afai_scene_time": "2026-11-24 12:00:00",
- "current_field_time": "2026-11-25 04:00:00",
+ "current_field_time": "2026-11-25 14:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-11-25",
@@ -30,68 +30,68 @@
   "2026-12-11"
  ],
  "offshore_wet_tonnes": 2378795.2,
- "predicted_stranding_tonnes": 94995.65,
- "predicted_h2s_tonnes": 73.4351,
- "predicted_nh3_tonnes": 22.9485,
+ "predicted_stranding_tonnes": 95835.24,
+ "predicted_h2s_tonnes": 73.7937,
+ "predicted_nh3_tonnes": 23.0605,
  "worst_segments": [
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU109",
-   "kg_per_m": 57.16,
+   "kg_per_m": 60.79,
    "risk_tier": "high"
   },
   {
    "name": "Yabucoa",
    "seg_id": "PU111",
-   "kg_per_m": 42.68,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU108",
-   "kg_per_m": 31.39,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Cabo Rojo / El Combate",
-   "seg_id": "PU036",
-   "kg_per_m": 30.89,
+   "kg_per_m": 43.39,
    "risk_tier": "high"
   },
   {
    "name": "Ceiba / Roosevelt Roads",
    "seg_id": "PU096",
-   "kg_per_m": 27.15,
+   "kg_per_m": 28.51,
    "risk_tier": "high"
   },
   {
-   "name": "Gu\u00e1nica",
-   "seg_id": "PU027",
-   "kg_per_m": 22.75,
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU108",
+   "kg_per_m": 28.13,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Cabo Rojo / El Combate",
+   "seg_id": "PU036",
+   "kg_per_m": 25.19,
    "risk_tier": "high"
   },
   {
    "name": "Naguabo",
    "seg_id": "PU104",
-   "kg_per_m": 21.1,
+   "kg_per_m": 22.23,
    "risk_tier": "high"
   },
   {
-   "name": "Humacao / Punta Santiago",
-   "seg_id": "PU106",
-   "kg_per_m": 13.96,
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU027",
+   "kg_per_m": 20.66,
    "risk_tier": "high"
   },
   {
    "name": "Fajardo / Las Cabezas",
    "seg_id": "PU094",
-   "kg_per_m": 13.17,
+   "kg_per_m": 13.75,
    "risk_tier": "high"
   },
   {
-   "name": "Vieques / Sun Bay",
-   "seg_id": "VI011",
-   "kg_per_m": 12.37,
+   "name": "Humacao / Punta Santiago",
+   "seg_id": "PU106",
+   "kg_per_m": 13.57,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU093",
+   "kg_per_m": 13.43,
    "risk_tier": "high"
   }
  ],
@@ -176,14 +176,14 @@
   "mixing_height_m": 2.5
  },
  "notes": [
-  "WRF wind runs 100 h of the 120 h horizon; wind is held constant beyond that"
+  "WRF wind runs 101 h of the 120 h horizon; wind is held constant beyond that"
  ],
  "status": {
   "wind": {
    "ok": true,
    "dataset": "wrf_nmm_2km_best_agg",
-   "n_fields": 104,
-   "covered_hours": 100.0,
+   "n_fields": 105,
+   "covered_hours": 101.0,
    "horizon_hours": 120,
    "reason": ""
   },
@@ -191,8 +191,8 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 90.3,
-   "history_rows": 4787
+   "history_age_days": 90.8,
+   "history_rows": 4801
   }
  }
 }
