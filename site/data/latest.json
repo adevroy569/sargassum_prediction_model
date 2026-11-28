@@ -1,7 +1,7 @@
 {
- "issued_at": "2026-11-28T03:00:00+00:00",
+ "issued_at": "2026-11-28T15:00:00+00:00",
  "afai_scene_time": "2026-11-27 12:00:00",
- "current_field_time": "2026-11-27 22:00:00",
+ "current_field_time": "2026-11-28 13:00:00",
  "horizon_hours": 120,
  "days": [
   "2026-11-28",
@@ -29,69 +29,69 @@
   "2026-12-13",
   "2026-12-14"
  ],
- "offshore_wet_tonnes": 1776772.3,
- "predicted_stranding_tonnes": 86679.68,
- "predicted_h2s_tonnes": 66.3752,
- "predicted_nh3_tonnes": 20.7422,
+ "offshore_wet_tonnes": 1826946.6,
+ "predicted_stranding_tonnes": 88193.7,
+ "predicted_h2s_tonnes": 67.4776,
+ "predicted_nh3_tonnes": 21.0868,
  "worst_segments": [
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU109",
-   "kg_per_m": 41.17,
+   "kg_per_m": 46.31,
    "risk_tier": "high"
   },
   {
    "name": "Yabucoa",
    "seg_id": "PU111",
-   "kg_per_m": 36.53,
+   "kg_per_m": 38.55,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU108",
-   "kg_per_m": 25.4,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Ceiba / Roosevelt Roads",
-   "seg_id": "PU096",
-   "kg_per_m": 20.99,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Fajardo / Las Cabezas",
-   "seg_id": "PU094",
-   "kg_per_m": 18.94,
+   "kg_per_m": 38.36,
    "risk_tier": "high"
   },
   {
    "name": "Gu\u00e1nica",
    "seg_id": "PU027",
-   "kg_per_m": 18.67,
+   "kg_per_m": 25.09,
    "risk_tier": "high"
   },
   {
-   "name": "Fajardo / Sardinera",
-   "seg_id": "PU095",
-   "kg_per_m": 14.34,
+   "name": "Ceiba / Roosevelt Roads",
+   "seg_id": "PU096",
+   "kg_per_m": 16.22,
    "risk_tier": "high"
   },
   {
-   "name": "Isabela / Jobos",
-   "seg_id": "PU058",
-   "kg_per_m": 13.5,
+   "name": "Guayanilla",
+   "seg_id": "PU023",
+   "kg_per_m": 15.89,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Fajardo / Las Cabezas",
+   "seg_id": "PU094",
+   "kg_per_m": 15.67,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Gu\u00e1nica",
+   "seg_id": "PU028",
+   "kg_per_m": 12.05,
+   "risk_tier": "high"
+  },
+  {
+   "name": "Quebradillas",
+   "seg_id": "PU059",
+   "kg_per_m": 11.26,
    "risk_tier": "high"
   },
   {
    "name": "Humacao / Punta Santiago",
    "seg_id": "PU106",
-   "kg_per_m": 12.72,
-   "risk_tier": "high"
-  },
-  {
-   "name": "Naguabo",
-   "seg_id": "PU104",
-   "kg_per_m": 11.34,
+   "kg_per_m": 11.19,
    "risk_tier": "high"
   }
  ],
@@ -191,8 +191,8 @@
    "ok": true,
    "n_learned": 4,
    "reason": "",
-   "history_age_days": 93.1,
-   "history_rows": 4829
+   "history_age_days": 93.6,
+   "history_rows": 4843
   }
  }
 }
